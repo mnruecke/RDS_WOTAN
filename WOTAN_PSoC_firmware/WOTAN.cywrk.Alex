@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CyXmlSerializer>
+<!--This file is machine generated and read. It is not intended to be edited by hand.-->
+<!--Due to this, there is no schema for this file.-->
+<CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21 type_name="CyDesigner.Common.ProjMgmt.Model.CyPrjMgmtWrkspcCustomData" version="4">
+<CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997 type_name="CyDesigner.Common.Base.CyCustomData" version="2">
+<userData>
+<dataGuid v="1b906a0f-a7b6-4e4d-a428-82f98b53cb35">
+<CyGuid_1b906a0f-a7b6-4e4d-a428-82f98b53cb35 type_name="CyDesigner.Common.ProjMgmt.GUI.CyExplorerWindow+CyExplorerWindowState" version="3" SelectedTab="Source">
+<TreeKeys>
+<v>Source</v>
+<v>Components</v>
+<v>Output</v>
+</TreeKeys>
+<TreeStates>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="WOTAN\WOTAN_6CH\Source Files\main.c">
+<ExpandedNodeIds>
+<v>WOTAN</v>
+<v>WOTAN\WOTAN_6CH</v>
+<v>WOTAN\WOTAN_6CH\TopDesign</v>
+<v>WOTAN\WOTAN_6CH\WOTAN_6CH.cydwr</v>
+<v>WOTAN\WOTAN_6CH\Source Files</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>WOTAN</v>
+<v>WOTAN\WOTAN_6CH</v>
+<v>WOTAN\WOTAN_6CH\TopDesign</v>
+<v>WOTAN\WOTAN_6CH\WOTAN_6CH.cydwr</v>
+<v>WOTAN\WOTAN_6CH\WOTAN_6CH.cydwr\Pins</v>
+<v>WOTAN\WOTAN_6CH\WOTAN_6CH.cydwr\Analog</v>
+<v>WOTAN\WOTAN_6CH\WOTAN_6CH.cydwr\Clocks</v>
+<v>WOTAN\WOTAN_6CH\WOTAN_6CH.cydwr\Interrupts</v>
+<v>WOTAN\WOTAN_6CH\WOTAN_6CH.cydwr\DMA</v>
+<v>WOTAN\WOTAN_6CH\WOTAN_6CH.cydwr\System</v>
+<v>WOTAN\WOTAN_6CH\WOTAN_6CH.cydwr\Directives</v>
+<v>WOTAN\WOTAN_6CH\WOTAN_6CH.cydwr\Flash Security</v>
+<v>WOTAN\WOTAN_6CH\WOTAN_6CH.cydwr\EEPROM</v>
+<v>WOTAN\WOTAN_6CH\Header Files</v>
+<v>WOTAN\WOTAN_6CH\Source Files</v>
+<v>WOTAN\WOTAN_6CH\Source Files\main.c</v>
+<v>WOTAN\WOTAN_6CH\Generated_Source</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="WOTAN\WOTAN_6CH">
+<ExpandedNodeIds>
+<v>WOTAN</v>
+<v>WOTAN\WOTAN_6CH</v>
+<v>WOTAN\WOTAN_6CH\bus_combinator</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>WOTAN</v>
+<v>WOTAN\WOTAN_6CH</v>
+<v>WOTAN\WOTAN_6CH\bus_combinator</v>
+<v>WOTAN\WOTAN_6CH\bus_combinator\bus_combinator.cysym</v>
+<v>WOTAN\WOTAN_6CH\bus_combinator\bus_combinator.v</v>
+<v>WOTAN\WOTAN_6CH\clockAdjust</v>
+<v>WOTAN\WOTAN_6CH\TopDesign</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
+<ExpandedNodeIds>
+<v>WOTAN</v>
+<v>WOTAN\WOTAN_6CH</v>
+<v>WOTAN\WOTAN_6CH\CortexM3</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_1.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_1_Bypass.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_1_INT.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_1_IRQ.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_1_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_2.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_2_Bypass.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_2_INT.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_2_IRQ.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_2_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\aux_sig1.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\aux_sig2.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\aux_sig3.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\aux_sig4.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\aux_sig5.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\aux_sig6.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\Baseline_Shifter.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\Baseline_Shifter_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ChannelSel.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\clkADC.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\Clock_4.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\Clock_5.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_1.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_1_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_1ab.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_1ab_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_2.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_2_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_2ab.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_2ab_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_3.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_3_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_4.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_4_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\Cm3Start.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\COM_IDAC.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\CompTrigger.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\CompTrigger_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\cy_em_eeprom.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\CyBootAsmGnu.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\CyDmac.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\cyfitter_cfg.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\CyFlash.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\CyLib.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\cymetadata.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\cyPm.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\CySpc.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\cyutils.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\DMA_ADC_1_dma.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\DMA_ADC_2_dma.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\DMA_DAC_1_dma.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\DMA_DAC_2_dma.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\DMA_DAC_3_dma.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\DMA_DAC_4_dma.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\enableTrigOut.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\enableTrigOut_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\FLASH.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\IDAC8_1.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\IDAC8_1_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\IDAC8_2.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\IDAC8_2_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\IDAC8_3.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\IDAC8_3_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\IDAC8_4.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\IDAC8_4_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\internTrigger.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\internTrigger_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_ADC_1.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_ADC_2.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_DAC_1.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_DAC_2.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_DAC_3.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_DAC_4.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\isrTrigger.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\LED.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\main.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\MainSig_inN.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\MainSig_inP.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\P_CH1.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\P_CH1a.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\P_CH1b.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\P_CH2.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\P_CH2a.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\P_CH2b.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\P_CH3.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\P_CH4.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\P_DCDC_CTRL.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\P_PWR_EN.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\pwmSAMPLING.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\pwmSAMPLING_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\sample_CH1a.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\sample_CH1a_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\sample_CH1b.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\sample_CH1b_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\sample_CH2a.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\sample_CH2a_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\sample_CH2b.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\sample_CH2b_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\sigBuf.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\sigBuf_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\SW.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\triggerInOut.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\UART_1.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\UART_1_BOOT.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\UART_1_INT.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\UART_1_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\USBUART.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\USBUART_audio.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\USBUART_boot.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\USBUART_cdc.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\USBUART_cls.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\USBUART_descr.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\USBUART_Dm.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\USBUART_Dp.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\USBUART_drv.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\USBUART_episr.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\USBUART_hid.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\USBUART_midi.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\USBUART_msc.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\USBUART_pm.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\USBUART_std.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\USBUART_vnd.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\WOTAN_6CH.elf</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\WOTAN_6CH.hex</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\WOTAN_6CH.map</v>
+<v>WOTAN\WOTAN_6CH\WOTAN_6CH.gpdsc</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>WOTAN</v>
+<v>WOTAN\WOTAN_6CH</v>
+<v>WOTAN\WOTAN_6CH\CortexM3</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_1.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_1_Bypass.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_1_INT.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_1_IRQ.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_1_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_2.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_2_Bypass.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_2_INT.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_2_IRQ.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_2_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\aux_sig1.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\aux_sig2.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\aux_sig3.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\aux_sig4.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\aux_sig5.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\aux_sig6.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\Baseline_Shifter.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\Baseline_Shifter_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ChannelSel.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\clkADC.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\Clock_4.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\Clock_5.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_1.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_1_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_1ab.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_1ab_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_2.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_2_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_2ab.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_2ab_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_3.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_3_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_4.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_4_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\Cm3Start.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\COM_IDAC.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\CompTrigger.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\CompTrigger_PM.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\cy_em_eeprom.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\CyBootAsmGnu.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\CyDmac.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\cyfitter_cfg.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\CyFlash.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\CyLib.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\cymetadata.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\cyPm.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\CySpc.lst</v>
+<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\cyutils.lst</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+</TreeStates>
+<TreeKeysV2>
+<v>Datasheet</v>
+</TreeKeysV2>
+<TreeStatesV2>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
+<ExpandedNodeIds>
+<v>WOTAN</v>
+<v>WOTAN\WOTAN_6CH\PSoC 5LP Architecture TRM</v>
+<v>WOTAN\WOTAN_6CH\CY8C58LP Family Datasheet</v>
+<v>WOTAN\WOTAN_6CH\System Reference Guides</v>
+<v>WOTAN\WOTAN_6CH\System Reference Guides\cy_boot_v5_60</v>
+<v>WOTAN\WOTAN_6CH\ADC_SAR_v3_0</v>
+<v>WOTAN\WOTAN_6CH\ADC_SAR_v3_0\ADC_SAR_v3_0.pdf</v>
+<v>WOTAN\WOTAN_6CH\AMux_v1_80.pdf</v>
+<v>WOTAN\WOTAN_6CH\and_v1_0</v>
+<v>WOTAN\WOTAN_6CH\and_v1_0\and_v1_0.pdf</v>
+<v>WOTAN\WOTAN_6CH\Capacitor_v1_0</v>
+<v>WOTAN\WOTAN_6CH\Capacitor_v1_0\Capacitor_v1_0.pdf</v>
+<v>WOTAN\WOTAN_6CH\Comp_v2_0.pdf</v>
+<v>WOTAN\WOTAN_6CH\Connector20_v1_0</v>
+<v>WOTAN\WOTAN_6CH\Connector20_v1_0\Connector20_v1_0.pdf</v>
+<v>WOTAN\WOTAN_6CH\Crystal_v1_0.pdf</v>
+<v>WOTAN\WOTAN_6CH\cy_clock_v2_20</v>
+<v>WOTAN\WOTAN_6CH\cy_clock_v2_20\cy_clock_v2_20.pdf</v>
+<v>WOTAN\WOTAN_6CH\cy_constant_v1_0</v>
+<v>WOTAN\WOTAN_6CH\cy_constant_v1_0\cy_constant_v1_0.pdf</v>
+<v>WOTAN\WOTAN_6CH\cy_dma_v1_70</v>
+<v>WOTAN\WOTAN_6CH\cy_dma_v1_70\cy_dma_v1_70.pdf</v>
+<v>WOTAN\WOTAN_6CH\cy_isr_v1_70</v>
+<v>WOTAN\WOTAN_6CH\cy_isr_v1_70\cy_isr_v1_70.pdf</v>
+<v>WOTAN\WOTAN_6CH\cy_pins_v2_20</v>
+<v>WOTAN\WOTAN_6CH\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
+<v>WOTAN\WOTAN_6CH\cy_vref_v1_70</v>
+<v>WOTAN\WOTAN_6CH\cy_vref_v1_70\cy_vref_v1_70.pdf</v>
+<v>WOTAN\WOTAN_6CH\CyControlReg_v1_80</v>
+<v>WOTAN\WOTAN_6CH\CyControlReg_v1_80\CyControlReg_v1_80.pdf</v>
+<v>WOTAN\WOTAN_6CH\Em_EEPROM_v1_20.pdf</v>
+<v>WOTAN\WOTAN_6CH\Gnd_v1_0</v>
+<v>WOTAN\WOTAN_6CH\Gnd_v1_0\Gnd_v1_0.pdf</v>
+<v>WOTAN\WOTAN_6CH\IDAC8_v2_0</v>
+<v>WOTAN\WOTAN_6CH\IDAC8_v2_0\IDAC8_v2_0.pdf</v>
+<v>WOTAN\WOTAN_6CH\Inductor_v1_0</v>
+<v>WOTAN\WOTAN_6CH\Inductor_v1_0\Inductor_v1_0.pdf</v>
+<v>WOTAN\WOTAN_6CH\LED_v1_0.pdf</v>
+<v>WOTAN\WOTAN_6CH\mux_v1_10.pdf</v>
+<v>WOTAN\WOTAN_6CH\NFET_En_v1_0</v>
+<v>WOTAN\WOTAN_6CH\NFET_En_v1_0\NFET_En_v1_0.pdf</v>
+<v>WOTAN\WOTAN_6CH\not_v1_0</v>
+<v>WOTAN\WOTAN_6CH\not_v1_0\not_v1_0.pdf</v>
+<v>WOTAN\WOTAN_6CH\OpAmp_v1_90</v>
+<v>WOTAN\WOTAN_6CH\OpAmp_v1_90\OpAmp_v1_90.pdf</v>
+<v>WOTAN\WOTAN_6CH\or_v1_0</v>
+<v>WOTAN\WOTAN_6CH\or_v1_0\or_v1_0.pdf</v>
+<v>WOTAN\WOTAN_6CH\Potentiometer_v1_0</v>
+<v>WOTAN\WOTAN_6CH\Potentiometer_v1_0\Potentiometer_v1_0.pdf</v>
+<v>WOTAN\WOTAN_6CH\Power_v1_0.pdf</v>
+<v>WOTAN\WOTAN_6CH\PWM_v3_30.pdf</v>
+<v>WOTAN\WOTAN_6CH\Resistor_v1_0</v>
+<v>WOTAN\WOTAN_6CH\Resistor_v1_0\Resistor_v1_0.pdf</v>
+<v>WOTAN\WOTAN_6CH\Sample_Hold_v1_40</v>
+<v>WOTAN\WOTAN_6CH\Sample_Hold_v1_40\Sample_Hold_v1_40.pdf</v>
+<v>WOTAN\WOTAN_6CH\ShiftReg_v2_30</v>
+<v>WOTAN\WOTAN_6CH\ShiftReg_v2_30\ShiftReg_v2_30.pdf</v>
+<v>WOTAN\WOTAN_6CH\SwitchSPST_v1_0.pdf</v>
+<v>WOTAN\WOTAN_6CH\UART_v2_50.pdf</v>
+<v>WOTAN\WOTAN_6CH\USBFS_v3_10.pdf</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>WOTAN</v>
+<v>WOTAN\WOTAN_6CH</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+</TreeStatesV2>
+</CyGuid_1b906a0f-a7b6-4e4d-a428-82f98b53cb35>
+</dataGuid>
+<dataGuid v="5f2be1a5-0687-4501-bb8c-cf21cb8211bf">
+<CyGuid_5f2be1a5-0687-4501-bb8c-cf21cb8211bf type_name="CyDesigner.Common.ProjMgmt.GUI.CyBookmarkData" version="1">
+<indicators />
+</CyGuid_5f2be1a5-0687-4501-bb8c-cf21cb8211bf>
+</dataGuid>
+</userData>
+</CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997>
+<Unloaded />
+<OpenDocs>
+<name v=".\WOTAN_6CH.cydsn\main.c" />
+<name v=".\WOTAN_6CH.cydsn\TopDesign\TopDesign.cysch" />
+<name v=".\WOTAN_6CH.cydsn\WOTAN_6CH.cydwr" />
+</OpenDocs>
+<OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
+
+  Actipro Docking/MDI for WinForms
+  Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
+  http://www.actiprosoftware.com
+
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1437, 838" SelectedTabbedMdiWindow="d739223c-2cd0-4a5b-9e60-2ae9ac6b3bed"><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="b7172aca-f29c-476b-a8af-ef77971c2f85" /><ToolWindow Key="CyNoticeWindow:44d3d453-9474-4f2b-b928-4356f496bef0:Notice Window" Guid="a8736edc-69cc-474f-b450-6d65019632bc" /><DocumentWindow Key="C:\Users\Alex\Desktop\Masterarbeit\Github\WOTAN_testing\WOTAN_6CH.cydsn\main.c" Guid="d739223c-2cd0-4a5b-9e60-2ae9ac6b3bed" /><DocumentWindow Key="C:\Users\Alex\Desktop\Masterarbeit\Github\WOTAN_testing\WOTAN_6CH.cydsn\TopDesign\TopDesign.cysch" Guid="29657bd6-edc7-476f-bf75-2110b6c69dc8" /><DocumentWindow Key="C:\Users\Alex\Desktop\Masterarbeit\Github\WOTAN_testing\WOTAN_6CH.cydsn\WOTAN_6CH.cydwr" Guid="473ee4f3-1fe8-425e-9a09-e613df487ed7" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+<config v="" />
+<AutoUpdate v="true" />
+</CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>
+</CyXmlSerializer>
