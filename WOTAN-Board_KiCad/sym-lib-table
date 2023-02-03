@@ -1,4 +1,0 @@
-(sym_lib_table
-  (lib (name WOTAN-Board_6CH_V0_0-cache)(type Legacy)(uri ${KIPRJMOD}/WOTAN-Board_6CH_V0_0-cache.lib)(options "")(descr ""))
-  (lib (name WOTAN-Board_6CH_V0_0-rescue)(type Legacy)(uri ${KIPRJMOD}/WOTAN-Board_6CH_V0_0-rescue.lib)(options "")(descr ""))
-)

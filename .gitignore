@@ -3,6 +3,9 @@
 *.cydsn/Generated_Source/
 *.cydsn/CortexM3/
 
+# Generated KiCAD Gerber files
+*/Gerberfiles/*
+
 # Log and auxilliary files
 *.log
 *.swp
