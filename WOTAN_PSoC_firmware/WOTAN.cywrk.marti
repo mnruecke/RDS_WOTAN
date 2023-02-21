@@ -17,10 +17,7 @@
 <ExpandedNodeIds>
 <v>WOTAN</v>
 <v>WOTAN\WOTAN_6CH</v>
-<v>WOTAN\WOTAN_6CH\TopDesign</v>
 <v>WOTAN\WOTAN_6CH\Source Files</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5</v>
 </ExpandedNodeIds>
 <VisibleNodeIds>
 <v>WOTAN</v>
@@ -31,81 +28,6 @@
 <v>WOTAN\WOTAN_6CH\Source Files</v>
 <v>WOTAN\WOTAN_6CH\Source Files\main.c</v>
 <v>WOTAN\WOTAN_6CH\Generated_Source</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\ADC_SAR_1</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\ADC_SAR_1_Bypass</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\ADC_SAR_1_IRQ</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\ADC_SAR_2</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\ADC_SAR_2_Bypass</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\ADC_SAR_2_IRQ</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\aux_sig1</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\aux_sig2</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\aux_sig3</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\aux_sig4</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\aux_sig5</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\aux_sig6</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\Baseline_Shifter</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\ChannelSel</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\clkADC</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\Clock_4</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\Clock_5</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\ClockShift_1</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\ClockShift_1ab</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\ClockShift_2</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\ClockShift_2ab</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\ClockShift_3</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\ClockShift_4</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\COM_IDAC</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\CompTrigger</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\cy_boot</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\DMA_ADC_1</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\DMA_ADC_2</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\DMA_DAC_1</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\DMA_DAC_2</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\DMA_DAC_3</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\DMA_DAC_4</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\Em_EEPROM_Dynamic</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\enableTrigOut</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\FLASH</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\IDAC8_1</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\IDAC8_2</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\IDAC8_3</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\IDAC8_4</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\internTrigger</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\isr_ADC_1</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\isr_ADC_2</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\isr_DAC_1</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\isr_DAC_2</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\isr_DAC_3</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\isr_DAC_4</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\isrTrigger</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\LED</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\MainSig_inN</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\MainSig_inP</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\P_CH1</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\P_CH1a</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\P_CH1b</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\P_CH2</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\P_CH2a</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\P_CH2b</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\P_CH3</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\P_CH4</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\P_DCDC_CTRL</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\P_PWR_EN</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\pwmSAMPLING</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\sample_CH1a</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\sample_CH1b</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\sample_CH2a</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\sample_CH2b</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\sigBuf</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\SW</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\triggerInOut</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\UART_1</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\USBUART</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\USBUART_Dm</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\USBUART_Dp</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\cycodeshareexport.ld</v>
-<v>WOTAN\WOTAN_6CH\Generated_Source\PSoC5\cycodeshareimport.ld</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 <CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
@@ -349,12 +271,6 @@
 <v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_ADC_2.lst</v>
 <v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_DAC_1.lst</v>
 <v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_DAC_2.lst</v>
-<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_DAC_3.lst</v>
-<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\isr_DAC_4.lst</v>
-<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\isrTrigger.lst</v>
-<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\LED.lst</v>
-<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\main.lst</v>
-<v>WOTAN\WOTAN_6CH\CortexM3\ARM_GCC_541\Debug\Listing Files\MainSig_inN.lst</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 </TreeStates>
@@ -507,7 +423,7 @@
   Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
   http://www.actiprosoftware.com
 
---><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1706, 1232" SelectedTabbedMdiWindow="f9f89cb9-8e4c-4f6c-bc16-42b475367d99"><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="28413480-aea5-4315-92d7-2afb641811e9" /><DocumentWindow Key="C:\Users\marti\OneDrive\Dokumente\MEGA\RDI_share\Mobiles_RDS_aboehn\WOTAN_testing\WOTAN_6CH.cydsn\TopDesign\TopDesign.cysch" Guid="f9f89cb9-8e4c-4f6c-bc16-42b475367d99" /><DocumentWindow Key="C:\Users\marti\OneDrive\Dokumente\MEGA\RDI_share\Mobiles_RDS_aboehn\WOTAN_testing\WOTAN_6CH.cydsn\WOTAN_6CH.cydwr" Guid="f41b2e5d-222b-4a62-aa29-52cc245c6816" /><DocumentWindow Key="C:\Users\marti\OneDrive\Dokumente\MEGA\RDI_share\Mobiles_RDS_aboehn\WOTAN_testing\WOTAN_6CH.cydsn\main.c" Guid="03267ebf-c4c1-43d7-9903-4b7e1d0e0e7b" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1934, 1068" SelectedTabbedMdiWindow="28413480-aea5-4315-92d7-2afb641811e9"><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="28413480-aea5-4315-92d7-2afb641811e9" /><DocumentWindow Key="C:\Users\marti\OneDrive\Desktop\github\RDS_WOTAN\WOTAN_PSoC_firmware\WOTAN_6CH.cydsn\TopDesign\TopDesign.cysch" Guid="f2d552d4-bde6-4d68-adf6-332bfe4801e1" /><DocumentWindow Key="C:\Users\marti\OneDrive\Desktop\github\RDS_WOTAN\WOTAN_PSoC_firmware\WOTAN_6CH.cydsn\WOTAN_6CH.cydwr" Guid="31585a28-7837-4ae5-a9ac-96afa5e15f2f" /><DocumentWindow Key="C:\Users\marti\OneDrive\Desktop\github\RDS_WOTAN\WOTAN_PSoC_firmware\WOTAN_6CH.cydsn\main.c" Guid="14618150-557f-4597-bc8d-a0465b38f6ac" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
 <config v="" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>

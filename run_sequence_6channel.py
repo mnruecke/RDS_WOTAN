@@ -47,84 +47,44 @@
 %
 % ========================================
 """
+
+
 """ --- Required parameters ---- """ 
 # A) check device manager to see at which port number the board enumerates
 serialPort = '\\\\.\\COM3' 
 
+repetitions = 3
+save_data = True    # 1 = Sequenz speichern
+data_path = 'C:/Users/marti/Downloads/rot_data_20230221/'
+sleep_time = 1
 
-# C) uncomment line with the channel that is to be observed:
-#channel = b'1'  # show output of DAC 1
-#channel = b'2'  # show output of DAC 2
-#channel = b'3'  # show output of DAC 3
-#channel = b'4'  # show output of DAC 4
-channel = b'2'  # show signal voltage between GPIO P0.6 (-) and GPIO P0.7 (+)
-
-# D) uncomment the used interface
-#interface = "UART"
-interface = "USBFS"
-
+import os
+if save_data and not os.path.exists( data_path ):
+    os.mkdir( data_path )
+    
+""" ----------------------------- """      
 
 
-""" ----------------------------- """
-#import serial
-#import time
-#import struct
-#import os
-#import os.path
-
-import matplotlib.pyplot as plt
 import time
-from rds_functions_6channel_beta import run_sequence, generate_sequence_offset, write_sequence
-
-
-path = './Messung221023_Ocean/'
-save = 0    # 1 = Sequenz speichern
-sleep_time = 3
-amp_var  = 1
-t, sig, amp = run_sequence(serialPort,save,path)
-
-
-
-#Warm-Up-Loop:
-# for i in range(0,10,1):
-#     time.sleep(sleep_time)
-#     t, sig, amp = run_sequence(serialPort,0,'Leermessung_33mT_140722')
-#     print(i, ": (Warm-Up) resulting amplitude: [V] ", amp)
-
-
-#nsamples_total, values_offset = generate_sequence_offset(amp_var, 1)    # Sequenz mit Offset
-#nsamples_total, values = generate_sequence_offset(amp_var, 0)           # Sequenz ohne Offset
-
-# Measure-Loop:
-# for i in range(0,10,1):
-#     # Messung: mit Offset
-#     if i%2 == 0:
-#         write_sequence(serialPort,nsamples_total,values_offset)
-#         time.sleep(sleep_time)
-#         t, sig, amp = run_sequence(serialPort,save,path)
-#         print(i, ": resulting amplitude: [V] ", amp)
-#     # Referenzmessung ohne Offset:
-#     else:
-#         write_sequence(serialPort,nsamples_total,values)
-#         time.sleep(sleep_time)
-#         t, sig, amp = run_sequence(serialPort,save,path)
-#         print(i, ": resulting amplitude: [V] ", amp)
-
+for _ in range( repetitions ):
     
-
-
-# visualize data
-plt.close('all')
-plt.figure(12)
-plt.plot( t, sig)
-plt.xlabel('time [ms]')
-plt.ylabel('signal [V]')
-plt.show()  
+    from rds_functions_6channel_beta import (
+        run_sequence,
+        generate_sequence_offset,
+        write_sequence
+        )
     
-#with open( "zwischenspeicher.txt" , 'w') as f:
-#    for dat in sig:
-#        f.write("%s\n" % float(dat))
+    t, sig, amp = run_sequence( serialPort, save_data, data_path)
     
-
+    
+    # visualize data
+    import matplotlib.pyplot as plt
+    plt.close('all')
+    plt.figure(12)
+    plt.plot( t, sig)
+    plt.xlabel('time [ms]')
+    plt.ylabel('signal [V]')
+    plt.show()  
         
-            
+    time.sleep( sleep_time )
+                

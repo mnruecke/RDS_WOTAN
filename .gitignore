@@ -1,28 +1,28 @@
 # Generated code files
-*.cydsn/codegentemp/
-*.cydsn/Generated_Source/
-*.cydsn/CortexM3/
+*/*.cydsn/codegentemp/
+*/*.cydsn/Generated_Source/
+*/*.cydsn/CortexM3/
 
 # Generated KiCAD Gerber files
 */Gerberfiles/*
 
 # Log and auxilliary files
-*.log
-*.swp
+*/*.log
+*/*.swp
 
-*.cywrk.*
-*.cydsn/*.cycdx
-*.cydsn/*.svd
-*.cydsn/*.cyprj.*
-*.cydsn/BUILD.log
-*.cydsn/Export/PSoCCreatorExportIDE.xml
-*.cydsn/GENERATE_API.log
-*.cydsn/*.cyfit
-*.cydsn/*.rpt
-*.cydsn/*_timing.html
+*/*.cywrk.*
+*/*.cydsn/*.cycdx
+*/*.cydsn/*.svd
+*/*.cydsn/*.cyprj.*
+*/*.cydsn/BUILD.log
+*/*.cydsn/Export/PSoCCreatorExportIDE.xml
+*/*.cydsn/GENERATE_API.log
+*/*.cydsn/*.cyfit
+*/*.cydsn/*.rpt
+*/*.cydsn/*_timing.html
 
 Backup/*.zip
 __pycache__/
 
 # User files
-*data_*.txt
+*/*data_*.txt
