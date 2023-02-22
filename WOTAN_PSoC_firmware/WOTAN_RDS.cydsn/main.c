@@ -34,7 +34,7 @@
 #include <string.h>
 #include <math.h>// => requires 'm' in: Project|Build Settings... -> ARM GCC ... -> Linker -> General -> Additional Libraries -> m
 
-char  version[3] = "1.7";  
+char  version[3] = "1.8";  // WOTAN for RDS Spectrometer
 // Version 1.7: allowing to split CH1 and CH2 into CH1a/CH1b and CH2a/CH2b
 // by halfing the sampling rate and using interleaved sampling patterns
 
@@ -49,15 +49,15 @@ char  version[3] = "1.7";
 #define  UART_BUF_OUT        80
 
 /* command set */
-// 1) select channel
-
-#define  KEY_SIG_1           '1'
-#define  KEY_SIG_2           '2'
-#define  KEY_SIG_3           '3'
-#define  KEY_SIG_4           '4'
-#define  KEY_SIG_5           '5'
-#define  KEY_SIG_6           '6'
-#define  KEY_SIG_MAIN        '7'
+// 1) select rx gain
+#define  KEY_AMP_x1           '1'
+#define  KEY_AMP_x2           '2'
+#define  KEY_AMP_x4           '3'
+#define  KEY_AMP_x8           '4'
+#define  KEY_AMP_x16          '5'
+#define  KEY_AMP_x24          '6'
+#define  KEY_AMP_x32          '7'
+#define  KEY_AMP_x48          '8'
 // 2) run sequence
 #define  KEY_RUN             'r'
 // 3) reset firmware
@@ -124,11 +124,7 @@ uint32 flash_offset_ch4 = 0;
 
 
 #define  CLOCK_SHIFT_CH1     0b1100   
-// channel splitting (CH1 -> CH1a / CH1b)
-#define  CLOCK_SHIFT_CH1ab    0b01111000
 #define  CLOCK_SHIFT_CH2     0b0011
-// channel splitting (CH2 -> CH2a / CH2b)
-#define  CLOCK_SHIFT_CH2ab    0b10000111
 #define  CLOCK_SHIFT_CH3     0b0110   
 #define  CLOCK_SHIFT_CH4     0b1001   
 
@@ -267,7 +263,6 @@ CY_ISR_PROTO( isr_ADC_1_done );
 CY_ISR_PROTO( isr_ADC_2_done );
 
 
-uint8 current_chan=0;
 uint8 count_of_runs=0;
 uint8 isDAC1Busy = FALSE;
 
@@ -353,15 +348,13 @@ void init_components(void){
     ADC_SAR_2_Start();
         ADC_SAR_2_IRQ_Disable();
     sigBuf_Start();
+    sigBuf_SetGain( sigBuf_GAIN_01 );									 
     
     // Sets the Trigger channel as input
     CompTrigger_Stop();
     enableTrigOut_Write( TRIGGER_OUT_TRUE );
     
     // Components for user interface and debugging
-    ChannelSel_Start();
-        // use real input by default
-        ChannelSel_Select(current_chan=KEY_SIG_MAIN-1-'0');
     UART_1_Start();
     CompTrigger_Start();
         isrTrigger_StartEx( isr_triggerIn );
@@ -419,18 +412,13 @@ void usbfs_interface(void)
                 /* Process firmware commands */
                 
                 
-                // 1) select a channel
-                if (    buffer[0] == KEY_SIG_1 ||\
-                        buffer[0] == KEY_SIG_2 ||\
-                        buffer[0] == KEY_SIG_3 ||\
-                        buffer[0] == KEY_SIG_4 ||\
-                        buffer[0] == KEY_SIG_5 ||\
-                        buffer[0] == KEY_SIG_6 ||\
-                        buffer[0] == KEY_SIG_MAIN	){
-                    current_chan = buffer[0]-1-'0';
-                    ChannelSel_Select( current_chan);
-                    //show_channel_num();
-                }//END if ( buffer[0]
+                // 1) select rx-Gain
+                if (      buffer[0] >= KEY_AMP_x1
+                      &&  buffer[0] <= KEY_AMP_x48 
+					){
+                    uint8 pga_gain_val = buffer[0] - '1';
+                    sigBuf_SetGain( pga_gain_val );									 
+                }//END if ( buffer[0] == ...		  
                 // 2) run sequence
                 if ( buffer[0] == KEY_RUN)
                     run_sequence();
@@ -591,18 +579,14 @@ void uart_interface(void)
     
     
         /* process firmware commands */
-            // 1) select a channel
-            if (    puttyIn[0] == KEY_SIG_1 ||\
-                    puttyIn[0] == KEY_SIG_2 ||\
-                    puttyIn[0] == KEY_SIG_3 ||\
-                    puttyIn[0] == KEY_SIG_4 ||\
-                    puttyIn[0] == KEY_SIG_5 ||\
-                    puttyIn[0] == KEY_SIG_6 ||\
-                    puttyIn[0] == KEY_SIG_MAIN	) {
-                current_chan = puttyIn[0]-1-'0';
-                ChannelSel_Select( current_chan );
-                //show_channel_num();
-            }
+            // 1) select rx-Gain
+            if (      puttyIn[0] >= KEY_AMP_x1
+                  &&  puttyIn[0] <= KEY_AMP_x48 
+				){
+                uint8 pga_gain_val = puttyIn[0]-'1';
+                sigBuf_SetGain( pga_gain_val );
+            }//END if ( buffer[0] == ...
+                        
             // 2) run sequence
             if ( puttyIn[0] == KEY_RUN)
                 run_sequence();
@@ -701,35 +685,7 @@ void uart_interface(void)
                 display_results();
                 show_channel_num();
             }    
-            // 14) (uart only) runs sequence and switches to the next channel (just running, no output)
-            if ( puttyIn[0] == KEY_RUN_AND_NEXT )
-            {
-                current_chan++;
-                if(current_chan>4) current_chan=0;
-                ChannelSel_Select(current_chan);
-                run_sequence();
-                show_channel_num();
-            }
-            
-            // Alex Test-Commands (can be deleted later on)
-            /*if ( puttyIn[0] == KEY_DCDC_OFF )
-            {
-                P_DCDC_CTRL_Write(!P_DCDC_CTRL_Read());
-                UART_1_PutString("DCDC");
-            }
-                
-            if ( puttyIn[0] == KEY_POWER_OFF )
-            {
-                P_PWR_EN_Write(1u);     // turn circuit off, to be turned on again via external switch.
-                UART_1_PutString("OFF");    
-            }
-               
-            if ( puttyIn[0] == KEY_LED )
-            {
-                LED_Write(!LED_Read());
-            }*/
-            
-            
+           
             puttyIn[0] = 0;
             bytenumber = 0;
             
@@ -757,8 +713,9 @@ void show_default_message(void)
     UART_1_PutCRLF(2);
     //sprintf(sms, "1) Press '%c' to run the sequence and show the results (ASCII table)", KEY_RUN_AND_SHOW);
     //    UART_1_PutString(sms); UART_1_PutCRLF(1);
-    sprintf(sms, "1) Press '%c', '%c', '%c', '%c', '%c', '%c' or '%c' for changing the signal channel",\
-        KEY_SIG_1, KEY_SIG_2, KEY_SIG_3, KEY_SIG_4, KEY_SIG_5, KEY_SIG_6, KEY_SIG_MAIN );
+    sprintf(sms, "1) Press '%c', '%c', '%c', '%c', '%c', '%c' or '%c' for changing the rx gain",\
+        KEY_AMP_x1, KEY_AMP_x2, KEY_AMP_x4, KEY_AMP_x8,
+        KEY_AMP_x16, KEY_AMP_x24, KEY_AMP_x32 );
         UART_1_PutString(sms); UART_1_PutCRLF(1);
     sprintf(sms, "2) Press '%c' to run the sequence", KEY_RUN);
         UART_1_PutString(sms); UART_1_PutCRLF(1);
@@ -790,8 +747,6 @@ void show_default_message(void)
 
 void show_channel_num(void)
 {
-    sprintf(sms,"Currently selected channel for data monitoring: %d", current_chan+1 );
-        UART_1_PutString(sms); UART_1_PutCRLF(1);
     sprintf(sms,"Count of sequence runs after reset: %d", count_of_runs);
         UART_1_PutString(sms); UART_1_PutCRLF(1);
 }

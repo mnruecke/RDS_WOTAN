@@ -58,6 +58,8 @@ save_data = 1 # 1 = save data
 data_path = 'C:/Users/marti/Downloads/rot_data_20230221/'
 sleep_time = 1
 
+rx_gain = '1' # '1' ... '8' => Gain: x1 ... x48
+
 import os
 if save_data and not os.path.exists( data_path ):    
     os.mkdir( data_path )
@@ -74,12 +76,12 @@ for _ in range( repetitions ):
         write_sequence
         )
     
-    t, sig, amp = run_sequence( serialPort, save_data, data_path)
+    t, sig, amp = run_sequence( serialPort, save_data, data_path, rx_gain)
     
     
     # visualize data
     import matplotlib.pyplot as plt
-    plt.close('all')
+    #plt.close('all')
     plt.figure(12)
     plt.plot( t, sig)
     plt.xlabel('time [ms]')
