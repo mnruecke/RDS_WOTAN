@@ -54,11 +54,11 @@
 serialPort = '\\\\.\\COM3' 
 
 repetitions = 1
-save_data = 1 # 1 = save data
-data_path = 'C:/Users/marti/Downloads/rot_data_20230221/'
-sleep_time = 1
+save_data   = 0 # 1 = save data
+data_path   = 'C:/Users/marti/Downloads/rot_data_20230222b/'
+sleep_time  = 1
 
-rx_gain = '1' # '1' ... '8' => Gain: x1 ... x48
+rx_gain = '7' # '0' ... '9' => Gain: x1 ... x512
 
 import os
 if save_data and not os.path.exists( data_path ):    

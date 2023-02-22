@@ -50,14 +50,16 @@ char  version[3] = "1.8";  // WOTAN for RDS Spectrometer
 
 /* command set */
 // 1) select rx gain
-#define  KEY_AMP_x1           '1'
-#define  KEY_AMP_x2           '2'
-#define  KEY_AMP_x4           '3'
-#define  KEY_AMP_x8           '4'
-#define  KEY_AMP_x16          '5'
-#define  KEY_AMP_x24          '6'
-#define  KEY_AMP_x32          '7'
-#define  KEY_AMP_x48          '8'
+#define  KEY_AMP_0              '0'// 1x1   x1
+#define  KEY_AMP_1              '1'// 2x1   x2
+#define  KEY_AMP_2              '2'// 2x2   x4
+#define  KEY_AMP_3              '3'// 4x2   x8
+#define  KEY_AMP_4              '4'// 4x4   x16
+#define  KEY_AMP_5              '5'// 8x4   x32
+#define  KEY_AMP_6              '6'// 8x8   x64
+#define  KEY_AMP_7              '7'// 16x8  x128
+#define  KEY_AMP_8              '8'// 16x16 x256
+#define  KEY_AMP_9              '9'// 32x16 x512
 // 2) run sequence
 #define  KEY_RUN             'r'
 // 3) reset firmware
@@ -250,6 +252,7 @@ void dma_adc_1_init(void);
 void dma_adc_2_init(void);
 void set_dac_range_1V(void);
 void set_dac_range_4V(void);
+void set_rx_gain(char);
 void trigger_out(void);
 void trigger_in(void);
 
@@ -349,6 +352,10 @@ void init_components(void){
         ADC_SAR_2_IRQ_Disable();
     sigBuf_Start();
     sigBuf_SetGain( sigBuf_GAIN_01 );									 
+    sigBuf_2_Start();
+    sigBuf_2_SetGain( sigBuf_2_GAIN_01 );									 
+    sigBuf_3_Start();
+    sigBuf_3_SetGain( sigBuf_3_GAIN_01 );									 
     
     // Sets the Trigger channel as input
     CompTrigger_Stop();
@@ -413,11 +420,10 @@ void usbfs_interface(void)
                 
                 
                 // 1) select rx-Gain
-                if (      buffer[0] >= KEY_AMP_x1
-                      &&  buffer[0] <= KEY_AMP_x48 
+                if (      buffer[0] >= KEY_AMP_0
+                      &&  buffer[0] <= KEY_AMP_9
 					){
-                    uint8 pga_gain_val = buffer[0] - '1';
-                    sigBuf_SetGain( pga_gain_val );									 
+                    set_rx_gain( buffer[0] );								 
                 }//END if ( buffer[0] == ...		  
                 // 2) run sequence
                 if ( buffer[0] == KEY_RUN)
@@ -580,11 +586,10 @@ void uart_interface(void)
     
         /* process firmware commands */
             // 1) select rx-Gain
-            if (      puttyIn[0] >= KEY_AMP_x1
-                  &&  puttyIn[0] <= KEY_AMP_x48 
+            if (      puttyIn[0] >= KEY_AMP_0
+                  &&  puttyIn[0] <= KEY_AMP_9
 				){
-                uint8 pga_gain_val = puttyIn[0]-'1';
-                sigBuf_SetGain( pga_gain_val );
+                set_rx_gain( puttyIn[0] );
             }//END if ( buffer[0] == ...
                         
             // 2) run sequence
@@ -714,8 +719,8 @@ void show_default_message(void)
     //sprintf(sms, "1) Press '%c' to run the sequence and show the results (ASCII table)", KEY_RUN_AND_SHOW);
     //    UART_1_PutString(sms); UART_1_PutCRLF(1);
     sprintf(sms, "1) Press '%c', '%c', '%c', '%c', '%c', '%c' or '%c' for changing the rx gain",\
-        KEY_AMP_x1, KEY_AMP_x2, KEY_AMP_x4, KEY_AMP_x8,
-        KEY_AMP_x16, KEY_AMP_x24, KEY_AMP_x32 );
+        KEY_AMP_0, KEY_AMP_1, KEY_AMP_2, KEY_AMP_3,
+        KEY_AMP_4, KEY_AMP_5, KEY_AMP_6 );
         UART_1_PutString(sms); UART_1_PutCRLF(1);
     sprintf(sms, "2) Press '%c' to run the sequence", KEY_RUN);
         UART_1_PutString(sms); UART_1_PutCRLF(1);
@@ -841,6 +846,50 @@ void set_dac_range_4V(void){
     IDAC8_4_SetRange( IDAC8_4_RANGE_2mA );
     //IDAC8_4_SetRange( IDAC8_1_RANGE_4V ); 
 }//END set_dac_range_4V()
+
+
+void set_rx_gain(char gain_val){
+    if( gain_val == KEY_AMP_0 ){
+        sigBuf_SetGain( sigBuf_GAIN_01 );
+        sigBuf_2_SetGain( sigBuf_2_GAIN_01 );
+    }
+    if( gain_val == KEY_AMP_1 ){
+        sigBuf_SetGain( sigBuf_GAIN_02 );
+        sigBuf_2_SetGain( sigBuf_2_GAIN_01 );
+    }
+    if( gain_val == KEY_AMP_2 ){
+        sigBuf_SetGain( sigBuf_GAIN_02 );
+        sigBuf_2_SetGain( sigBuf_2_GAIN_02 );
+    }
+    if( gain_val == KEY_AMP_3 ){
+        sigBuf_SetGain( sigBuf_GAIN_04 );
+        sigBuf_2_SetGain( sigBuf_2_GAIN_02 );
+    }
+    if( gain_val == KEY_AMP_4 ){
+        sigBuf_SetGain( sigBuf_GAIN_04 );
+        sigBuf_2_SetGain( sigBuf_2_GAIN_04 );
+    }
+    if( gain_val == KEY_AMP_5 ){
+        sigBuf_SetGain( sigBuf_GAIN_08 );
+        sigBuf_2_SetGain( sigBuf_2_GAIN_04 );
+    }
+    if( gain_val == KEY_AMP_6 ){
+        sigBuf_SetGain( sigBuf_GAIN_08 );
+        sigBuf_2_SetGain( sigBuf_2_GAIN_08 );
+    }
+    if( gain_val == KEY_AMP_7 ){
+        sigBuf_SetGain( sigBuf_GAIN_16 );
+        sigBuf_2_SetGain( sigBuf_2_GAIN_08 );
+    }    
+    if( gain_val == KEY_AMP_8 ){
+        sigBuf_SetGain( sigBuf_GAIN_16 );
+        sigBuf_2_SetGain( sigBuf_2_GAIN_16 );
+    }    
+    if( gain_val == KEY_AMP_9 ){
+        sigBuf_SetGain( sigBuf_GAIN_32 );
+        sigBuf_2_SetGain( sigBuf_2_GAIN_16 );
+    }    
+}//END set_rx_gain(char)
 
     
 void dma_dac_1_init(void)

@@ -101,6 +101,8 @@
 <v>WOTAN\WOTAN_RDS\Generated_Source\PSoC5\P_PWR_EN</v>
 <v>WOTAN\WOTAN_RDS\Generated_Source\PSoC5\pwmSAMPLING</v>
 <v>WOTAN\WOTAN_RDS\Generated_Source\PSoC5\sigBuf</v>
+<v>WOTAN\WOTAN_RDS\Generated_Source\PSoC5\sigBuf_2</v>
+<v>WOTAN\WOTAN_RDS\Generated_Source\PSoC5\sigBuf_3</v>
 <v>WOTAN\WOTAN_RDS\Generated_Source\PSoC5\SW</v>
 <v>WOTAN\WOTAN_RDS\Generated_Source\PSoC5\triggerInOut</v>
 <v>WOTAN\WOTAN_RDS\Generated_Source\PSoC5\UART_1</v>
@@ -110,8 +112,6 @@
 <v>WOTAN\WOTAN_RDS\Generated_Source\PSoC5\cycodeshareexport.ld</v>
 <v>WOTAN\WOTAN_RDS\Generated_Source\PSoC5\cycodeshareimport.ld</v>
 <v>WOTAN\WOTAN_RDS\Generated_Source\PSoC5\cycodeshareimport.scat</v>
-<v>WOTAN\WOTAN_RDS\Generated_Source\PSoC5\cydevice.h</v>
-<v>WOTAN\WOTAN_RDS\Generated_Source\PSoC5\cydevice_trm.h</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 <CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
@@ -220,6 +220,10 @@
 <v>WOTAN\WOTAN_RDS\CortexM3\ARM_GCC_541\Debug\Listing Files\pwmSAMPLING.lst</v>
 <v>WOTAN\WOTAN_RDS\CortexM3\ARM_GCC_541\Debug\Listing Files\pwmSAMPLING_PM.lst</v>
 <v>WOTAN\WOTAN_RDS\CortexM3\ARM_GCC_541\Debug\Listing Files\sigBuf.lst</v>
+<v>WOTAN\WOTAN_RDS\CortexM3\ARM_GCC_541\Debug\Listing Files\sigBuf_2.lst</v>
+<v>WOTAN\WOTAN_RDS\CortexM3\ARM_GCC_541\Debug\Listing Files\sigBuf_2_PM.lst</v>
+<v>WOTAN\WOTAN_RDS\CortexM3\ARM_GCC_541\Debug\Listing Files\sigBuf_3.lst</v>
+<v>WOTAN\WOTAN_RDS\CortexM3\ARM_GCC_541\Debug\Listing Files\sigBuf_3_PM.lst</v>
 <v>WOTAN\WOTAN_RDS\CortexM3\ARM_GCC_541\Debug\Listing Files\sigBuf_PM.lst</v>
 <v>WOTAN\WOTAN_RDS\CortexM3\ARM_GCC_541\Debug\Listing Files\SW.lst</v>
 <v>WOTAN\WOTAN_RDS\CortexM3\ARM_GCC_541\Debug\Listing Files\triggerInOut.lst</v>
@@ -379,7 +383,8 @@
 <v>WOTAN\WOTAN_RDS\not_v1_0\not_v1_0.pdf</v>
 <v>WOTAN\WOTAN_RDS\or_v1_0</v>
 <v>WOTAN\WOTAN_RDS\or_v1_0\or_v1_0.pdf</v>
-<v>WOTAN\WOTAN_RDS\PGA_v2_0.pdf</v>
+<v>WOTAN\WOTAN_RDS\PGA_v2_0</v>
+<v>WOTAN\WOTAN_RDS\PGA_v2_0\PGA_v2_0.pdf</v>
 <v>WOTAN\WOTAN_RDS\Potentiometer_v1_0</v>
 <v>WOTAN\WOTAN_RDS\Potentiometer_v1_0\Potentiometer_v1_0.pdf</v>
 <v>WOTAN\WOTAN_RDS\Power_v1_0.pdf</v>
@@ -436,7 +441,8 @@
 <v>WOTAN\WOTAN_RDS\not_v1_0\not_v1_0.pdf</v>
 <v>WOTAN\WOTAN_RDS\or_v1_0</v>
 <v>WOTAN\WOTAN_RDS\or_v1_0\or_v1_0.pdf</v>
-<v>WOTAN\WOTAN_RDS\PGA_v2_0.pdf</v>
+<v>WOTAN\WOTAN_RDS\PGA_v2_0</v>
+<v>WOTAN\WOTAN_RDS\PGA_v2_0\PGA_v2_0.pdf</v>
 <v>WOTAN\WOTAN_RDS\Potentiometer_v1_0</v>
 <v>WOTAN\WOTAN_RDS\Potentiometer_v1_0\Potentiometer_v1_0.pdf</v>
 <v>WOTAN\WOTAN_RDS\Power_v1_0.pdf</v>
@@ -462,9 +468,9 @@
 </CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997>
 <Unloaded />
 <OpenDocs>
-<name v=".\WOTAN_6CH.cydsn\TopDesign\TopDesign.cysch" />
-<name v=".\WOTAN_6CH.cydsn\WOTAN_6CH.cydwr" />
-<name v=".\WOTAN_6CH.cydsn\main.c" />
+<name v=".\WOTAN_RDS.cydsn\TopDesign\TopDesign.cysch" />
+<name v=".\WOTAN_RDS.cydsn\WOTAN_RDS.cydwr" />
+<name v=".\WOTAN_RDS.cydsn\main.c" />
 </OpenDocs>
 <OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
 
@@ -472,7 +478,7 @@
   Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
   http://www.actiprosoftware.com
 
---><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1934, 1068" SelectedTabbedMdiWindow="28413480-aea5-4315-92d7-2afb641811e9"><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="28413480-aea5-4315-92d7-2afb641811e9" /><DocumentWindow Key="C:\Users\marti\OneDrive\Desktop\github\RDS_WOTAN\WOTAN_PSoC_firmware\WOTAN_6CH.cydsn\TopDesign\TopDesign.cysch" Guid="f2d552d4-bde6-4d68-adf6-332bfe4801e1" /><DocumentWindow Key="C:\Users\marti\OneDrive\Desktop\github\RDS_WOTAN\WOTAN_PSoC_firmware\WOTAN_6CH.cydsn\WOTAN_6CH.cydwr" Guid="31585a28-7837-4ae5-a9ac-96afa5e15f2f" /><DocumentWindow Key="C:\Users\marti\OneDrive\Desktop\github\RDS_WOTAN\WOTAN_PSoC_firmware\WOTAN_6CH.cydsn\main.c" Guid="14618150-557f-4597-bc8d-a0465b38f6ac" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1750, 950" SelectedTabbedMdiWindow="14618150-557f-4597-bc8d-a0465b38f6ac"><DocumentWindow Key="C:\Users\marti\OneDrive\Desktop\github\RDS_WOTAN\WOTAN_PSoC_firmware\WOTAN_RDS.cydsn\TopDesign\TopDesign.cysch" Guid="f2d552d4-bde6-4d68-adf6-332bfe4801e1" /><DocumentWindow Key="C:\Users\marti\OneDrive\Desktop\github\RDS_WOTAN\WOTAN_PSoC_firmware\WOTAN_RDS.cydsn\WOTAN_RDS.cydwr" Guid="31585a28-7837-4ae5-a9ac-96afa5e15f2f" /><DocumentWindow Key="C:\Users\marti\OneDrive\Desktop\github\RDS_WOTAN\WOTAN_PSoC_firmware\WOTAN_RDS.cydsn\main.c" Guid="14618150-557f-4597-bc8d-a0465b38f6ac" /><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="28413480-aea5-4315-92d7-2afb641811e9" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
 <config v="" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>

@@ -6,15 +6,15 @@
 ###################################################################################
 # Dataset description:
 
-main_title = "RDS 50 kHz "
+main_title = "RDS 50 kHz - Magnetosoms in H20 and H20 + Glyc."
 
-data_dir = 'C:/Users/marti/Downloads/rot_data_20230221/'   
+data_dir = 'C:/Users/marti/Downloads/rot_data_20230222b/'   
 
 file_type = 'TXT' # RDS_WOTAN: 'TXT'; Tektronix: 'CSV'; Lecroy: 'TRC' 
 
 
 DELETE_EXISTING_PLOTS = True  
-harmonic_plot_list = range(10,26)#[2,3,4,5,10,11,16,17,22,23]                                                            
+harmonic_plot_list = range(1,20)#[2,3,4,5,10,11,16,17,22,23]                                                            
 
 
 CREATE_NPY_TEMP_DATA  = False
@@ -40,31 +40,45 @@ if CREATE_NPY_TEMP_DATA: # -> *.npy loads faster than *.csv
 # file collection: [1...N]
 # blocks in file collection: [1..M][M+1..K]..[..N]
 # interleaved data sets in block: [1a,1b,1c ... Ma, Mb, Mc...]
-NUM_OF_FILES = 16
-NUM_OF_DATA_BLOCKS = 2
-NUM_OF_FILES_IN_DATA_BLOCK = 8
+NUM_OF_FILES = 64
+NUM_OF_DATA_BLOCKS = 4
+NUM_OF_FILES_IN_DATA_BLOCK = 16
 NUM_OF_INTERLEAVED_DATASETS = 4 # Datasets in a block
 
 sig_labels_block_1 = [
-                        'Test (1a)','Control (1a)',
-                        'Test (1b)','Control(1b)',
+                        'Magnetosom + H20 (a)','Control (1a)',
+                        'Magnetosom + H20 (b)','Control(1b)',
                      ] 
 
 sig_labels_block_2 = [
-                        'Test (2a)','Control (2a)',
-                        'Test (2b)','Control (2b)',
+                        'Magnetosom + Glyc. (a)','Control (2a)',
+                        'Magnetosom + Glyc. (b)','Control (2b)',
+                     ] 
+
+sig_labels_block_3 = [
+                        'Magnetosom + H20 + GSA (a)','Control (3a)',
+                        'Magnetosom + H20 + GSA (b)','Control(3b)',
+                     ] 
+
+sig_labels_block_4 = [
+                        'Magnetosom + Glyc. + GSA (a)','Control (4a)',
+                        'Magnetosom + Glyc. + GSA (b)','Control (4b)',
                      ] 
 
 
 sig_labels = (
                  sig_labels_block_1
                + sig_labels_block_2
+               + sig_labels_block_3
+               + sig_labels_block_4
              )
 
 # Deselect data with '0'
 plot_option_1 = [
                         [ 1, 1,     1, 1, ], # Block 1
                         [ 1, 1,     1, 1, ], # Block 2
+                        [ 1, 1,     1, 1, ], # Block 3
+                        [ 1, 1,     1, 1, ], # Block 4
                         
                     ]
 
@@ -72,6 +86,17 @@ plot_option_1 = [
 plot_option_2 = [
                         [ 1, 0,     1, 0, ], # Block 1
                         [ 1, 0,     1, 0, ], # Block 2
+                        [ 1, 0,     1, 0, ], # Block 3
+                        [ 1, 0,     1, 0, ], # Block 4
+                        
+                    ]
+
+# Block 3 and Block 4
+plot_option_3 = [
+                        [ 0, 0,     0, 0, ], # Block 1
+                        [ 0, 0,     0, 0, ], # Block 2
+                        [ 1, 0,     1, 0, ], # Block 3
+                        [ 1, 0,     1, 0, ], # Block 4
                         
                     ]
 

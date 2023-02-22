@@ -770,7 +770,7 @@ def run_sequence( serialPort, save, pfad, rx_gain='1'):
     p_trig_dir  = b'x' # setting the trigger to output (x: trig out, y: trig in)
     p_dac_range = b'h' # setting DAC output voltage range: 'l' for 0...1V ([l]ow; 'h' for 0...4V ([h]igh)
     
-    p_rx_gain   = bytes(rx_gain,'utf-8') # 1...8 -> rx gain: x1 .. x48
+    p_rx_gain   = bytes(rx_gain,'utf-8') # 1...8 -> rx gain: x1 .. x512
 
     """ END - main settings """
 
