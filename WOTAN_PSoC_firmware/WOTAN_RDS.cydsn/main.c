@@ -80,13 +80,6 @@ char  version[3] = "1.8";  // WOTAN for RDS Spectrometer
 #define  KEY_SERIAL_NUMBER   'S'
 // 11) Get the binary data from the two uint16 ADC buffers
 #define  KEY_SEND_BYTE_DAT   'o'
-// 12) (uart only) give ADC data stream in ASCII format (for display in e.g. Putty)
-#define  KEY_SEND_ASCII_DAT  'd'
-// 13) (uart only) run sequence and show results (2*NSAMPLES_ADC lines, ASCII formatted) via UART
-#define  KEY_RUN_AND_SHOW    's'
-// 14) (uart only) run sequence and swithes to the next channel (just running, no output)
-#define KEY_RUN_AND_NEXT     'a'
-
 // 15) new: Shift waveforms in multiples of sampling time (usage: 'O<channel-pair><16bit-offset>')
 #define KEY_SHIFT_WAVEFORMS  'O'
 
@@ -238,10 +231,7 @@ uint16 signal_adc_2[NSAMPLES_ADC];
 
 // function prototypes
 void init_components(void);
-void show_default_message(void);
-void show_channel_num(void);
 void run_sequence(void);
-void display_results(void);
 void uart_interface(void);
 void usbfs_interface(void);
 void dma_dac_1_init(void);
@@ -273,8 +263,6 @@ uint8 isDAC1Busy = FALSE;
 int main(void){
     // Initialization routines
     init_components();
-    
-    show_default_message();
     
     // Avoid errorness serial input due to initial switching noise:
     CyDelay(500);
@@ -676,115 +664,25 @@ void uart_interface(void)
                 }
                 LED_Write( 0u );
             }// END send binary adc data
-
-            // 12) (uart only) give ADC data stream in ASCII format (for display in e.g. Putty)
-            if ( puttyIn[0] == KEY_SEND_ASCII_DAT )
-            {
-                display_results();
-            }
-            
-            // 13) (uart only) run sequence and show results (2*NSAMPLES_ADC lines, ASCII formatted) via UART
-            if ( puttyIn[0] == KEY_RUN_AND_SHOW )
-            {
-                run_sequence();
-                display_results();
-                show_channel_num();
-            }    
            
             puttyIn[0] = 0;
             bytenumber = 0;
             
-    }
-    
+    }  
 }
+
 
 void trigger_out(void) {
     CompTrigger_Stop();
     enableTrigOut_Write( TRIGGER_OUT_TRUE );  
-    //UART_1_PutStringConst("Trigger set to output");
-    //UART_1_PutCRLF(1);
 }
+
 
 void trigger_in(void) {
     CompTrigger_Start();
     enableTrigOut_Write( TRIGGER_OUT_FALSE );    
-    //UART_1_PutStringConst("Trigger set to input");
-    //UART_1_PutCRLF(1);
 }
 
-
-void show_default_message(void)
-{
-    UART_1_PutCRLF(2);
-    //sprintf(sms, "1) Press '%c' to run the sequence and show the results (ASCII table)", KEY_RUN_AND_SHOW);
-    //    UART_1_PutString(sms); UART_1_PutCRLF(1);
-    sprintf(sms, "1) Press '%c', '%c', '%c', '%c', '%c', '%c' or '%c' for changing the rx gain",\
-        KEY_AMP_0, KEY_AMP_1, KEY_AMP_2, KEY_AMP_3,
-        KEY_AMP_4, KEY_AMP_5, KEY_AMP_6 );
-        UART_1_PutString(sms); UART_1_PutCRLF(1);
-    sprintf(sms, "2) Press '%c' to run the sequence", KEY_RUN);
-        UART_1_PutString(sms); UART_1_PutCRLF(1);
-    sprintf(sms, "3) Press '%c' to reset the firmware", KEY_RESET);
-        UART_1_PutString(sms); UART_1_PutCRLF(1);
-    sprintf(sms, "4) Press '%c' to set the max amplitude of the DAC to 1V", KEY_VDAC_1V);
-        UART_1_PutString(sms); UART_1_PutCRLF(1);
-    sprintf(sms, "5) Press '%c' to set the max amplitude of the DAC to 4V", KEY_VDAC_4V);
-        UART_1_PutString(sms); UART_1_PutCRLF(1);
-    sprintf(sms, "6) write new sequence to the flash");
-        UART_1_PutString(sms); UART_1_PutCRLF(1);
-    sprintf(sms, "7) Press '%c' to use the Trigger as output (defualt)", KEY_TRIGGER_OUT);
-        UART_1_PutString(sms); UART_1_PutCRLF(1);
-    sprintf(sms, "8) Press '%c' to use the Trigger as input", KEY_TRIGGER_IN);
-        UART_1_PutString(sms); UART_1_PutCRLF(1);
-//    sprintf(sms, "9) Press '%c' for firmware information", version );
-//        UART_1_PutString(sms); UART_1_PutCRLF(1);
-    sprintf(sms, "10) Press '%c' to get the Serial Number", KEY_SERIAL_NUMBER);
-        UART_1_PutString(sms); UART_1_PutCRLF(1);
-    sprintf(sms, "11) Press '%c' to get the stored ADC values as bytestream", KEY_SEND_BYTE_DAT);
-        UART_1_PutString(sms); UART_1_PutCRLF(1);
-    sprintf(sms, "12) (only UART) Press '%c' to get the stored ADC values as ASCII stream", KEY_SEND_ASCII_DAT);
-        UART_1_PutString(sms); UART_1_PutCRLF(1);
-    sprintf(sms, "13) (only UART) Press '%c' to run the sequence and get the stored ADC values as ASCII stream", KEY_RUN_AND_SHOW);
-        UART_1_PutString(sms); UART_1_PutCRLF(1);
-
-    UART_1_PutCRLF(2);
-}
-
-void show_channel_num(void)
-{
-    sprintf(sms,"Count of sequence runs after reset: %d", count_of_runs);
-        UART_1_PutString(sms); UART_1_PutCRLF(1);
-}
-
-void display_results(void)
-{
-    for(int i=0;i<NSAMPLES_ADC;i++)
-    {
-        sprintf(sms,"ADC_1 Value %d,0 us:\t  %d", i, signal_adc_1[i]);
-            UART_1_PutString(sms);
-        UART_1_PutCRLF(1);
-        sprintf(sms,"ADC_2 Value %d,5 us:\t  %d", i, signal_adc_2[i]);
-            UART_1_PutString(sms);
-        UART_1_PutCRLF(1);
-        
-        CyDelay(3); // delay for avoiding bluetooth buffer overrun
-        
-        // stop printing ascii table with any key:
-        if( UART_1_GetRxBufferSize() != 0 )
-        {
-           UART_1_ClearRxBuffer();
-           UART_1_PutCRLF(2);
-           UART_1_PutStringConst("Data listing aborted...\n\n");
-           UART_1_PutCRLF(1);
-           CyDelay(10);
-           break;
-        }
-    }
-    
-    show_channel_num();
-    
-    show_default_message();  
-}
 
 void run_sequence(void)
 {
