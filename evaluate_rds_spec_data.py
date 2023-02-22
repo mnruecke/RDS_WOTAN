@@ -20,19 +20,19 @@ harmonic_plot_list = range(1,16)#[2,3,4,5,10,11,16,17,22,23]
 CREATE_NPY_TEMP_DATA  = False
 FORCE_RAW_DATA_RELOAD = True # ignore preprocessed data in temp_dir
 
-import platform
-import os
 if CREATE_NPY_TEMP_DATA: # -> *.npy loads faster than *.csv
 
     # Directory for preprocessed data:
     temp_dir_name = "rds_50kHz_evaluation/"    
     
+    import platform
     if platform.system() == 'Windows':
         temp_dir_root = "C:/Users/marti/Downloads/"
     elif platform.system() == 'Linux':
         temp_dir_root = "/home/martin/Downloads/"
     temp_dir = temp_dir_root + temp_dir_name   
    
+    import os
     if not os.path.exists( temp_dir ):
         os.mkdir( temp_dir )
         
@@ -286,6 +286,7 @@ except:
 if DELETE_EXISTING_PLOTS:
     plt.close('all')
 
+import platform
 if platform.system() == 'Windows':    
     matplotlib.rcParams.update({'font.size': 22})
 elif platform.system() == 'Linux':    

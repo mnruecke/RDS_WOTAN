@@ -54,12 +54,12 @@
 serialPort = '\\\\.\\COM3' 
 
 repetitions = 3
-save_data = True    # 1 = Sequenz speichern
+save_data = True   
 data_path = 'C:/Users/marti/Downloads/rot_data_20230221/'
 sleep_time = 1
 
-import os
 if save_data and not os.path.exists( data_path ):
+    import os
     os.mkdir( data_path )
     
 """ ----------------------------- """      
