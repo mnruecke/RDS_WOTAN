@@ -40,8 +40,8 @@ if CREATE_NPY_TEMP_DATA: # -> *.npy loads faster than *.csv
 # file collection: [1...N]
 # blocks in file collection: [1..M][M+1..K]..[..N]
 # interleaved data sets in block: [1a,1b,1c ... Ma, Mb, Mc...]
-NUM_OF_FILES = 64
-NUM_OF_DATA_BLOCKS = 4
+NUM_OF_FILES = 96
+NUM_OF_DATA_BLOCKS = 6
 NUM_OF_FILES_IN_DATA_BLOCK = 16
 NUM_OF_INTERLEAVED_DATASETS = 4 # Datasets in a block
 
@@ -51,8 +51,8 @@ sig_labels_block_1 = [
                      ] 
 
 sig_labels_block_2 = [
-                        'Magnetosom + Glyc. (a)','Control (2a)',
-                        'Magnetosom + Glyc. (b)','Control (2b)',
+                        'Magnetosom + H20 + Glyc. (a)','Control (2a)',
+                        'Magnetosom + H20 + Glyc. (b)','Control (2b)',
                      ] 
 
 sig_labels_block_3 = [
@@ -61,16 +61,27 @@ sig_labels_block_3 = [
                      ] 
 
 sig_labels_block_4 = [
-                        'Magnetosom + Glyc. + GSA (a)','Control (4a)',
-                        'Magnetosom + Glyc. + GSA (b)','Control (4b)',
+                        'Magnetosom + H20 + Glyc. + GSA (a)','Control (4a)',
+                        'Magnetosom + H20 + Glyc. + GSA (b)','Control (4b)',
                      ] 
 
+sig_labels_block_5 = [
+                        'Magnetosom + H20 - PGA2 (a)','Control (5a)',
+                        'Magnetosom + H20 - PGA2 (b)','Control (5b)',
+                     ] 
+
+sig_labels_block_6 = [
+                        'Magnetosom + H20 - 16x avg (a)','Control (6a)',
+                        'Magnetosom + H20 - 16x avg (b)','Control (6b)',
+                     ] 
 
 sig_labels = (
                  sig_labels_block_1
                + sig_labels_block_2
                + sig_labels_block_3
                + sig_labels_block_4
+               + sig_labels_block_5
+               + sig_labels_block_6
              )
 
 # Deselect data with '0'
@@ -79,7 +90,8 @@ plot_option_1 = [
                         [ 1, 1,     1, 1, ], # Block 2
                         [ 1, 1,     1, 1, ], # Block 3
                         [ 1, 1,     1, 1, ], # Block 4
-                        
+                        [ 1, 1,     1, 1, ], # Block 5                        
+                        [ 1, 1,     1, 1, ], # Block 6                       
                     ]
 
 # No baseline
@@ -88,20 +100,32 @@ plot_option_2 = [
                         [ 1, 0,     1, 0, ], # Block 2
                         [ 1, 0,     1, 0, ], # Block 3
                         [ 1, 0,     1, 0, ], # Block 4
-                        
+                        [ 1, 0,     1, 0, ], # Block 5                        
+                        [ 1, 0,     1, 0, ], # Block 6                        
                     ]
 
-# Block 3 and Block 4
+# Compare Block 1 with Block 5 and 6
 plot_option_3 = [
-                        [ 0, 0,     0, 0, ], # Block 1
+                        [ 1, 0,     1, 0, ], # Block 1
                         [ 0, 0,     0, 0, ], # Block 2
+                        [ 0, 0,     0, 0, ], # Block 3
+                        [ 0, 0,     0, 0, ], # Block 4
+                        [ 1, 0,     1, 0, ], # Block 5                       
+                        [ 1, 0,     1, 0, ], # Block 6                       
+                    ]
+
+# Compare Block 2, 3 and 4
+plot_option_4 = [
+                        [ 0, 0,     0, 0, ], # Block 1
+                        [ 1, 0,     1, 0, ], # Block 2
                         [ 1, 0,     1, 0, ], # Block 3
                         [ 1, 0,     1, 0, ], # Block 4
-                        
+                        [ 0, 0,     0, 0, ], # Block 5                       
+                        [ 0, 0,     0, 0, ], # Block 6                      
                     ]
 
 
-visibility_matrix = plot_option_2
+visibility_matrix = plot_option_3
 
 # Data set order for plotting 
 data_ids = list(range(len(sig_labels_block_1)))

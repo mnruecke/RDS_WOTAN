@@ -744,7 +744,11 @@ def write_sequence(serialPort,nsamples_total,values):
 """ run_sequence() """
 """ ************** """
 
-def run_sequence( serialPort, save, pfad, rx_gain='1'):
+def run_sequence( serialPort,
+                  save, pfad,
+                  rx_gain='1',
+                  n_avg=1, wait_sec=1
+                  ):
     """ --- Required parameters ---- """ 
     baudrate = 1382400    #Baudrate  #921600
                                                                                  
@@ -774,34 +778,55 @@ def run_sequence( serialPort, save, pfad, rx_gain='1'):
 
     """ END - main settings """
 
-    """ start measurement on PSoC and get data """
-    try: # open and interact with serial port 
-        ser = serial.Serial( serialPort, baudrate, timeout=time_out)
-        # run MPI sequence on psoc
-    
+    """ WOTAN board control and data acquisition  """
+    try:
+        # 0) open and interact with serial port 
+        ser = serial.Serial( serialPort,
+                             baudrate,
+                             timeout=time_out
+                             )
+        
+        # 1) WOTAN board settings
         ser.write( p_rx_gain )
         time.sleep(0.001)
         ser.write( p_trig_dir )
         time.sleep(0.001)
         ser.write( p_dac_range )
-        time.sleep(0.001)
+        time.sleep(0.001)        
     
-        ser.write( p_run_sequ )
-        time.sleep(0.030)
-        ser.flushInput()
-        time.sleep(0.001)
-        ser.write( p_get_data )
-        time.sleep(0.001)
-    
-        # get data as byte stream 
-        adc_data_bin = ser.read(bufInputSize)
-        # transform byte stream into int16 array
-        adc_data_int16 = struct.unpack('>'+'H'*int(len(adc_data_bin)/bytesPerSample),adc_data_bin)
-    
+        # 2) Run measurement
+        adc_data_avg = np.array([])   
+        for avg_i in range( n_avg ):
+        
+            # 2b) Start measurement
+            ser.write( p_run_sequ )
+            time.sleep(0.030)
+            
+            # 2c) Data handling
+            ser.flushInput()
+            time.sleep(0.001)
+            ser.write( p_get_data )
+            time.sleep(0.001)
+            # get data as byte stream 
+            adc_data_bin = ser.read(bufInputSize)
+            # transform byte stream into int16 array
+            adc_data_int16 = struct.unpack('>'+'H'*int(len(adc_data_bin)/bytesPerSample),adc_data_bin)
+            
+            # 2d) Averaging
+            if len(adc_data_avg) == 0:
+                adc_data_avg = np.array( adc_data_int16 )
+            else:
+                adc_data_avg += np.array( adc_data_int16 )
+                
+            if n_avg > 1:
+                print( f'Avg #: { avg_i }' )
+                time.sleep( wait_sec )
+
+        adc_data_avg = adc_data_avg / n_avg                           
+        
     finally: # close serial port
         ser.close()
-    
-        #print(len(adc_data_int16))
+
 
 
     if len(adc_data_bin) == numOfSamples*bytesPerSample: # check if run was successful
@@ -810,14 +835,8 @@ def run_sequence( serialPort, save, pfad, rx_gain='1'):
             # and ADC 2 (odd samples)
             # (this method fails if signal has steps or goes into saturation!)
 
-        adc1 = adc_data_int16[0::2]
-        adc2 = adc_data_int16[1::2]
-  
-    #    adc=[];
-    #    for i in adc_data_int16:
-        #        adc.append(adc_data_int16[i]+1)
-        #    adc1 = adc[0::2]
-        #    adc2 = adc[1::2]
+        adc1 = adc_data_avg[0::2]
+        adc2 = adc_data_avg[1::2]
     
         adc1DIVadc2 = 0;
         for sp in range(len(adc1)):
@@ -828,16 +847,8 @@ def run_sequence( serialPort, save, pfad, rx_gain='1'):
         adc_data_corr[0::2] = adc_data_corr[0::2] *(1-adc1DIVadc2)
         adc_data_corr[1::2] = adc2
         
-        # visualize data
-        
         dat_time = np.arange(0,sequDuration,timePerSample)
         dat_sig  = adc_data_corr * adcVoltPerBit
-        
-        #plt.figure(2)
-        #plt.plot( dat_time, dat_sig, dat_time, dat_sig,'+')
-        #plt.xlabel('time [ms]')
-        #plt.ylabel('signal [V]')
-        #plt.show()
     
         """ Write data to disk """
         if( save_data ):

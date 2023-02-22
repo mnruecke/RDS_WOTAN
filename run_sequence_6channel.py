@@ -53,12 +53,12 @@
 # A) check device manager to see at which port number the board enumerates
 serialPort = '\\\\.\\COM3' 
 
-repetitions = 1
 save_data   = 0 # 1 = save data
 data_path   = 'C:/Users/marti/Downloads/rot_data_20230222b/'
-sleep_time  = 1
 
-rx_gain = '7' # '0' ... '9' => Gain: x1 ... x512
+rx_gain         = '5' # '0'...'9' => Gain: x1 ... x512 // '6'=x64
+n_avg           = 16
+wait_sec_avg    = 1 # time in s between measurements when avg > 1
 
 import os
 if save_data and not os.path.exists( data_path ):    
@@ -67,26 +67,27 @@ if save_data and not os.path.exists( data_path ):
 """ ----------------------------- """      
 
 
-import time
-for _ in range( repetitions ):
-    
-    from rds_functions_6channel_beta import (
-        run_sequence,
-        generate_sequence_offset,
-        write_sequence
-        )
-    
-    t, sig, amp = run_sequence( serialPort, save_data, data_path, rx_gain)
-    
-    
-    # visualize data
-    import matplotlib.pyplot as plt
-    #plt.close('all')
-    plt.figure(12)
-    plt.plot( t, sig)
-    plt.xlabel('time [ms]')
-    plt.ylabel('signal [V]')
-    plt.show()  
+import time   
+from rds_functions_6channel_beta import (
+    run_sequence,
+    generate_sequence_offset,
+    write_sequence
+    )
+
+t, sig, amp = run_sequence( serialPort,
+                            save_data, data_path,
+                            rx_gain,
+                            n_avg, wait_sec_avg
+                            )
+
+
+# visualize data
+import matplotlib.pyplot as plt
+#plt.close('all')
+plt.figure(12)
+plt.plot( t, sig)
+plt.xlabel('time [ms]')
+plt.ylabel('signal [V]')
+plt.show()  
         
-    time.sleep( sleep_time )
                 

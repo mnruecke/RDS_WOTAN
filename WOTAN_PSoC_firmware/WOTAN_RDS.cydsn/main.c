@@ -750,42 +750,52 @@ void set_rx_gain(char gain_val){
     if( gain_val == KEY_AMP_0 ){
         sigBuf_SetGain( sigBuf_GAIN_01 );
         sigBuf_2_SetGain( sigBuf_2_GAIN_01 );
+        sigBuf_3_SetGain( sigBuf_3_GAIN_01 );
     }
     if( gain_val == KEY_AMP_1 ){
         sigBuf_SetGain( sigBuf_GAIN_02 );
         sigBuf_2_SetGain( sigBuf_2_GAIN_01 );
+        sigBuf_3_SetGain( sigBuf_3_GAIN_01 );
     }
     if( gain_val == KEY_AMP_2 ){
         sigBuf_SetGain( sigBuf_GAIN_02 );
         sigBuf_2_SetGain( sigBuf_2_GAIN_02 );
+        sigBuf_3_SetGain( sigBuf_3_GAIN_01 );
     }
     if( gain_val == KEY_AMP_3 ){
         sigBuf_SetGain( sigBuf_GAIN_04 );
         sigBuf_2_SetGain( sigBuf_2_GAIN_02 );
+        sigBuf_3_SetGain( sigBuf_3_GAIN_01 );
     }
     if( gain_val == KEY_AMP_4 ){
         sigBuf_SetGain( sigBuf_GAIN_04 );
         sigBuf_2_SetGain( sigBuf_2_GAIN_04 );
+        sigBuf_3_SetGain( sigBuf_3_GAIN_01 );
     }
     if( gain_val == KEY_AMP_5 ){
         sigBuf_SetGain( sigBuf_GAIN_08 );
         sigBuf_2_SetGain( sigBuf_2_GAIN_04 );
+        sigBuf_3_SetGain( sigBuf_3_GAIN_01 );
     }
     if( gain_val == KEY_AMP_6 ){
         sigBuf_SetGain( sigBuf_GAIN_08 );
         sigBuf_2_SetGain( sigBuf_2_GAIN_08 );
+        sigBuf_3_SetGain( sigBuf_3_GAIN_01 );
     }
     if( gain_val == KEY_AMP_7 ){
         sigBuf_SetGain( sigBuf_GAIN_16 );
         sigBuf_2_SetGain( sigBuf_2_GAIN_08 );
+        sigBuf_3_SetGain( sigBuf_3_GAIN_01 );
     }    
     if( gain_val == KEY_AMP_8 ){
         sigBuf_SetGain( sigBuf_GAIN_16 );
         sigBuf_2_SetGain( sigBuf_2_GAIN_16 );
+        sigBuf_3_SetGain( sigBuf_3_GAIN_01 );
     }    
     if( gain_val == KEY_AMP_9 ){
         sigBuf_SetGain( sigBuf_GAIN_32 );
         sigBuf_2_SetGain( sigBuf_2_GAIN_16 );
+        sigBuf_3_SetGain( sigBuf_3_GAIN_01 );
     }    
 }//END set_rx_gain(char)
 
