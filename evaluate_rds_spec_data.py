@@ -14,7 +14,7 @@ file_type = 'TXT' # RDS_WOTAN: 'TXT'; Tektronix: 'CSV'; Lecroy: 'TRC'
 
 
 DELETE_EXISTING_PLOTS = True  
-harmonic_plot_list = range(1,16)#[2,3,4,5,10,11,16,17,22,23]                                                            
+harmonic_plot_list = range(10,26)#[2,3,4,5,10,11,16,17,22,23]                                                            
 
 
 CREATE_NPY_TEMP_DATA  = False
@@ -40,9 +40,9 @@ if CREATE_NPY_TEMP_DATA: # -> *.npy loads faster than *.csv
 # file collection: [1...N]
 # blocks in file collection: [1..M][M+1..K]..[..N]
 # interleaved data sets in block: [1a,1b,1c ... Ma, Mb, Mc...]
-NUM_OF_FILES = 32
+NUM_OF_FILES = 16
 NUM_OF_DATA_BLOCKS = 2
-NUM_OF_FILES_IN_DATA_BLOCK = 16
+NUM_OF_FILES_IN_DATA_BLOCK = 8
 NUM_OF_INTERLEAVED_DATASETS = 4 # Datasets in a block
 
 sig_labels_block_1 = [

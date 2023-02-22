@@ -53,13 +53,13 @@
 # A) check device manager to see at which port number the board enumerates
 serialPort = '\\\\.\\COM3' 
 
-repetitions = 3
-save_data = True   
+repetitions = 1
+save_data = 1 # 1 = save data
 data_path = 'C:/Users/marti/Downloads/rot_data_20230221/'
 sleep_time = 1
 
-if save_data and not os.path.exists( data_path ):
-    import os
+import os
+if save_data and not os.path.exists( data_path ):    
     os.mkdir( data_path )
     
 """ ----------------------------- """      
