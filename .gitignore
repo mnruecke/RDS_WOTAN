@@ -5,6 +5,10 @@
 
 # Generated KiCAD Gerber files
 */Gerberfiles/*
+*/*.zip
+*/_autosave-*
+*/#auto_saved_files#
+*/*-backups/*
 
 # Log and auxilliary files
 */*.log

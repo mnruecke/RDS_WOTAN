@@ -792,10 +792,10 @@ void set_rx_gain(char gain_val){
         sigBuf_2_SetGain( sigBuf_2_GAIN_16 );
         sigBuf_3_SetGain( sigBuf_3_GAIN_01 );
     }    
-    if( gain_val == KEY_AMP_9 ){
-        sigBuf_SetGain( sigBuf_GAIN_32 );
-        sigBuf_2_SetGain( sigBuf_2_GAIN_16 );
-        sigBuf_3_SetGain( sigBuf_3_GAIN_01 );
+    if( gain_val == KEY_AMP_9 ){ // KEY_AMP_5 for high bandwidth
+        sigBuf_SetGain( sigBuf_GAIN_04 );
+        sigBuf_2_SetGain( sigBuf_2_GAIN_04 );
+        sigBuf_3_SetGain( sigBuf_3_GAIN_02 );
     }    
 }//END set_rx_gain(char)
 

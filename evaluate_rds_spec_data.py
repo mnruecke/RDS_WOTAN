@@ -6,17 +6,23 @@
 ###################################################################################
 # Dataset description:
 
-main_title = "RDS 50 kHz - Magnetosoms in H20 and H20 + Glyc."
+main_title = "RDS 50 kHz - 2 MSs - TXT"
 
-data_dir = 'C:/Users/marti/Downloads/rot_data_20230222b/'   
+data_dir = 'C:/Users/marti/Downloads/rot_data_20230223c/'   
 
 file_type = 'TXT' # RDS_WOTAN: 'TXT'; Tektronix: 'CSV'; Lecroy: 'TRC' 
 
 
-DELETE_EXISTING_PLOTS = True  
-harmonic_plot_list = range(1,20)#[2,3,4,5,10,11,16,17,22,23]                                                            
+# Plotting options
+PLOT_FULL_BANDWIDTH_SIGNAL = 0
+PLOT_HARMONICS = 1 # Downmixed signal
+PLOT_REFERENCE = 1
+
+DELETE_EXISTING_PLOTS = False 
+harmonic_plot_list    = [31,41,51]#range( 31, 32)#[2,3,4,5,10,11,16,17,22,23]                                                            
 
 
+# Temp file creation for processing large data sets
 CREATE_NPY_TEMP_DATA  = False
 FORCE_RAW_DATA_RELOAD = True # ignore preprocessed data in temp_dir
 
@@ -40,92 +46,51 @@ if CREATE_NPY_TEMP_DATA: # -> *.npy loads faster than *.csv
 # file collection: [1...N]
 # blocks in file collection: [1..M][M+1..K]..[..N]
 # interleaved data sets in block: [1a,1b,1c ... Ma, Mb, Mc...]
-NUM_OF_FILES = 96
-NUM_OF_DATA_BLOCKS = 6
-NUM_OF_FILES_IN_DATA_BLOCK = 16
-NUM_OF_INTERLEAVED_DATASETS = 4 # Datasets in a block
+NUM_OF_FILES = 16
+NUM_OF_DATA_BLOCKS = 2
+NUM_OF_FILES_IN_DATA_BLOCK = 8
+NUM_OF_INTERLEAVED_DATASETS = 2 # Datasets in a block
 
 sig_labels_block_1 = [
-                        'Magnetosom + H20 (a)','Control (1a)',
-                        'Magnetosom + H20 (b)','Control(1b)',
+                        'M1; Gain = 4x4x2 (a)','Control (1a)',
                      ] 
-
 sig_labels_block_2 = [
-                        'Magnetosom + H20 + Glyc. (a)','Control (2a)',
-                        'Magnetosom + H20 + Glyc. (b)','Control (2b)',
+                        'M1; Gain = 4x4x2 (b)','Control (1b)',
                      ] 
 
-sig_labels_block_3 = [
-                        'Magnetosom + H20 + GSA (a)','Control (3a)',
-                        'Magnetosom + H20 + GSA (b)','Control(3b)',
-                     ] 
 
-sig_labels_block_4 = [
-                        'Magnetosom + H20 + Glyc. + GSA (a)','Control (4a)',
-                        'Magnetosom + H20 + Glyc. + GSA (b)','Control (4b)',
-                     ] 
-
-sig_labels_block_5 = [
-                        'Magnetosom + H20 - PGA2 (a)','Control (5a)',
-                        'Magnetosom + H20 - PGA2 (b)','Control (5b)',
-                     ] 
-
-sig_labels_block_6 = [
-                        'Magnetosom + H20 - 16x avg (a)','Control (6a)',
-                        'Magnetosom + H20 - 16x avg (b)','Control (6b)',
-                     ] 
 
 sig_labels = (
                  sig_labels_block_1
                + sig_labels_block_2
-               + sig_labels_block_3
-               + sig_labels_block_4
-               + sig_labels_block_5
-               + sig_labels_block_6
              )
 
 # Deselect data with '0'
 plot_option_1 = [
-                        [ 1, 1,     1, 1, ], # Block 1
-                        [ 1, 1,     1, 1, ], # Block 2
-                        [ 1, 1,     1, 1, ], # Block 3
-                        [ 1, 1,     1, 1, ], # Block 4
-                        [ 1, 1,     1, 1, ], # Block 5                        
-                        [ 1, 1,     1, 1, ], # Block 6                       
+                        [ 1, 1 ], # Block 1
+                        [ 1, 1 ], # Block 2              
                     ]
 
 # No baseline
 plot_option_2 = [
-                        [ 1, 0,     1, 0, ], # Block 1
-                        [ 1, 0,     1, 0, ], # Block 2
-                        [ 1, 0,     1, 0, ], # Block 3
-                        [ 1, 0,     1, 0, ], # Block 4
-                        [ 1, 0,     1, 0, ], # Block 5                        
-                        [ 1, 0,     1, 0, ], # Block 6                        
+                        [ 1, 0 ], # Block 1
+                        [ 1, 0 ], # Block 2            
                     ]
 
 # Compare Block 1 with Block 5 and 6
 plot_option_3 = [
-                        [ 1, 0,     1, 0, ], # Block 1
-                        [ 0, 0,     0, 0, ], # Block 2
-                        [ 0, 0,     0, 0, ], # Block 3
-                        [ 0, 0,     0, 0, ], # Block 4
-                        [ 1, 0,     1, 0, ], # Block 5                       
-                        [ 1, 0,     1, 0, ], # Block 6                       
+                        [ 1, 0 ], # Block 1
+                        [ 1, 0 ], # Block 2           
                     ]
 
 # Compare Block 2, 3 and 4
 plot_option_4 = [
-                        [ 0, 0,     0, 0, ], # Block 1
-                        [ 1, 0,     1, 0, ], # Block 2
-                        [ 1, 0,     1, 0, ], # Block 3
-                        [ 1, 0,     1, 0, ], # Block 4
-                        [ 0, 0,     0, 0, ], # Block 5                       
-                        [ 0, 0,     0, 0, ], # Block 6                      
+                        [ 1, 0 ], # Block 1
+                        [ 1, 0 ], # Block 2            
                     ]
 
 
-visibility_matrix = plot_option_3
+visibility_matrix = plot_option_2
 
 # Data set order for plotting 
 data_ids = list(range(len(sig_labels_block_1)))
@@ -143,12 +108,6 @@ BANDWIDTH = 10000 # Bandwidth around the downmixed harmonic in Hz
 SAMPLES_PER_SEC = 2e6 # sampling rate of data files
 DOWN_SAMPLING   = 1
 SAMPLING_TIME_IN_SEC = 0.015 # 1 / SAMPLES_PER_SEC * N_SAMPLES
-
-# Plotting options
-PLOT_FULL_BANDWIDTH_SIGNAL = 1
-PLOT_HARMONICS = 1 # Downmixed signal
-
-PLOT_REFERENCE = 1
 
 
 ###################################################################################
@@ -214,7 +173,11 @@ def downsampling_data( t, y, decimation_factor ):
     if decimation_factor == 1:
         return t, y   
     
-    y = np.reshape( y, [ len( y ) // decimation_factor, decimation_factor ] )
+    y = np.reshape( y, [ len( y ) // decimation_factor,
+                         decimation_factor
+                         ]
+                   )
+    
     y = np.sum( y, 1 ) / decimation_factor  
     t = t[ :: decimation_factor ]   
     
@@ -411,8 +374,8 @@ if PLOT_FULL_BANDWIDTH_SIGNAL:
                 plt.plot( t_, trace_, label = label_ )
 
  
-    plt.xlabel('t[ms]')
-    plt.ylabel('Amplitude[V]')
+    plt.xlabel( 't[ms]' )
+    plt.ylabel( 'Amplitude[V]' )
     plt.legend( loc='upper right' )  
         
     
