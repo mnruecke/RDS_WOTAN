@@ -474,8 +474,7 @@ def generate_phase_sweep_sequence(values, ch, freq, amp, phase_von, phase_bis): 
 
     for t in (np.arange(nsamples_sequence)+nsamples_ramp_up):
         values[ch][t] =  off + (amp_start-amp_end) (1/nsamples_sequence * t) * np.sin(2 * np.pi * f * t + phi * np.pi/180)
-
-    
+   
     for t in (np.arange(nsamples_ramp_down)+nsamples_ramp_up+nsamples_sequence):
         values[ch][t] =  off + amp_start * np.sin(2 * np.pi * f * t + phi * np.pi/180) * (1.0 - 1.0 / nsamples_ramp_down * (t-nsamples_sequence-nsamples_ramp_up)) 
     """ end generate sequence """

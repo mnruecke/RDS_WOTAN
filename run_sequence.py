@@ -57,7 +57,7 @@ save_data   = 0 # 1 = save data
 data_path   = 'C:/Users/marti/Downloads/rot_data_20230223c/'
 
 rx_gain         = '9' # '0'...'9' => Gain: x1 ... x512 // '6'=x64
-n_avg           = 2
+n_avg           = 1
 wait_sec_avg    = 1 # time in s between measurements when avg > 1
 
 import os
