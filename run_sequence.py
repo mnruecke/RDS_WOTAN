@@ -81,7 +81,7 @@ t, sig, amp = run_sequence( serialPort,
 import matplotlib.pyplot as plt
 #plt.close('all')
 plt.figure(12)
-plt.plot( t, sig)
+plt.plot( t[:100], sig[:100])
 plt.xlabel('time [ms]')
 plt.ylabel('signal [V]')
 plt.show()  
