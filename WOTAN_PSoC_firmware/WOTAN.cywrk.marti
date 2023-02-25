@@ -310,7 +310,6 @@
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_2_IRQ.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\ADC_SAR_2_PM.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\clkADC.lst</v>
-<v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\Clock_4.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_1.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_1_PM.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_2.lst</v>
@@ -423,7 +422,6 @@
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Release\Listing Files\ADC_SAR_2_IRQ.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Release\Listing Files\ADC_SAR_2_PM.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Release\Listing Files\clkADC.lst</v>
-<v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Release\Listing Files\Clock_4.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Release\Listing Files\ClockShift_1.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Release\Listing Files\ClockShift_1_PM.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Release\Listing Files\ClockShift_2.lst</v>
@@ -808,18 +806,14 @@
 </userData>
 </CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997>
 <Unloaded />
-<OpenDocs>
-<name v=".\WOTAN_RDS2_Master.cydsn\WOTAN_RDS2_Master.cydwr" />
-<name v=".\WOTAN_RDS2_Master.cydsn\TopDesign\TopDesign.cysch" />
-<name v=".\WOTAN_RDS2_Master.cydsn\main.c" />
-</OpenDocs>
+<OpenDocs />
 <OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
 
   Actipro Docking/MDI for WinForms
   Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
   http://www.actiprosoftware.com
 
---><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1669, 950" SelectedTabbedMdiWindow="f9f41ea4-8a11-4cba-a281-b5c20bea6b9e"><DocumentWindow Key="C:\Users\marti\OneDrive\Desktop\github\RDS_WOTAN\WOTAN_PSoC_firmware\WOTAN_RDS2_Master.cydsn\WOTAN_RDS2_Master.cydwr" Guid="754c4672-3b5d-4598-af75-99651c146b63" /><DocumentWindow Key="C:\Users\marti\OneDrive\Desktop\github\RDS_WOTAN\WOTAN_PSoC_firmware\WOTAN_RDS2_Master.cydsn\TopDesign\TopDesign.cysch" Guid="d09e7d98-1e6c-4e8f-8ee3-cb79505043c0" /><DocumentWindow Key="C:\Users\marti\OneDrive\Desktop\github\RDS_WOTAN\WOTAN_PSoC_firmware\WOTAN_RDS2_Master.cydsn\main.c" Guid="f9f41ea4-8a11-4cba-a281-b5c20bea6b9e" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer /><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
 <config v="Debug" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>

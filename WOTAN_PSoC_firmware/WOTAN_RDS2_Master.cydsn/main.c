@@ -580,7 +580,9 @@ void get_data_package( uint8 * adc_data_packet, size_t packet_i ){
 
 
 void get_data_package_board_1( uint8 * adc_data_packet, size_t packet_i ){
-   
+    
+    // UART needs to run at 72 MHz
+
     // 1) Request pkt_j from board 1
     // 2) return pointer of rx buffer of UART_Master_Board_1
     
@@ -588,11 +590,14 @@ void get_data_package_board_1( uint8 * adc_data_packet, size_t packet_i ){
     // 1) Board 1 Mock up request
     // 1a) Mockup command
     
+    
+    
     // 1b) Mockup data
     uint8 adc1_adc2_interleaved[USBFS_TX_SIZE];
     get_data_package( adc1_adc2_interleaved, packet_i ); 
     UART_Slave_Board_1_PutArray( adc1_adc2_interleaved, USBFS_TX_SIZE );
     
+
     // 2) Pass pointer to rx array after packet has arrived
     // 2a) Wait until rx buffer has USBFS_TX_SIZE bytes
     int time_out = 0;
@@ -611,11 +616,9 @@ void get_data_package_board_1( uint8 * adc_data_packet, size_t packet_i ){
             UART_Master_Board_1_rxBuffer[i] = 0xff;      
             
     // 2b) Pass pointer to rx array
-    adc_data_packet = (uint8 *) UART_Master_Board_1_rxBuffer;
-    /// FIXIT
-    get_data_package(  adc_data_packet, packet_i );
-    
-    
+    for(int i=0; i< USBFS_TX_SIZE; ++i)        
+        adc_data_packet[i] = UART_Master_Board_1_rxBuffer[i];    
+  
 }//END get_data_package_board_1( uint8 *, size_t )
 
 

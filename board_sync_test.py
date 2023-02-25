@@ -24,12 +24,20 @@ try: # open and interact with serial port
     # 1) get adc data directly
     ser.write( b'A' )
     time.sleep(0.001)
-    adc_data = ser.read(bufInputSize)
+    adc_data_indirect = ser.read(bufInputSize)
+
+    # 1) get adc data directly
+    ser.write( b'o' )
+    time.sleep(0.001)
+    adc_data_direct = ser.read(bufInputSize)
+
 
 
     # 3) Verify
-    print( len( adc_data ))
-    print( adc_data[:5] + adc_data[-5:] )
+    print( len( adc_data_indirect ))
+    print( adc_data_direct == adc_data_indirect )
+    print( adc_data_direct[1::10000]   ) 
+    print( adc_data_indirect[1::10000] )
     
 finally: # close serial port
     ser.close()
