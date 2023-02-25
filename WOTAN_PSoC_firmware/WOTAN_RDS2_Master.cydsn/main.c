@@ -239,7 +239,7 @@ void run_sequence(void);
 void uart_interface(void);
 void usbfs_interface(void);
 void get_data_package( uint8 * , size_t );
-void get_data_package_board_1( uint8 *, size_t );
+uint8 * get_data_package_board_1( size_t );
 void usbfs_send_adc_data(void);
 void usbfs_send_adc_data_board_1(void);
 void dma_dac_1_init(void);
@@ -579,9 +579,9 @@ void get_data_package( uint8 * adc_data_packet, size_t packet_i ){
 }//END get_data_package()
 
 
-void get_data_package_board_1( uint8 * adc_data_packet, size_t packet_i ){
+uint8 * get_data_package_board_1( size_t packet_i ){
     
-    // UART needs to run at 72 MHz
+    // UART needs to run at 72 MHz or 36 MHz, fails at 18 MHz
 
     // 1) Request pkt_j from board 1
     // 2) return pointer of rx buffer of UART_Master_Board_1
@@ -601,24 +601,21 @@ void get_data_package_board_1( uint8 * adc_data_packet, size_t packet_i ){
     // 2) Pass pointer to rx array after packet has arrived
     // 2a) Wait until rx buffer has USBFS_TX_SIZE bytes
     int time_out = 0;
-    int timeout_reached = 0;
+    int timeout_reached = FALSE;
     const int timeout_cycles = 10000;
     while( UART_Master_Board_1_GetRxBufferSize() < USBFS_TX_SIZE ){
         ++time_out;
         if( time_out > timeout_cycles ){
-            timeout_reached = 1;
+            timeout_reached = TRUE;
             break;
         }
     }           
     
-    if( timeout_reached )// Packet invalid
+    if( timeout_reached )// Mark packet as invalid
         for( int i=0; i < USBFS_TX_SIZE; ++i)         
             UART_Master_Board_1_rxBuffer[i] = 0xff;      
-            
-    // 2b) Pass pointer to rx array
-    for(int i=0; i< USBFS_TX_SIZE; ++i)        
-        adc_data_packet[i] = UART_Master_Board_1_rxBuffer[i];    
-  
+
+    return (uint8 *) UART_Master_Board_1_rxBuffer;
 }//END get_data_package_board_1( uint8 *, size_t )
 
 
@@ -628,14 +625,12 @@ void usbfs_send_adc_data_board_1(void){
     // turn uint16 arrays into byte stream (ADC 1 and ADC 2 separate)
     for(int pkt_i=0; pkt_i<2*NSAMPLES_ADC/USBFS_TX_SIZE*DMA_ADC_1_BYTES_PER_BURST; ++pkt_i)
     {
-        // a) create data packet fitting in usb tx buffer
-        uint8 adc1adc2_data_pkt[USBFS_TX_SIZE];
-        get_data_package_board_1( adc1adc2_data_pkt, pkt_i );
-        //get_data_package( adc1adc2_data_pkt, pkt_i );
+        // a) get data packet fitting in usb tx buffer
+        uint8 * uart_rx_master_board_1_PTR = get_data_package_board_1( pkt_i );
        
         // b) send
         while (0u == USBUART_CDCIsReady());            
-        USBUART_PutData( adc1adc2_data_pkt, USBFS_TX_SIZE);  
+        USBUART_PutData( uart_rx_master_board_1_PTR, USBFS_TX_SIZE);  
     }
     LED_Write(0u);
     
