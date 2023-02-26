@@ -51,7 +51,7 @@
 
 """ --- Required parameters ---- """ 
 # A) check device manager to see at which port number the board enumerates
-serialPort = '\\\\.\\COM3' 
+serialPort = '\\\\.\\COM18' 
 
 save_data   = 0 # 1 = save data
 data_path   = 'C:/Users/marti/Downloads/rot_data_20230223c/'

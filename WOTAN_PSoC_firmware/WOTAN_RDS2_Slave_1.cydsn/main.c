@@ -236,7 +236,6 @@ uint16 signal_adc_2[NSAMPLES_ADC];
 // function prototypes
 void init_components(void);
 void run_sequence(void);
-void uart_interface(void);
 void usbfs_interface(void);
 void get_data_package( uint8 * , size_t );
 uint8 * get_extern_data_package_board_1( size_t );
@@ -251,8 +250,6 @@ void dma_adc_2_init(void);
 void set_dac_range_1V(void);
 void set_dac_range_4V(void);
 void set_rx_gain(char);
-void trigger_out(void);
-void trigger_in(void);
 
 
 CY_ISR_PROTO( isr_triggerIn );
@@ -274,12 +271,9 @@ int main(void){
     
     // Avoid errorness serial input due to initial switching noise:
     CyDelay(500);
-    UART_1_ClearRxBuffer();
       
     for(;;){
-        // uart interface
-        uart_interface();  // for using BLE module HC-05 via UART interface
-        
+
         // fast usbfs iterface
         usbfs_interface(); // for using fast USBUART routed to the onboard Micro-USB-B socket
         
@@ -328,7 +322,6 @@ void init_components(void){
     uint8 dac_idle_ch4[NSAMPLES_ADC];
     if( *(FLASH_CH4+(NSAMPLES_ADC-1)) != IDLE_VALUE_CH4 )
     {// -> write to flash only once after programming
-        LED_Write(1u);
         
         for(int i=0;i<(NSAMPLES_ADC/2);i++){
             dac_idle_ch1[i] = IDLE_VALUE_CH1;
@@ -341,8 +334,6 @@ void init_components(void){
         FLASH_Write( dac_idle_ch3, FLASH_CH3+(NSAMPLES_ADC/2), NSAMPLES_ADC);    
         FLASH_Write( dac_idle_ch4, FLASH_CH4+(NSAMPLES_ADC/2), NSAMPLES_ADC); 
         
-        //CyDelay(10);
-        LED_Write(0u);
     }//END if( *(FLASH_CH2+(3*NSAMPLES_DAC-1)) != IDLE_VALUE_CH2_CH3_CH4 )
     
 
@@ -358,14 +349,11 @@ void init_components(void){
     sigBuf_3_Start();
     sigBuf_3_SetGain( sigBuf_3_GAIN_01 );									 
     
-    // Sets the Trigger channel as input
-    CompTrigger_Stop();
-    enableTrigOut_Write( TRIGGER_OUT_TRUE );
     
     // Components for user interface and debugging
-    UART_1_Start();
-    CompTrigger_Start();
-        isrTrigger_StartEx( isr_triggerIn );
+
+    isrTrigger_StartEx( isr_triggerIn );
+        
     isr_DAC_1_StartEx( isr_DAC_1_done );
     isr_DAC_2_StartEx( isr_DAC_2_done );
     isr_DAC_3_StartEx( isr_DAC_3_done );
@@ -408,10 +396,7 @@ void usbfs_interface(void)
 
             if (0u != count)
             {   
-                /* Avoid interference with the UART_1 component */
-                UART_1_ClearRxBuffer();
-                UART_1_ClearTxBuffer();
-                
+               
                 /* Wait until component is ready to send data to host. */
                 while (0u == USBUART_CDCIsReady())
                 {
@@ -460,18 +445,8 @@ void usbfs_interface(void)
                         FLASH_Write( (uint8*)signal_adc_1, FLASH_STORAGE[channel_number], number_of_samples-20);
                     }
                 }
-                // 7) Use gpio P3[0] as trigger output
-                if ( buffer[0] == KEY_TRIGGER_OUT )             
-                { 
-                    trigger_out();
-                }
-                // 8) Use gpio P3[0] as trigger input
-                if ( buffer[0] == KEY_TRIGGER_IN )             
-                { 
-                    trigger_in();
-                }     
-                // 9) Firmware information
                 
+                // 9) Firmware information              
                 if ( buffer[0] == KEY_VERSION )
                 {
                     while (0u == USBUART_CDCIsReady());
@@ -520,23 +495,6 @@ void usbfs_interface(void)
                 if ( buffer[0] == KEY_SEND_BYTE_DAT )
                     usbfs_send_adc_data();
 
-		        // Alex Test-Commands (can be deleted later on)
-                if ( buffer[0] == KEY_DCDC_OFF )
-                {
-                    P_DCDC_CTRL_Write(!P_DCDC_CTRL_Read());
-                    UART_1_PutString("DCDC");
-                }
-                
-                if ( buffer[0] == KEY_POWER_OFF )
-                {
-                    P_PWR_EN_Write(!P_PWR_EN_Read());
-                    UART_1_PutString("OFF");
-                }
-                
-                if ( buffer[0] == KEY_LED )
-                {
-                    LED_Write(!LED_Read());
-                }
 
             }
         }
@@ -545,8 +503,7 @@ void usbfs_interface(void)
 
 
 void usbfs_send_adc_data(void){
-    
-    LED_Write(1u);
+
     // turn uint16 arrays into byte stream (ADC 1 and ADC 2 separate)
     for(int pkt_j=0; pkt_j<2*NSAMPLES_ADC/USBFS_TX_SIZE*DMA_ADC_1_BYTES_PER_BURST; ++pkt_j)
     {
@@ -558,7 +515,7 @@ void usbfs_send_adc_data(void){
         while (0u == USBUART_CDCIsReady());            
         USBUART_PutData( adc1_adc2_interleaved , USBFS_TX_SIZE );  
     }
-    LED_Write(0u);
+    
 }//END usbfs_send_adc_data(void)
 
 
@@ -621,7 +578,6 @@ uint8 * get_extern_data_package_board_1( size_t packet_i ){
 
 void usbfs_send_adc_data_board_1(void){
     
-    LED_Write(1u);
     // turn uint16 arrays into byte stream (ADC 1 and ADC 2 separate)
     for(int pkt_i=0; pkt_i<2*NSAMPLES_ADC/USBFS_TX_SIZE*DMA_ADC_1_BYTES_PER_BURST; ++pkt_i)
     {
@@ -632,146 +588,14 @@ void usbfs_send_adc_data_board_1(void){
         while (0u == USBUART_CDCIsReady());            
         USBUART_PutData( uart_rx_master_board_1_PTR, USBFS_TX_SIZE);  
     }
-    LED_Write(0u);
     
 }//END usbfs_send_adc_data_board_1(void)
 
-
-void uart_interface(void)
-{
-    uint number_of_packages;
-    uint package_number;
-    uint number_of_samples;
-    uint channel_number;
-    char * wave_segment_ptr;
-    ready_to_start_sequence = TRUE; // used to avoid extern trigger from blocking the userinterface
-    // Control interface via UART for Putty or Matlab/Octave
-    
-    if( UART_1_GetRxBufferSize() > 0) {
-        puttyIn[bytenumber] = UART_1_GetChar();    
-        bytenumber++;
-    }
-    
-
-    if((bytenumber > 0 && puttyIn[0] != 'p') || (puttyIn[0] =='p' && bytenumber == size_of_header + size_of_segment)) {
-    
-    
-        /* process firmware commands */
-            // 1) select rx-Gain
-            if (      puttyIn[0] >= KEY_AMP_0
-                  &&  puttyIn[0] <= KEY_AMP_9
-				){
-                set_rx_gain( puttyIn[0] );
-            }//END if ( buffer[0] == ...
-                        
-            // 2) run sequence
-            if ( puttyIn[0] == KEY_RUN)
-                run_sequence();
-            // 3) reset firmware 
-            if ( puttyIn[0] == KEY_RESET )
-                CySoftwareReset(); // If Putty is used: this ends the session!
-            // 4) set VDAC output range to 1V (default, voltage DACs only, comment code out when using current DACs)
-            if ( puttyIn[0] == KEY_VDAC_1V )
-                set_dac_range_1V();
-            // 5) set VDAC output range to 4V (voltage DACs only, comment code out when using current DACs)
-            if ( puttyIn[0] == KEY_VDAC_4V )
-                set_dac_range_4V();    
-            // 6) writes new sequence
-            if ( puttyIn[0] == KEY_WRITE_SEQUENCE )
-            {
-                
-                // get parameters:
-                number_of_packages  = (256*puttyIn[4]+puttyIn[5]);
-                package_number      = (256*puttyIn[2]+puttyIn[3]);
-                number_of_samples   = number_of_packages*size_of_segment;
-                channel_number      = puttyIn[1];
-                
-                // write wave into flash memory:
-                wave_segment_ptr    = ((char *) signal_adc_1) + size_of_segment * package_number;
-                memcpy(  wave_segment_ptr, (char *) &puttyIn[size_of_header], size_of_segment );
-                if( package_number == (number_of_packages-1) )
-                {
-                    FLASH_Write( (uint8*)signal_adc_1, FLASH_STORAGE[channel_number], number_of_samples);
-                }
-                packages_received++;
-                //for(int i=0; i< bytenumber; i++) UART_1_PutChar(puttyIn[i]);
-
-            }     
-            // 7) Use gpio P3[0] as trigger output
-            if ( puttyIn[0] == KEY_TRIGGER_OUT )             
-            { 
-                trigger_out();
-            }
-            // 8) Use gpio P3[0] as trigger input
-            if ( puttyIn[0] == KEY_TRIGGER_IN )             
-            { 
-                trigger_in();
-            }     
-            // 9) Firmware information
-            if ( puttyIn[0] == KEY_VERSION )
-            {
-                UART_1_PutString(version);
-            }
-            // 10) Chip information
-            if ( puttyIn[0] == KEY_SERIAL_NUMBER )
-            {
-
-                int strlength = 34;
-                char pseudoid[strlength];
-                    memset(pseudoid,0,strlength);
-                    sprintf( pseudoid, "%3d %3d %3d %3d %3d %3d %3d",\
-                        *(uint8 *)CYREG_FLSHID_CUST_TABLES_Y_LOC,\
-                        *(uint8 *)CYREG_FLSHID_CUST_TABLES_X_LOC,\
-                        *(uint8 *)CYREG_FLSHID_CUST_TABLES_WAFER_NUM,\
-                        *(uint8 *)CYREG_FLSHID_CUST_TABLES_LOT_LSB,\
-                        *(uint8 *)CYREG_FLSHID_CUST_TABLES_LOT_MSB,\
-                        *(uint8 *)CYREG_FLSHID_CUST_TABLES_WRK_WK,\
-                        *(uint8 *)CYREG_FLSHID_CUST_TABLES_FAB_YR);
-
-                UART_1_PutString(pseudoid);
-
-            }
-            
-            // 11) Get the binary data from the two uint16 ADC buffers
-            if ( puttyIn[0] == KEY_SEND_BYTE_DAT )
-            {
-                LED_Write( 1u ); 
-                for(int j=0;j<NSAMPLES_ADC;j++)
-                {
-                    // turn uint16 arrays into uint8 streams:
-                    UART_1_PutChar(signal_adc_1[j] >>8   );
-                    UART_1_PutChar(signal_adc_1[j] &0xFF );
-                    UART_1_PutChar(signal_adc_2[j] >>8   );
-                    UART_1_PutChar(signal_adc_2[j] &0xFF );  
-                    
-                    CyDelayUs(350); // delay added for avoiding bluetooth buffer overrun
-                }
-                LED_Write( 0u );
-            }// END send binary adc data
-           
-            puttyIn[0] = 0;
-            bytenumber = 0;
-            
-    }  
-}
-
-
-void trigger_out(void) {
-    CompTrigger_Stop();
-    enableTrigOut_Write( TRIGGER_OUT_TRUE );  
-}
-
-
-void trigger_in(void) {
-    CompTrigger_Start();
-    enableTrigOut_Write( TRIGGER_OUT_FALSE );    
-}
-
-
-void run_sequence(void)
-{
-    //UART_1_PutStringConst("Running sequence");
-    internTrigger_Write(STOP_CLOCK);
+void run_sequence(void){
+ 
+    // Trigger In:
+    //   posedge: reset PWM for ADDA clock generation, set up dmas
+    //   negedge: reset in is low -> ADDA clock starts running
     
     // Reset trigger adjustments
     ClockShift_1_Stop(); ClockShift_1_WriteRegValue(CLOCK_SHIFT_CH1); ClockShift_1_Start();
@@ -788,8 +612,6 @@ void run_sequence(void)
 
     dma_adc_1_init();
     dma_adc_2_init();
-        
-    internTrigger_Write(START_CLOCK);
     
     count_of_runs++;
 }//END run_sequence()
@@ -1106,13 +928,14 @@ void dma_adc_2_init(void)
 }
 
 CY_ISR( isr_triggerIn ){
-    if( ready_to_start_sequence == TRUE ){
-        ready_to_start_sequence = FALSE; // avoid blocking Putty user interface
-        LED_Write( ~LED_Read()); // indicate trigger
-        run_sequence(); 
-        CyDelayUs(SEQU_DURATION_US); // Block CPU while sequence is running to avoid interference
-    }
+    
+    LED_Write( 1 );
+           
+    run_sequence(); 
+    
+    CyDelayUs(SEQU_DURATION_US); // Block CPU while sequence is running to avoid interference
 
+    LED_Write( 0 );
 }
 
 CY_ISR( isr_DAC_1_done ){

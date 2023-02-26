@@ -35,7 +35,7 @@
 # y-coil B/I = 0.79
 
 """ --- Required parameters ---- """ 
-serialPort = '\\\\.\\COM3' 
+serialPort = '\\\\.\\COM6' 
 """ ----------------------------- """
 
 from rds_functions import generate_sequence, write_sequence
