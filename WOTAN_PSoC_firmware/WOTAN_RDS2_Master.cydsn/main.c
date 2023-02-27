@@ -241,7 +241,7 @@ void usbfs_interface(void);
 void get_data_package( uint8 * , size_t );
 uint8 * get_extern_data_package_board_1( size_t );
 void usbfs_send_adc_data(void);
-void usbfs_send_adc_data_board_1(void);
+void usbfs_send_extern_adc_data_board_1(void);
 void dma_dac_1_init(void);
 void dma_dac_2_init(void);
 void dma_dac_3_init(void);
@@ -421,7 +421,21 @@ void usbfs_interface(void)
                 
                 // 0) Test board sync
                 if( buffer[0] == KEY_BOARD_SYNC )
-                    usbfs_send_adc_data_board_1();                
+                    usbfs_send_extern_adc_data_board_1();      
+                    
+                // 0b) 
+                if( buffer[0] == 'Y' ){
+                    // Request single data packet from external board
+                    
+                    int packet_num = ((int)buffer[2] << 8) + (int)buffer[3];
+
+                    uint8 * uart_rx_master_board_1_PTR = \
+                            get_extern_data_package_board_1( packet_num );
+                    
+                    // b) send
+                    while (0u == USBUART_CDCIsReady());            
+                    USBUART_PutData( uart_rx_master_board_1_PTR, USBFS_TX_SIZE);  
+                }
                 
                 // 1) select rx-Gain
                 if (      buffer[0] >= KEY_AMP_0
@@ -586,20 +600,21 @@ uint8 * get_extern_data_package_board_1( size_t packet_i ){
     // 1) Request packet_i from board 1
     // 2) return pointer of rx buffer of UART_Master_Board_1
     
+    // 1) Request packet_i from Board 1
+    const int command_size = 4;
+    const char send_adc_data_command = 'C';
+    uint8 command[ command_size ];
+    command[0] = send_adc_data_command;
+    command[1] = send_adc_data_command;
+    command[2] = (uint8) ((packet_i >> 8) & 0xff);
+    command[3] = (uint8) ( packet_i       & 0xff);
     
-    // 1) Board 1 Mock up request
-    // 1a) Mockup command for requesting packet_i
+    LED_Write( ~LED_Read());
+    UART_Master_Board_1_PutArray( command, command_size);  
+  
     
-    
-    
-    // 1b) Mockup data
-    uint8 adc1_adc2_interleaved[USBFS_TX_SIZE];
-    get_data_package( adc1_adc2_interleaved, packet_i ); 
-    UART_Slave_Board_1_PutArray( adc1_adc2_interleaved, USBFS_TX_SIZE );
-    
-
-    // 2) Pass pointer to rx array after packet has arrived
-    // 2a) Wait until rx buffer has USBFS_TX_SIZE bytes
+    // 2) Wait for USBFS_TX_SIZE bytes
+    //    and return pointer to UART_Master_Board_1_rxBuffer
     int time_out = 0;
     int timeout_reached = FALSE;
     const int timeout_cycles = 10000;
@@ -610,16 +625,16 @@ uint8 * get_extern_data_package_board_1( size_t packet_i ){
             break;
         }
     }           
-    
+ 
     if( timeout_reached )// Mark packet as invalid
         for( int i=0; i < USBFS_TX_SIZE; ++i)         
-            UART_Master_Board_1_rxBuffer[i] = 0xff;      
+            UART_Master_Board_1_rxBuffer[i] = 0x12;      
 
     return (uint8 *) UART_Master_Board_1_rxBuffer;
 }//END get_data_package_board_1( uint8 *, size_t )
 
 
-void usbfs_send_adc_data_board_1(void){
+void usbfs_send_extern_adc_data_board_1(void){
     
     LED_Write(1u);
     // turn uint16 arrays into byte stream (ADC 1 and ADC 2 separate)

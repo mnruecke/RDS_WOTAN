@@ -241,6 +241,8 @@ void get_data_package( uint8 * , size_t );
 uint8 * get_extern_data_package_board_1( size_t );
 void usbfs_send_adc_data(void);
 void usbfs_send_adc_data_board_1(void);
+void uart_to_master( void );
+void send_adc_data_to_master( size_t );
 void dma_dac_1_init(void);
 void dma_dac_2_init(void);
 void dma_dac_3_init(void);
@@ -251,6 +253,7 @@ void set_dac_range_1V(void);
 void set_dac_range_4V(void);
 void set_rx_gain(char);
 
+CY_ISR_PROTO( M1_send_command );
 
 CY_ISR_PROTO( isr_triggerIn );
 CY_ISR_PROTO( isr_DAC_1_done );
@@ -276,6 +279,9 @@ int main(void){
 
         // fast usbfs iterface
         usbfs_interface(); // for using fast USBUART routed to the onboard Micro-USB-B socket
+        
+        // Polling for commands from master board
+        uart_to_master();
         
     }//endfor(;;)
 }/* END MAIN() ***********************************/
@@ -351,6 +357,7 @@ void init_components(void){
     
     
     // Components for user interface and debugging
+    isr_M1_StartEx( M1_send_command );
 
     isrTrigger_StartEx( isr_triggerIn );
         
@@ -534,6 +541,54 @@ void get_data_package( uint8 * adc_data_packet, size_t packet_i ){
     } 
     
 }//END get_data_package()
+
+
+void uart_to_master( void ){
+    
+    
+    const int command_length = 4;
+    const uint8 send_adc_data = 'C';
+    
+    // Command: CC<packet_num>
+    if( UART_Slave_Board_1_GetRxBufferSize() == command_length ){
+        
+
+        volatile uint8 command[command_length];
+        command[0] =  UART_Slave_Board_1_GetByte();
+        command[1] =  UART_Slave_Board_1_GetByte();
+        command[2] =  UART_Slave_Board_1_GetByte();
+        command[3] =  UART_Slave_Board_1_GetByte();
+        
+        if( command[0] == command[1] && command[0] == send_adc_data ){
+
+            volatile uint8 a1 = command[0];
+            volatile uint8 a2 = command[1];            
+            volatile uint8 a3 = command[2];          
+            volatile uint8 a4 = command[3];
+            
+            
+            LED_Write( ~LED_Read());
+            
+            volatile uint16 packet_num = (uint16)(command[2]<<8) + (uint16)command[3];
+            send_adc_data_to_master( packet_num ); 
+            
+        }//END if( command[0] == command[1] && command[0] == send_adc_data )       
+    }//END if( UART_Slave_Board_1_GetRxBufferSize() == command_length )
+    
+    // Clear buffer by sending command longer than command_length
+    if( UART_Slave_Board_1_GetRxBufferSize() > command_length )
+        UART_Slave_Board_1_ClearRxBuffer();
+    
+}//END get_command_from_master()
+
+
+void send_adc_data_to_master( size_t packet_i ){
+
+    uint8 adc1_adc2_interleaved[USBFS_TX_SIZE];
+    get_data_package( adc1_adc2_interleaved, packet_i ); 
+    UART_Slave_Board_1_PutArray( adc1_adc2_interleaved, USBFS_TX_SIZE );    
+    
+}//END send_adc_data_to_master( size_t packet_i )
 
 
 uint8 * get_extern_data_package_board_1( size_t packet_i ){
@@ -925,6 +980,10 @@ void dma_adc_2_init(void)
     }
     CyDmaChSetInitialTd(DMA_ADC_2_Chan, DMA_ADC_2_TD[0]);
     CyDmaChEnable(DMA_ADC_2_Chan, 1);     
+}
+
+CY_ISR( M1_send_command ){
+    //LED_Write( ~LED_Read());
 }
 
 CY_ISR( isr_triggerIn ){

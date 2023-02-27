@@ -687,6 +687,7 @@
       <Data key="182182c0-69ed-4b81-bcde-fc76763a1ea6" value="P_CH1" />
       <Data key="1425177d-0d0e-4468-8bcc-e638e5509a9b" value="Rx_1" />
       <Data key="77715107-f8d5-47e5-a629-0fb83101ac6b" value="P_CH1a" />
+      <Data key="93178698-afb3-4cc4-95d7-f73f2f22250e" value="UART_txM1_rxS1_12p4" />
       <Data key="a9fc890a-c009-4151-99ba-fe8dfd5e6162" value="clkin_Slave_15p4" />
       <Data key="a55f9180-9065-472e-8f2a-6d2718edba60" value="aux_sig3" />
       <Data key="a472e532-5116-4f32-91ad-68721896301b" value="SW_1" />
@@ -696,6 +697,7 @@
       <Data key="c39ef993-d787-4c0c-8ad6-c0c81f866442/618a72fc-5ddd-4df5-958f-a3d55102db42" value="USBUART_Dp" />
       <Data key="c805b1e3-af66-4b67-bba1-83b521a46d8e" value="P_CH1b" />
       <Data key="cc3bcd7e-5dc0-48ea-9bf6-6aa082be1ada" value="COM_IDAC" />
+      <Data key="d6e63b75-486d-44c0-ada3-3edd59beaf78" value="UART_rxM1_txS1_12p3" />
       <Data key="d8e24fdc-701a-4be6-9f30-66517e2a7bc8" value="P_DCDC_CTRL" />
       <Data key="d6419c78-5830-48a8-bd62-6befe8cc322d" value="LED_Drive" />
       <Data key="dfb3522d-b930-4df1-8f72-a93637091638/16a808f6-2e13-45b9-bce0-b001c8655113" value="ADC_SAR_1_Bypass" />
@@ -3940,6 +3942,11 @@
         <Data key="Port Format" value="1,5" />
       </Group>
     </Group>
+    <Group key="93178698-afb3-4cc4-95d7-f73f2f22250e">
+      <Group key="0">
+        <Data key="Port Format" value="12,4" />
+      </Group>
+    </Group>
     <Group key="a9fc890a-c009-4151-99ba-fe8dfd5e6162">
       <Group key="0">
         <Data key="Port Format" value="12,2" />
@@ -3983,6 +3990,11 @@
     <Group key="cc3bcd7e-5dc0-48ea-9bf6-6aa082be1ada">
       <Group key="0">
         <Data key="Port Format" value="0,0" />
+      </Group>
+    </Group>
+    <Group key="d6e63b75-486d-44c0-ada3-3edd59beaf78">
+      <Group key="0">
+        <Data key="Port Format" value="12,3" />
       </Group>
     </Group>
     <Group key="d8e24fdc-701a-4be6-9f30-66517e2a7bc8">
