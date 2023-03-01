@@ -128,6 +128,15 @@ uint32 flash_offset_ch4 = 0;
 #define  CLOCK_SHIFT_CH4     0b1001   
 
 
+// Pulse shifting for Board cascading, 50% duty cycle, 
+//                                                123456789         123456789
+//                                       123456789         123456789     1234
+#define  DELAY_CORRECTION     0
+#define  CLOCKSHIFT_SLAVE1    9 + DELAY_CORRECTION
+#define  CLOCK_SHIFT_ADDA_SLAVE1_35TO4 0b00000000000000111111111111111111 << (CLOCKSHIFT_SLAVE1)
+#define  CLOCK_SHIFT_ADDA_SLAVE1_3TO0                                  0b0000 
+
+
 // Set all MPI waveform parameters
 #define MAX_VALUE       254 
 #define IDLE_VALUE_CH1  127
@@ -318,6 +327,11 @@ void init_components(void){
         IDAC8_4_SetValue(IDLE_VALUE_CH4);
         ClockShift_4_WriteRegValue(CLOCK_SHIFT_CH4);
         ClockShift_4_Start();
+  
+    ClockShift_SLAVE1_35to4_WriteRegValue( CLOCK_SHIFT_ADDA_SLAVE1_35TO4 );    
+    ClockShift_SLAVE1_3to0_WriteRegValue(  CLOCK_SHIFT_ADDA_SLAVE1_3TO0  );    
+    ClockShift_SLAVE1_35to4_Start();
+    ClockShift_SLAVE1_3to0_Start();    
    
     //Waveforms in flash need to be extendet with dac idle values
     // for 256 additional steps to allow wave shifting of up to 256 steps 
@@ -656,7 +670,16 @@ void run_sequence(void){
     ClockShift_1_Stop(); ClockShift_1_WriteRegValue(CLOCK_SHIFT_CH1); ClockShift_1_Start();
     ClockShift_2_Stop(); ClockShift_2_WriteRegValue(CLOCK_SHIFT_CH2); ClockShift_2_Start();
     ClockShift_3_Stop(); ClockShift_3_WriteRegValue(CLOCK_SHIFT_CH3); ClockShift_3_Start();
-    ClockShift_4_Stop(); ClockShift_4_WriteRegValue(CLOCK_SHIFT_CH4); ClockShift_4_Start();      
+    ClockShift_4_Stop(); ClockShift_4_WriteRegValue(CLOCK_SHIFT_CH4); ClockShift_4_Start();    
+    
+    
+    ClockShift_SLAVE1_35to4_Stop();
+    ClockShift_SLAVE1_3to0_Stop(); 
+    ClockShift_SLAVE1_35to4_WriteRegValue( CLOCK_SHIFT_ADDA_SLAVE1_35TO4 );    
+    ClockShift_SLAVE1_3to0_WriteRegValue(  CLOCK_SHIFT_ADDA_SLAVE1_3TO0  );    
+    ClockShift_SLAVE1_35to4_Start();
+    ClockShift_SLAVE1_3to0_Start();  
+    
 
     dma_dac_1_init();
     dma_dac_2_init();

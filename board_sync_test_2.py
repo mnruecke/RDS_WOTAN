@@ -25,15 +25,18 @@ try: # open and interact with serial port
 
     ser = serial.Serial( serialPort, baudrate, timeout=timeout_)
 
-    # 1) get adc data directly
-    ser.write( b'Y00' )# + bytes([ 1, 0xff]) )
-    time.sleep(0.001)
-    adc_data = ser.read(bufInputSize)
+    adc_data_full = []
+    for i in range(100):
+        # 1) get adc data directly
+        ser.write( b'Y' + bytes([ 0, i]) )
+        time.sleep(0.001)
+        adc_data = ser.read(bufInputSize)
+        adc_data_full += adc_data
 
 
-    # 3) Verify
-    print( len( adc_data ))
-    print( adc_data )
+        # 3) Verify
+        print( len( adc_data_full ))
+    print( adc_data_full )
 
     
 finally: # close serial port

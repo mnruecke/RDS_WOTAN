@@ -331,6 +331,10 @@
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_3_PM.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_4.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_4_PM.lst</v>
+<v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_MASTER_35to4.lst</v>
+<v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_MASTER_35to4_PM.lst</v>
+<v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_MASTER_3to0.lst</v>
+<v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_MASTER_3to0_PM.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\Cm3Start.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\COM_IDAC.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\CompTrigger.lst</v>
@@ -381,6 +385,8 @@
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\P_CH4.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\P_DCDC_CTRL.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\P_PWR_EN.lst</v>
+<v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\Pin_3p3.lst</v>
+<v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\Pin_3p4.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\pwmSAMPLING.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\pwmSAMPLING_PM.lst</v>
 <v>WOTAN\WOTAN_RDS2_Master\CortexM3\ARM_GCC_541\Debug\Listing Files\sigBuf.lst</v>
@@ -557,6 +563,10 @@
 <v>WOTAN\WOTAN_RDS2_Slave_1\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_3_PM.lst</v>
 <v>WOTAN\WOTAN_RDS2_Slave_1\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_4.lst</v>
 <v>WOTAN\WOTAN_RDS2_Slave_1\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_4_PM.lst</v>
+<v>WOTAN\WOTAN_RDS2_Slave_1\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_SLAVE1_35to4.lst</v>
+<v>WOTAN\WOTAN_RDS2_Slave_1\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_SLAVE1_35to4_PM.lst</v>
+<v>WOTAN\WOTAN_RDS2_Slave_1\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_SLAVE1_3to0.lst</v>
+<v>WOTAN\WOTAN_RDS2_Slave_1\CortexM3\ARM_GCC_541\Debug\Listing Files\ClockShift_SLAVE1_3to0_PM.lst</v>
 <v>WOTAN\WOTAN_RDS2_Slave_1\CortexM3\ARM_GCC_541\Debug\Listing Files\Cm3Start.lst</v>
 <v>WOTAN\WOTAN_RDS2_Slave_1\CortexM3\ARM_GCC_541\Debug\Listing Files\cy_em_eeprom.lst</v>
 <v>WOTAN\WOTAN_RDS2_Slave_1\CortexM3\ARM_GCC_541\Debug\Listing Files\CyBootAsmGnu.lst</v>
@@ -595,6 +605,8 @@
 <v>WOTAN\WOTAN_RDS2_Slave_1\CortexM3\ARM_GCC_541\Debug\Listing Files\main.lst</v>
 <v>WOTAN\WOTAN_RDS2_Slave_1\CortexM3\ARM_GCC_541\Debug\Listing Files\MainSig_inN.lst</v>
 <v>WOTAN\WOTAN_RDS2_Slave_1\CortexM3\ARM_GCC_541\Debug\Listing Files\MainSig_inP.lst</v>
+<v>WOTAN\WOTAN_RDS2_Slave_1\CortexM3\ARM_GCC_541\Debug\Listing Files\Pin_2.lst</v>
+<v>WOTAN\WOTAN_RDS2_Slave_1\CortexM3\ARM_GCC_541\Debug\Listing Files\Pin_3p6.lst</v>
 <v>WOTAN\WOTAN_RDS2_Slave_1\CortexM3\ARM_GCC_541\Debug\Listing Files\pwmSAMPLING.lst</v>
 <v>WOTAN\WOTAN_RDS2_Slave_1\CortexM3\ARM_GCC_541\Debug\Listing Files\pwmSAMPLING_PM.lst</v>
 <v>WOTAN\WOTAN_RDS2_Slave_1\CortexM3\ARM_GCC_541\Debug\Listing Files\sigBuf.lst</v>

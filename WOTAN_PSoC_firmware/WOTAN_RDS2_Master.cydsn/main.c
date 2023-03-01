@@ -127,6 +127,13 @@ uint32 flash_offset_ch4 = 0;
 #define  CLOCK_SHIFT_CH3     0b0110   
 #define  CLOCK_SHIFT_CH4     0b1001   
 
+// Pulse shifting for Board cascading, 50% duty cycle, 18 steps clock
+//                                                123456789         123456789
+//                                       123456789         123456789     1234
+#define  DELAY_CORRECTION     1
+#define  CLOCKSHIFT_MASTER    0 + DELAY_CORRECTION
+#define  CLOCK_SHIFT_ADDA_MASTER_37TO4 0b00000000000000111111111111111111 << (CLOCKSHIFT_MASTER)
+#define  CLOCK_SHIFT_ADDA_MASTER_3TO0                                  0b0000  
 
 // Set all MPI waveform parameters
 #define MAX_VALUE       254 
@@ -318,6 +325,12 @@ void init_components(void){
         IDAC8_4_SetValue(IDLE_VALUE_CH4);
         ClockShift_4_WriteRegValue(CLOCK_SHIFT_CH4);
         ClockShift_4_Start();
+        
+    ClockShift_MASTER_35to4_WriteRegValue( CLOCK_SHIFT_ADDA_MASTER_37TO4 );    
+    ClockShift_MASTER_3to0_WriteRegValue(  CLOCK_SHIFT_ADDA_MASTER_3TO0  );    
+    ClockShift_MASTER_35to4_Start();
+    ClockShift_MASTER_3to0_Start();
+                
    
     //Waveforms in flash need to be extendet with dac idle values
     // for 256 additional steps to allow wave shifting of up to 256 steps 
@@ -606,8 +619,8 @@ uint8 * get_extern_data_package_board_1( size_t packet_i ){
     uint8 command[ command_size ];
     command[0] = send_adc_data_command;
     command[1] = send_adc_data_command;
-    command[2] = (uint8) ((packet_i >> 8) & 0xff);
-    command[3] = (uint8) ( packet_i       & 0xff);
+    command[2] =  (uint8) ((packet_i >> 8) & 0xff);
+    command[3] =  (uint8) ( packet_i       & 0xff);
     
     LED_Write( ~LED_Read());
     UART_Master_Board_1_PutArray( command, command_size);  
@@ -794,9 +807,17 @@ void run_sequence(void)
     ClockShift_3_Stop(); ClockShift_3_WriteRegValue(CLOCK_SHIFT_CH3); ClockShift_3_Start();
     ClockShift_4_Stop(); ClockShift_4_WriteRegValue(CLOCK_SHIFT_CH4); ClockShift_4_Start();      
 
-    dma_dac_1_init();
-    dma_dac_2_init();
+       
+    ClockShift_MASTER_35to4_Stop();
+    ClockShift_MASTER_3to0_Stop();    
+    ClockShift_MASTER_35to4_WriteRegValue( CLOCK_SHIFT_ADDA_MASTER_37TO4 );    
+    ClockShift_MASTER_3to0_WriteRegValue(  CLOCK_SHIFT_ADDA_MASTER_3TO0  );    
+    ClockShift_MASTER_35to4_Start();
+    ClockShift_MASTER_3to0_Start();
+
     
+    dma_dac_1_init();
+    dma_dac_2_init();   
 
     dma_dac_3_init();
     dma_dac_4_init();
