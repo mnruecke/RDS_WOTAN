@@ -363,13 +363,17 @@ void init_components(void){
     ADC_SAR_1_Start();
         ADC_SAR_1_IRQ_Disable();
     ADC_SAR_2_Start();
-        ADC_SAR_2_IRQ_Disable();
+        ADC_SAR_2_IRQ_Disable();        
+    
+    Opamp_ADC_REF_Start();        
+        
     sigBuf_Start();
-    sigBuf_SetGain( sigBuf_GAIN_01 );									 
+    sigBuf_SetGain(   sigBuf_GAIN_01 );									 
     sigBuf_2_Start();
     sigBuf_2_SetGain( sigBuf_2_GAIN_01 );									 
     sigBuf_3_Start();
-    sigBuf_3_SetGain( sigBuf_3_GAIN_01 );									 
+    sigBuf_3_SetGain( sigBuf_3_GAIN_01 );		
+
     
     // Sets the Trigger channel as input
     CompTrigger_Stop();

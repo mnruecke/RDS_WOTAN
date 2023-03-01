@@ -681,13 +681,14 @@
       <Data key="96cdbc71-a795-46fa-bdb2-cbd1c0ea6123" value="SW2" />
       <Data key="405f5391-6476-434f-bc95-2f29f3acedb2" value="aux_sig6" />
       <Data key="475f8602-fa85-4a37-b54a-8d6fa583da6c" value="GND_P2p6" />
+      <Data key="860c1c01-bb78-49c2-9988-7b7a5598f670" value="ADC_S1_n_3p7" />
       <Data key="4449a3c3-c27e-4d3b-abfc-abe395e2b68c" value="aux_sig5" />
       <Data key="42111eb0-e58a-4eff-b59f-d6f65fd2737b" value="P_CH2" />
       <Data key="49656ab2-c381-423d-8435-71ac4f70a0e6" value="Pin_1" />
       <Data key="78097fa9-7275-4e1a-b8d3-71b7922d2779" value="Pin_1" />
       <Data key="182182c0-69ed-4b81-bcde-fc76763a1ea6" value="P_CH1" />
       <Data key="1425177d-0d0e-4468-8bcc-e638e5509a9b" value="Rx_1" />
-      <Data key="77715107-f8d5-47e5-a629-0fb83101ac6b" value="P_CH1a" />
+      <Data key="77715107-f8d5-47e5-a629-0fb83101ac6b" value="ADC_S1_p_3p6" />
       <Data key="93178698-afb3-4cc4-95d7-f73f2f22250e" value="UART_txM1_rxS1_12p4" />
       <Data key="a9fc890a-c009-4151-99ba-fe8dfd5e6162" value="clkin_Slave_15p4" />
       <Data key="a55f9180-9065-472e-8f2a-6d2718edba60" value="aux_sig3" />
@@ -3919,6 +3920,11 @@
         <Data key="Port Format" value="0,5" />
       </Group>
     </Group>
+    <Group key="860c1c01-bb78-49c2-9988-7b7a5598f670">
+      <Group key="0">
+        <Data key="Port Format" value="3,7" />
+      </Group>
+    </Group>
     <Group key="4449a3c3-c27e-4d3b-abfc-abe395e2b68c">
       <Group key="0">
         <Data key="Port Format" value="0,3" />
@@ -3946,7 +3952,7 @@
     </Group>
     <Group key="77715107-f8d5-47e5-a629-0fb83101ac6b">
       <Group key="0">
-        <Data key="Port Format" value="1,5" />
+        <Data key="Port Format" value="3,6" />
       </Group>
     </Group>
     <Group key="93178698-afb3-4cc4-95d7-f73f2f22250e">

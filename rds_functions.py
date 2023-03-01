@@ -874,3 +874,186 @@ def run_sequence( serialPort,
                + f'bytes received)' )
         
 """ end run_sequence() """
+
+
+def run_sequence_MS(  serialPort_Master,  serialPort_Slave,
+                      save, pfad,
+                      rx_gain='1',
+                      n_avg=1, wait_sec=1
+                      ):
+    """ --- Required parameters ---- """ 
+    baudrate = 1382400    #Baudrate  #921600
+                                                                                 
+    """ ----------------------------- """
+    
+    """ main settings """
+    # serial port
+    time_out       = 10
+    nameDataFiles  = pfad 
+    save_data      = save
+    # sequence details
+    bytesPerSample = 2
+    timePerSample  = 0.00025 # sample time in ms
+    #sequDuration   = 15 # sequence duration in ms
+    sequDuration   = 15 # sequence duration in ms
+    numOfSamples   = int(sequDuration/timePerSample)
+    bufInputSize   = numOfSamples * bytesPerSample
+    adcVoltPerBit    = 4.80 / 4096 # scaling factor for ADC data: PSoC-VDD/ADC-res
+
+    # list of commands defined in WOTAN
+    p_run_sequ    = b'r' # starts the sequence
+    p_get_data    = b'o' # request binary ADC data of last measurement
+    p_trig_dir_M  = b'x' # setting the trigger to output (x: trig out, y: trig in)
+    p_dac_range   = b'h' # setting DAC output voltage range: 'l' for 0...1V ([l]ow; 'h' for 0...4V ([h]igh)
+    
+    p_rx_gain   = bytes(rx_gain,'utf-8') # 1...8 -> rx gain: x1 .. x512
+
+    """ END - main settings """
+
+    """ WOTAN board control and data acquisition  """
+    try:
+        # 0) open and interact with serial port 
+        serM = serial.Serial( serialPort_Master,
+                              baudrate,
+                              timeout=time_out
+                              )
+
+        serS = serial.Serial( serialPort_Slave,
+                              baudrate,
+                              timeout=time_out
+                              )
+        
+        # 1a) WOTAN board settings - Master
+        serM.write( p_rx_gain )
+        time.sleep(0.001)
+        serM.write( p_trig_dir_M )
+        time.sleep(0.001)
+        serM.write( p_dac_range )
+        time.sleep(0.001)  
+        
+        # 1b) WOTAN board settings - Slave
+        serS.write( p_rx_gain )
+        time.sleep(0.001)
+        
+    
+        # 2) Run measurement
+        adc_data_avg_M = np.array([])   
+        adc_data_avg_S = np.array([])   
+        for avg_i in range( n_avg ):
+        
+            # 2b) Start measurement
+            serM.write( p_run_sequ )
+            time.sleep(0.030)
+            
+            # 2c) Data handling Master
+            serM.flushInput()
+            time.sleep(0.001)
+            serM.write( p_get_data )
+            time.sleep(0.001)
+            # get data as byte stream 
+            adc_data_bin_M = serM.read(bufInputSize//2)
+            # transform byte stream into int16 array
+            adc_data_int16_M = struct.unpack('>'+'H'
+                                *int(len(adc_data_bin_M)
+                                     /bytesPerSample),
+                                adc_data_bin_M
+                                )
+            
+            # 2d) Averaging Master
+            if len(adc_data_avg_M) == 0:
+                adc_data_avg_M = np.array( adc_data_int16_M )
+            else:
+                adc_data_avg_M += np.array( adc_data_int16_M )
+                
+            if n_avg > 1:
+                print( f'Avg Master #: { avg_i }' )
+                time.sleep( wait_sec )
+                
+            # 3c) Data handling Slave
+            serS.flushInput()
+            time.sleep(0.001)
+            serS.write( p_get_data )
+            time.sleep(0.001)
+            # get data as byte stream 
+            adc_data_bin_S = serS.read(bufInputSize//2)
+            # transform byte stream into int16 array
+            adc_data_int16_S = struct.unpack('>'+'H'
+                                *int(len(adc_data_bin_S)
+                                     /bytesPerSample),
+                                adc_data_bin_S
+                                )
+            
+            # 3d) Averaging Slave
+            if len(adc_data_avg_S) == 0:
+                adc_data_avg_S  = np.array( adc_data_int16_S )
+            else:
+                adc_data_avg_S += np.array( adc_data_int16_S )
+                
+            if n_avg > 1:
+                print( f'Avg Slave #: { avg_i }' )
+                time.sleep( wait_sec )
+                
+
+        adc_data_avg_M = adc_data_avg_M / n_avg                           
+        adc_data_avg_S = adc_data_avg_S / n_avg    
+
+        adc_data_avg = np.zeros( 2*len( adc_data_avg_M ))
+        adc_data_avg[0::2] = adc_data_avg_M       
+        adc_data_avg[1::2] = adc_data_avg_S       
+                 
+        
+    finally: # close serial port
+        serM.close()
+        serS.close()
+
+
+    bytes_expected  = numOfSamples * bytesPerSample
+    bytes_received  = len( adc_data_bin_M ) + len( adc_data_bin_S )
+    if bytes_received == bytes_expected: 
+        #  data correction routines:
+            # find and correct scaling difference between ADC 1 (even samples)
+            # and ADC 2 (odd samples)
+            # (this method fails if signal has steps or goes into saturation!)
+
+        # adc1 = adc_data_avg[0::2]
+        # adc2 = adc_data_avg[1::2]
+    
+        # adc1DIVadc2 = 0;
+        # for sp in range(len(adc1)):
+        #     adc1DIVadc2 += (adc1[sp]-adc2[sp])/(adc1[sp]+adc2[sp])*2/len(adc1)
+    
+        # adc_data_corr = np.zeros(len(adc_data_int16_M))
+        # adc_data_corr[0::2] = adc1
+        # adc_data_corr[0::2] = adc_data_corr[0::2] *(1-adc1DIVadc2)
+        # adc_data_corr[1::2] = adc2
+        
+        # dat_time = np.arange(0,sequDuration,timePerSample)
+        # dat_sig  = adc_data_corr * adcVoltPerBit
+        
+        dat_time = np.arange( 0, sequDuration, timePerSample)
+        dat_sig  = adc_data_avg * adcVoltPerBit   
+    
+        """ Write data to disk """
+        if( save_data ):
+            #  save data as ascii table
+            # write data in file with continuous numbering
+            cnt = 0
+            data_file_name = nameDataFiles + '_' + str(cnt) + '.txt'
+            while os.path.isfile( data_file_name ): #prevents overriding files
+                cnt += 1
+                data_file_name = nameDataFiles + '_' + str(cnt) + '.txt'
+            with open( data_file_name , 'w') as f:
+                for dat in dat_sig:
+                    f.write("%s\n" % int(dat))
+                print( 'Data written to: ' + data_file_name +
+                  '  (' + str(len( dat_sig )) + ' samples)')
+        
+        """ return data & max. amplitude: """
+        return dat_time, dat_sig, max(dat_sig) - min(dat_sig)
+        
+    else:
+        print(   f'Data incomplete '
+               + f'({len(bytes_received)} '
+               + f'bytes received)' )
+        
+""" end run_sequence() """
