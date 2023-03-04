@@ -13,9 +13,10 @@
 <v>Output</v>
 </TreeKeys>
 <TreeStates>
-<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="WOTAN\WOTAN_RDS2_Master">
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="WOTAN\WOTAN_RDS\TopDesign">
 <ExpandedNodeIds>
 <v>WOTAN</v>
+<v>WOTAN\WOTAN_RDS</v>
 <v>WOTAN\WOTAN_RDS\TopDesign</v>
 <v>WOTAN\WOTAN_RDS2_Master\TopDesign</v>
 <v>WOTAN\WOTAN_RDS2_Slave_1\TopDesign</v>
@@ -23,6 +24,11 @@
 <VisibleNodeIds>
 <v>WOTAN</v>
 <v>WOTAN\WOTAN_RDS</v>
+<v>WOTAN\WOTAN_RDS\TopDesign</v>
+<v>WOTAN\WOTAN_RDS\WOTAN_RDS.cydwr</v>
+<v>WOTAN\WOTAN_RDS\Header Files</v>
+<v>WOTAN\WOTAN_RDS\Source Files</v>
+<v>WOTAN\WOTAN_RDS\Generated_Source</v>
 <v>WOTAN\WOTAN_RDS2_Master</v>
 <v>WOTAN\WOTAN_RDS2_Slave_1</v>
 </VisibleNodeIds>
@@ -838,6 +844,7 @@
 <v>WOTAN\WOTAN_RDS2_Master\NFET_En_v1_0\NFET_En_v1_0.pdf</v>
 <v>WOTAN\WOTAN_RDS2_Master\not_v1_0</v>
 <v>WOTAN\WOTAN_RDS2_Master\not_v1_0\not_v1_0.pdf</v>
+<v>WOTAN\WOTAN_RDS2_Master\OpAmp_v1_90.pdf</v>
 <v>WOTAN\WOTAN_RDS2_Master\or_v1_0</v>
 <v>WOTAN\WOTAN_RDS2_Master\or_v1_0\or_v1_0.pdf</v>
 <v>WOTAN\WOTAN_RDS2_Master\PGA_v2_0</v>
@@ -990,14 +997,21 @@
 </userData>
 </CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997>
 <Unloaded />
-<OpenDocs />
+<OpenDocs>
+<name v=".\WOTAN_RDS2_Master.cydsn\WOTAN_RDS2_Master.cydwr" />
+<name v=".\WOTAN_RDS2_Master.cydsn\TopDesign\TopDesign.cysch" />
+<name v=".\WOTAN_RDS2_Master.cydsn\main.c" />
+<name v=".\WOTAN_RDS2_Slave_1.cydsn\WOTAN_RDS2_Slave_1.cydwr" />
+<name v=".\WOTAN_RDS2_Slave_1.cydsn\TopDesign\TopDesign.cysch" />
+<name v=".\WOTAN_RDS2_Slave_1.cydsn\main.c" />
+</OpenDocs>
 <OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
 
   Actipro Docking/MDI for WinForms
   Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
   http://www.actiprosoftware.com
 
---><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer /><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1724, 1008" SelectedTabbedMdiWindow="405c059f-3ca7-4d15-aaea-c9e64cc9f077"><DocumentWindow Key="C:\Users\marti\OneDrive\Desktop\github\RDS_WOTAN\WOTAN_PSoC_firmware\WOTAN_RDS2_Master.cydsn\WOTAN_RDS2_Master.cydwr" Guid="1569c00f-87c8-45ea-989a-eaf153c5e82a" /><DocumentWindow Key="C:\Users\marti\OneDrive\Desktop\github\RDS_WOTAN\WOTAN_PSoC_firmware\WOTAN_RDS2_Master.cydsn\TopDesign\TopDesign.cysch" Guid="405c059f-3ca7-4d15-aaea-c9e64cc9f077" /><DocumentWindow Key="C:\Users\marti\OneDrive\Desktop\github\RDS_WOTAN\WOTAN_PSoC_firmware\WOTAN_RDS2_Master.cydsn\main.c" Guid="b09d941d-d93b-4505-ac62-657aa4c6c35b" /><DocumentWindow Key="C:\Users\marti\OneDrive\Desktop\github\RDS_WOTAN\WOTAN_PSoC_firmware\WOTAN_RDS2_Slave_1.cydsn\WOTAN_RDS2_Slave_1.cydwr" Guid="b97ab8b9-19a7-4fc5-9ddf-d794a551a4aa" /><DocumentWindow Key="C:\Users\marti\OneDrive\Desktop\github\RDS_WOTAN\WOTAN_PSoC_firmware\WOTAN_RDS2_Slave_1.cydsn\TopDesign\TopDesign.cysch" Guid="dad99d11-2f01-47ce-bc2a-dc45157924db" /><DocumentWindow Key="C:\Users\marti\OneDrive\Desktop\github\RDS_WOTAN\WOTAN_PSoC_firmware\WOTAN_RDS2_Slave_1.cydsn\main.c" Guid="da189cc4-bd16-4f22-a387-29c92d26522b" /><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="28413480-aea5-4315-92d7-2afb641811e9" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
 <config v="Debug" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>

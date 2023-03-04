@@ -25,7 +25,7 @@ F_ROT_X = 50200 # eben 50200 # 1/0.015*756 # = 50400 Hz
 #F_ROT_Y = 50250 # Hz Zielfrequenz
 F_ROT_Y = 50000 #1/0.015*753 # = 50200 Hz
 #F_ROT_Y = 52000
-F_OFFSET = 200 # Hz
+F_OFFSET = 20 # Hz
 TIME_PER_SAMPLE = 0.0000005 # s 
 """ end CONSTANTS """
 
@@ -222,7 +222,7 @@ def generate_sequence(amp1_comp, f1_comp, phi1_comp,amp_var):
     f_offset = F_OFFSET       # offset field frequency
     f_off = frequency_scale*f_offset / f_corr    # calculated offset frequency for psoc
 
-    r_off_rotx = 0.03   # ratio of rotation amplitude_x to offset amplitude = amp_off = 0.1 * amp_rotx
+    r_off_rotx = 0.5   # ratio of rotation amplitude_x to offset amplitude = amp_off = 0.1 * amp_rotx
     #r_off_rotx = 0.99
     amp_rotx = 1/(2*(1+r_off_rotx)) * (max_value-1)
     amp_off = r_off_rotx/(2*(1+r_off_rotx)) * (max_value-1)

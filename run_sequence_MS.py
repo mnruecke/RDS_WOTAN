@@ -73,21 +73,30 @@ if save_data and not os.path.exists( data_path ):
 import time   
 from rds_functions import run_sequence_MS
 
-t, sig, amp = run_sequence_MS( serialPort_Master, serialPort_Slave1,
-                                save_data, data_path,
-                                rx_gain,
-                                n_avg, wait_sec_avg
-                                )
 
+for _ in range(10):
+    t, sigP, amp = run_sequence_MS( serialPort_Master, serialPort_Slave1,
+                                    save_data, data_path,
+                                    rx_gain,
+                                    n_avg, wait_sec_avg
+                                    )
 
-# visualize data
-import matplotlib.pyplot as plt
-#plt.close('all')
-plt.figure(12)
-#plt.plot( t[:100], sig[:100])
-plt.plot( t, sig)
-plt.xlabel('time [ms]')
-plt.ylabel('signal [V]')
-plt.show()  
-        
+    t, sigN, amp = run_sequence_MS( serialPort_Master, serialPort_Slave1,
+                                    save_data, data_path,
+                                    rx_gain,
+                                    n_avg, wait_sec_avg
+                                    )    
+    
+    sig = sigP-sigN
+    
+    # visualize data
+    import matplotlib.pyplot as plt
+    #plt.close('all')
+    plt.figure(12)
+    #plt.plot( t[:100], sig[:100])
+    plt.plot( t, sig)
+    plt.xlabel('time [ms]')
+    plt.ylabel('signal [V]')
+    plt.show()  
+            
                 
