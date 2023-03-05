@@ -1,25 +1,27 @@
 
 ###################################################################################
-# RDS_WOTAN - Spectrometer calibration - 21.02.2023
+# RDS_WOTAN - Spectrometer 2 - 02.03.2023
 # 
 
 ###################################################################################
 # Dataset description:
 
-main_title = "RDS 50 kHz - 2 MSs - TXT"
+main_title = "RDS 50 kHz - FF liquid - 2 MSs - Single WOTAN Board"
 
-data_dir = 'C:/Users/marti/Downloads/rot_data_20230223c/'   
+data_dir = (   'C:\\Users\\marti\\OneDrive\\Dokumente\\'
+             + 'MEGA\\RDI_share\\RDS_2023\\rds2_20230302_FFb\\'  
+             )
 
 file_type = 'TXT' # RDS_WOTAN: 'TXT'; Tektronix: 'CSV'; Lecroy: 'TRC' 
 
 
 # Plotting options
-PLOT_FULL_BANDWIDTH_SIGNAL = 0
-PLOT_HARMONICS = 1 # Downmixed signal
-PLOT_REFERENCE = 1
+PLOT_FULL_BANDWIDTH_SIGNAL = False
+PLOT_HARMONICS = True # Downmixed signal
+PLOT_REFERENCE = True
 
-DELETE_EXISTING_PLOTS = False 
-harmonic_plot_list    = [31,41,51]#range( 31, 32)#[2,3,4,5,10,11,16,17,22,23]                                                            
+DELETE_EXISTING_PLOTS = True
+harmonic_plot_list    = range(2,40,3)                                           
 
 
 # Temp file creation for processing large data sets
@@ -46,51 +48,56 @@ if CREATE_NPY_TEMP_DATA: # -> *.npy loads faster than *.csv
 # file collection: [1...N]
 # blocks in file collection: [1..M][M+1..K]..[..N]
 # interleaved data sets in block: [1a,1b,1c ... Ma, Mb, Mc...]
-NUM_OF_FILES = 16
-NUM_OF_DATA_BLOCKS = 2
+NUM_OF_FILES = 24
+NUM_OF_DATA_BLOCKS = 3
 NUM_OF_FILES_IN_DATA_BLOCK = 8
-NUM_OF_INTERLEAVED_DATASETS = 2 # Datasets in a block
+NUM_OF_INTERLEAVED_DATASETS = 4 # Datasets in a block
 
 sig_labels_block_1 = [
-                        'M1; Gain = 4x4x2 (a)','Control (1a)',
+                        'FF; 16x Avg (a)','Control (1a)',
+                        'FF; 16x Avg (b)','Control (1b)',
                      ] 
 sig_labels_block_2 = [
-                        'M1; Gain = 4x4x2 (b)','Control (1b)',
+                        'FF; 1x Avg (a)','Control (2a)',
+                        'FF; 1x Avg (b)','Control (2b)',
                      ] 
 
+sig_labels_block_3 = [
+                        'FF; 64x Avg (a)','Control (3a)',
+                        'FF; 64x Avg (b)','Control (3b)',
+                     ] 
 
 
 sig_labels = (
                  sig_labels_block_1
                + sig_labels_block_2
+               + sig_labels_block_3
              )
 
-# Deselect data with '0'
-plot_option_1 = [
-                        [ 1, 1 ], # Block 1
-                        [ 1, 1 ], # Block 2              
-                    ]
+# Deselect data plots with '0'
+# 1) plot all
+plot_option_1 = [   # Samp. 1, Contr. 1, Samp. 2, Contr. 2
+                    [       1,        1,       1,       0 ], # Block 1
+                    [       1,        1,       1,       0 ], # Block 2
+                    [       1,        1,       1,       0 ], # Block 3             
+                ]
 
-# No baseline
+# 2) No baseline
 plot_option_2 = [
-                        [ 1, 0 ], # Block 1
-                        [ 1, 0 ], # Block 2            
-                    ]
+                        [ 1, 0, 1, 0 ], # Block 1
+                        [ 1, 0, 1, 0 ], # Block 2            
+                        [ 1, 0, 1, 0 ], # Block 2            
+                   ]
 
-# Compare Block 1 with Block 5 and 6
+# 3) only 64x avg
 plot_option_3 = [
-                        [ 1, 0 ], # Block 1
-                        [ 1, 0 ], # Block 2           
-                    ]
-
-# Compare Block 2, 3 and 4
-plot_option_4 = [
-                        [ 1, 0 ], # Block 1
-                        [ 1, 0 ], # Block 2            
+                        [ 0, 0, 0, 0 ], # Block 1
+                        [ 0, 0, 0, 0 ], # Block 2              
+                        [ 1, 0, 1, 1 ], # Block 2              
                     ]
 
 
-visibility_matrix = plot_option_2
+visibility_matrix = plot_option_3
 
 # Data set order for plotting 
 data_ids = list(range(len(sig_labels_block_1)))
@@ -103,7 +110,7 @@ START_IDX_REF    = 1 # odd  #: reference
 F_CHX = 50200 # Hz
 F_CHY = 50000 # Hz
 
-BANDWIDTH = 10000 # Bandwidth around the downmixed harmonic in Hz
+BANDWIDTH = 20000 # Bandwidth around the downmixed harmonic in Hz
 
 SAMPLES_PER_SEC = 2e6 # sampling rate of data files
 DOWN_SAMPLING   = 1
@@ -131,8 +138,11 @@ def get_full_sized_window():
         print( "'%matplotlib qt' not selected")
 
 
-def signal_down_mixing( signal, n_harmonic_shift, bandwidth,
-                        real_and_imag = False ):
+def signal_down_mixing( signal,
+                        n_harmonic_shift,
+                        bandwidth,
+                        real_and_imag = False
+                        ):
     
     signal_ft = np.fft.fft( signal )
 
@@ -145,10 +155,10 @@ def signal_down_mixing( signal, n_harmonic_shift, bandwidth,
     
     y_ft_lhs = 2* np.roll( signal_ft, -f_shift_pts )
     y_ft_lhs = y_ft_lhs[ : df_pts]
-    y_ft_lhs = y_ft_lhs + 0 * y_ft_lhs
+    y_ft     = y_ft_lhs + 0 * y_ft_lhs
     
-    amp_corr = float(len( y_ft_lhs )) / float(len( signal_ft ))
-    sig_complex = amp_corr * np.fft.ifft( y_ft_lhs )
+    amp_corr = float(len( y_ft )) / float(len( signal_ft ))
+    sig_complex = amp_corr * np.fft.ifft( y_ft )
     
     
     sig_real = np.transpose( np.real( sig_complex ) )
@@ -162,7 +172,7 @@ def signal_down_mixing( signal, n_harmonic_shift, bandwidth,
 
 def downsampling_data( t, y, decimation_factor ):
 
-    # Excess data points: for TEK: 0, for Lecroy: 2, 
+    # Excess data points: for TEK and TXT: 0, for Lecroy: 2, 
     if file_type == 'CSV' or file_type == 'TXT':
         dismiss_first_data_points = 0 
     elif file_type == 'TRC':
@@ -184,7 +194,7 @@ def downsampling_data( t, y, decimation_factor ):
     return t, y
 
 def read_data_file( data_directory, file_number, file_type_ ):
-    ''' Read *.csv or *.trc files '''
+    ''' Read *.csv, *.txt or *.trc files '''
     settings = []
     fName = ""
 
@@ -214,7 +224,15 @@ def read_data_file( data_directory, file_number, file_type_ ):
     return t, y, fName
 
 
-def average_dataset( data_set_start, last_data_file, num_of_interleaved_data_sets ):
+def average_interleaved_dataset( data_set_start,
+                                 last_data_file,
+                                 num_of_interleaved_data_sets
+                                 ):
+    ''' 
+    If (last_data_file - data_set_start) / num_of_interleaved_data_sets
+    is > 1 ( = num of averages, must be an integer value),
+    the average of every num_of_interleaved_data_sets file is taken.
+    '''
     
     sig_avg = []
     n_avg = 0
@@ -225,7 +243,7 @@ def average_dataset( data_set_start, last_data_file, num_of_interleaved_data_set
                                                 data_dir,
                                                 file_i,
                                                 file_type
-                                               )
+                                                )
         
         t, y = downsampling_data( t_full, y_full, DOWN_SAMPLING )
         
@@ -239,12 +257,28 @@ def average_dataset( data_set_start, last_data_file, num_of_interleaved_data_set
     return t, sig_avg, n_avg
 
 
-def read_data_sets( range_start, range_end, num_of_interleaved_data_sets ):
+def read_interleaved_data_sets( range_start,
+                                range_end,
+                                num_of_interleaved_data_sets
+                                ):
+    ''' 
+    Expects the data file ordering to be interleaved.
+    Files from range_start to range_end are read and stored into
+    'sig_container' consecutively.
+    If ( range_end - range_start) / num_of_interleaved_data_sets
+    is > 1 ( = num of averages, must be an integer value),
+    the average of every num_of_interleaved_data_sets file is taken.
+    '''    
     
     sig_container = []
     for data_set in range( num_of_interleaved_data_sets ):
-        t, sig_, n = average_dataset( range_start + data_set, range_end,
-                                          num_of_interleaved_data_sets )
+        
+        t, sig_, n = average_interleaved_dataset( 
+                                range_start + data_set,
+                                range_end,
+                                num_of_interleaved_data_sets
+                                )
+        
         sig_container.append(sig_)    
         
     return t, sig_container, n
@@ -274,7 +308,7 @@ except:
     sig = []
     for block_i in range( NUM_OF_DATA_BLOCKS ):     
         
-        t, sig_, n = read_data_sets(
+        t, sig_, n = read_interleaved_data_sets(
                 block_i    * NUM_OF_FILES_IN_DATA_BLOCK, 
                (block_i+1) * NUM_OF_FILES_IN_DATA_BLOCK,
                 NUM_OF_INTERLEAVED_DATASETS
@@ -314,9 +348,15 @@ ref_ids    = data_ids[ START_IDX_REF ::2 ]
 ref_x_list = ref_ids
 ref_y_list = ref_x_list[-1:] + ref_x_list[:-1]     
 
-assert( NUM_OF_FILES == NUM_OF_DATA_BLOCKS * NUM_OF_FILES_IN_DATA_BLOCK )
-assert( np.size( sig_labels ) == NUM_OF_INTERLEAVED_DATASETS * NUM_OF_DATA_BLOCKS )    
-assert( np.size( visibility_matrix ) == np.size( sig_labels ))
+assert(    NUM_OF_FILES
+        == NUM_OF_DATA_BLOCKS * NUM_OF_FILES_IN_DATA_BLOCK
+        )
+assert(    np.size( sig_labels )
+        == NUM_OF_INTERLEAVED_DATASETS * NUM_OF_DATA_BLOCKS
+        )    
+assert(    np.size( visibility_matrix )
+        == np.size( sig_labels )
+        )
  
     
 if PLOT_FULL_BANDWIDTH_SIGNAL:  
@@ -326,7 +366,11 @@ if PLOT_FULL_BANDWIDTH_SIGNAL:
     
     plt.title( main_title + "\n" + 
                "Differenzsignale: " + str(n) + " Mittelungen;"
-               + " MS/s: " +  str( SAMPLES_PER_SEC / DOWN_SAMPLING / 1e6 ))  
+               + " MS/s: " +  str(   SAMPLES_PER_SEC
+                                   / DOWN_SAMPLING
+                                   / 1e6
+                                   )
+               )  
 
     for block_i in range( NUM_OF_DATA_BLOCKS ):    
         
@@ -344,8 +388,13 @@ if PLOT_FULL_BANDWIDTH_SIGNAL:
                        - sig[data_ids[ dat_i+1 ] +file_offset ]
                        )
             
-            label_ = (    sig_labels[data_ids[ dat_i   ] +file_offset ] + ' - '
-                        + sig_labels[data_ids[ dat_i+1 ] +file_offset ]
+            label_ = (    sig_labels[data_ids[ dat_i   ] 
+                                     + file_offset
+                                     ]
+                        + ' - '
+                        + sig_labels[data_ids[ dat_i+1 ]
+                                     + file_offset
+                                     ]
                         )
             
             plt.plot( t_ , trace_, label = label_ )       
@@ -367,8 +416,13 @@ if PLOT_FULL_BANDWIDTH_SIGNAL:
                            - sig[data_ids[ ref_y_i ] +file_offset ]
                            )
                 
-                label_ = (   sig_labels[data_ids[ ref_x_i ] +file_offset ] + ' - '
-                           + sig_labels[data_ids[ ref_y_i ] +file_offset ]                         
+                label_ = (   sig_labels[data_ids[ ref_x_i ] 
+                                        + file_offset
+                                        ]
+                           + ' - '
+                           + sig_labels[data_ids[ ref_y_i ]
+                                        + file_offset
+                                        ]                         
                            )
                 
                 plt.plot( t_, trace_, label = label_ )
@@ -389,7 +443,10 @@ if PLOT_HARMONICS:
         plt.figure()
         get_full_sized_window()
         
-        plt.title(   str( harmonic ) + "th Harmonic for: " + main_title )
+        plt.title(   str( harmonic )
+                   + "th Harmonic for: "
+                   + main_title
+                   )
             
         for block_i in range( NUM_OF_DATA_BLOCKS ):
             
@@ -402,13 +459,23 @@ if PLOT_HARMONICS:
                     
                 t_ = t * time_unit
                 
-                raw_trace_ = sig[ dat_i +file_offset ] - sig[ dat_i+1 +file_offset ]
-                trace_ = signal_down_mixing( raw_trace_, harmonic, BANDWIDTH )
+                raw_trace_ = (   sig[ dat_i +file_offset ]
+                               - sig[ dat_i+1 +file_offset ]
+                               )
+                trace_ = signal_down_mixing( raw_trace_,
+                                             harmonic,
+                                             BANDWIDTH
+                                             )
                 
                 t_downmixed = t_ [ :: len(t)//len(trace_) ]
                 
-                label_ = (   sig_labels[data_ids[ dat_i   ] +file_offset ] + ' - '
-                           + sig_labels[data_ids[ dat_i+1 ] +file_offset ]
+                label_ = (   sig_labels[  data_ids[ dat_i   ]
+                                        + file_offset
+                                        ]
+                           + ' - '
+                           + sig_labels[  data_ids[ dat_i+1 ]
+                                        + file_offset
+                                        ]
                            )
                                           
                 plt.plot( t_downmixed, trace_, label = label_ )  
@@ -427,13 +494,23 @@ if PLOT_HARMONICS:
                     
                     t_ = t * time_unit
                     
-                    raw_trace_ = sig[ ref_x_i +file_offset ] - sig[ ref_y_i +file_offset ]
-                    trace_ = signal_down_mixing( raw_trace_, harmonic, BANDWIDTH )
+                    raw_trace_ = (   sig[ ref_x_i +file_offset ]
+                                   - sig[ ref_y_i +file_offset ] 
+                                   )
+                    trace_ = signal_down_mixing( raw_trace_,
+                                                 harmonic,
+                                                 BANDWIDTH
+                                                 )
                     
                     t_downmixed = t_ [ :: len(t)//len(trace_) ]     
                     
-                    label_ = (   sig_labels[data_ids[ ref_x_i ] +file_offset ] + ' - '
-                               + sig_labels[data_ids[ ref_y_i ] +file_offset ]                         
+                    label_ = (   sig_labels[  data_ids[ ref_x_i ]
+                                            + file_offset
+                                            ]
+                               + ' - '
+                               + sig_labels[  data_ids[ ref_y_i ]
+                                            + file_offset
+                                            ]                         
                                )           
                     
                     plt.plot( t_downmixed, trace_, label = label_ )  

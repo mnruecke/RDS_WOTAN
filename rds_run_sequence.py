@@ -51,10 +51,13 @@
 
 """ --- Required parameters ---- """ 
 # A) check device manager to see at which port number the board enumerates
-serialPort = '\\\\.\\COM18' 
+serialPort = '\\\\.\\COM13' 
 
-save_data   = 1 # 1 = save data
-data_path   = 'C:/Users/marti/Downloads/rds2_20230301_M1c/'
+save_data   = 0 # 1 = save data
+data_path   = (   'C:\\Users\\marti\\OneDrive\\Dokumente\\'
+                + 'MEGA\\RDI_share\\RDS_2023\\
+                + 'rds2_20230302_FFb\\'
+                )
 
 rx_gain         = '0' # '0'...'9' => Gain: x1 ... x512 // '6'=x64
 n_avg           = 1
@@ -68,7 +71,7 @@ if save_data and not os.path.exists( data_path ):
 
 
 import time   
-from rds_functions import run_sequence
+from rds_essentials import run_sequence
 
 t, sig, amp = run_sequence( serialPort,
                             save_data, data_path,

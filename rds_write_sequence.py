@@ -35,16 +35,24 @@
 # y-coil B/I = 0.79
 
 """ --- Required parameters ---- """ 
-serialPort = '\\\\.\\COM18' 
+serialPort = '\\\\.\\COM13' 
 """ ----------------------------- """
 
-from rds_functions import generate_sequence, write_sequence
+from rds_essentials import ( generate_sequence,
+                             write_sequence,
+                             plot_sequence
+                             )
                             
+nsamples_total, values = generate_sequence( 0, 0, 0, 1 ) 
 
-""" Sequenz erzeugen """
-nsamples_total, values = generate_sequence( 0, 0, 0, 1 ) # generate_sequence(amp1=0 ... 0.49, f1, phi1)
-#nsamples_total, values = generate_sequence2f( 0.24, 49000 , 0, 0.25, 50250 , 0) # generate_sequence(amp1=0 ... 0.49, f1, phi1)
+write_sequence( serialPort,
+                nsamples_total,
+                values
+                )
 
-""" Sequenz auf PSOC schreiben """
-write_sequence( serialPort, nsamples_total, values)
+plot_sequence( values,
+               channels = [0,1],
+               dac_sampling_rate = 250e3
+               )
+
 
