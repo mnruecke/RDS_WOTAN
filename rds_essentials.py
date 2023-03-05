@@ -19,22 +19,34 @@ import os.path
 from dataclasses import dataclass
 
 """ CONSTANTS: """
-# Rotationsfrequenzen sollten Vielfache von 1/(0.015s)=66.66666 Hz sein,
-# damit FFT weniger bleeding hat.
+# Rotation frequencies should be multiples of
+# 1/(0.015s)=66.66666 Hz, so that FFT has less bleeding.
 
 @dataclass
-class Sequence_Params:
+class RDS_Sequence_Params:
     
-    f_rot_x_Hz:      float = 50200
-    f_rot_y_Hz:      float = 50000
-    f_offset_Hz:     float = 200 
-    
-    dac_samples_per_sec: float =  250e3
-    adc_samples_per_sec: float = 2000e3
+    f_rot_x_Hz:     float = 50200
+    f_rot_y_Hz:     float = 50000
+    f_offset_x_Hz:  float = 25 
 
-def foo( params = Sequence_Params() ):
-    print( params )
-foo( params = Sequence_Params( f_rot_y_Hz = 50500 ) )
+    amp_rot_x:      float = 0.9
+    amp_rot_y:      float = 1
+    amp_offset_x:   float = 0.1
+    
+    phi_rot_x:      float = np.pi * 0
+    phi_rot_y:      float = np.pi * 0.5
+    phi_offset_x:   float = np.pi * 0
+    
+    calib_pulse_pos:   int = 0
+    calib_pulse_width: int = 1
+
+    dac_samples_per_sec: int =  250e3
+    adc_samples_per_sec: int = 2000e3
+    
+    n_samples_ramp_up:      int = 3750
+    n_samples_main:         int = 3750
+    n_samples_ramp_down:    int = 375
+    '''END class RDS_Sequence_Params '''
 
 F_ROT_X = 50200 # Hz
 F_ROT_Y = 50000 # Hz
@@ -42,6 +54,119 @@ F_OFFSET =  200 # Hz
 TIME_PER_SAMPLE = 0.0000005 # s 
 """ end CONSTANTS """
 
+def generate_wavelets( par = RDS_Sequence_Params() ):
+    
+    AMP_MAX = 255
+    
+    pts_total = (    par. n_samples_ramp_up
+                   + par. n_samples_main
+                   + par. n_samples_ramp_down  
+                   )
+    
+    t_start = 0
+    t = np.arange(   t_start,
+                     pts_total
+                   ) / par. dac_samples_per_sec
+    
+    def phase_at_t15ms( frequ ):
+        ''' get phase offset at t=15 ms
+            data sampling starts at t=15 ms
+        '''
+        pts_to_15ms = par.n_samples_ramp_up
+        t_to_15ms   = pts_to_15ms / par.dac_samples_per_sec
+        phi_at_15ms = 2 * np.pi * frequ * t_to_15ms 
+        
+        return phi_at_15ms
+    
+    def sine( amp, frequ, phi, t ):
+        ''' Generate sine wave '''
+        y_sine = (  amp
+                  * AMP_MAX /2
+                  * np.sin( 2*np.pi * frequ * t + phi )
+                  )
+
+        return y_sine
+
+    def sequence_envelope():
+        ''' make sequence ramp up/down before and after main '''
+        pts_up      = par.n_samples_ramp_up
+        pts_main    = par.n_samples_main
+        pts_down    = par.n_samples_ramp_down
+        
+        envelope = np.append(
+                    np.append( 
+                        np.arange( pts_up ) / pts_up,
+                        np.ones(   pts_main )
+                        ),
+                      np.arange( pts_down, 0, -1) / pts_down
+                      )
+        return envelope
+
+    phi_offset_x_t15ms = phase_at_t15ms( par.f_offset_x_Hz )
+    Ax_offset = (   sequence_envelope()
+                  * sine(
+                          par. amp_offset_x,
+                          par. f_offset_x_Hz,
+                          par. phi_offset_x - phi_offset_x_t15ms,
+                          t
+                          )
+                  )# Ax_offset
+        
+    phi_x_t15ms = phase_at_t15ms( par.f_rot_x_Hz )
+    Ax_rot = (   sequence_envelope()
+               * sine( 
+                        par. amp_rot_x,
+                        par. f_rot_x_Hz,
+                        par. phi_rot_x - phi_x_t15ms,
+                        t
+                        )
+               )# Ax_rot
+
+    phi_y_t15ms = phase_at_t15ms( par.f_rot_y_Hz )
+    Ay_rot = (   sequence_envelope()
+               * sine( 
+                        par. amp_rot_y,
+                        par. f_rot_y_Hz,
+                        par. phi_rot_y - phi_y_t15ms,
+                        t
+                        )
+               )# Ay_rot
+    
+    
+    calib_pulse_start = int(   par. n_samples_ramp_up
+                             + par. calib_pulse_pos
+                             )   
+    calib_pulse_end   = calib_pulse_start + par.calib_pulse_width
+    
+    A_calib = AMP_MAX/2 * np.ones( pts_total )
+    A_calib[ calib_pulse_start : calib_pulse_end ] = AMP_MAX
+    
+    A_ch4_ = np.uint8( AMP_MAX/2 * np.ones(  pts_total )) # unused
+
+    Ax = Ax_rot + Ax_offset + AMP_MAX/2
+    Ay = Ay_rot             + AMP_MAX/2
+    
+    assert( max(Ax) <= 255 and min(Ax) >= 0 )
+    assert( max(Ay) <= 255 and min(Ay) >= 0 )   
+    assert( max(A_calib) <= 255 and min(A_calib) >= 0 )   
+    assert( max(A_ch4_)  <= 255 and min(A_ch4_) >= 0 )   
+    
+    A_CH1 = np.uint8( Ax )
+    A_CH2 = np.uint8( Ay )        
+    A_CH3 = np.uint8( A_calib )    
+    A_CH4 = np.uint8( A_ch4_ )
+         
+    waves_0_to_3 = np.append( A_CH1, 
+                    np.append( A_CH2,
+                     np.append( A_CH3, A_CH4 )))
+   
+    num_of_channels = 4
+    waves_0_to_3 = waves_0_to_3.reshape( num_of_channels,
+                                         pts_total
+                                         )
+    
+    return pts_total, waves_0_to_3
+    
 
 def read_PSOC_data( path_, start_index, Mittelungen):
     """ PSOC-Daten aus txt einlesen: """
@@ -63,7 +188,7 @@ def generate_sequence( amp1_comp, f1_comp, phi1_comp, amp_var):
     
     """ main settings """
     #  channel settings
-    num_channels = 4            # number of channels
+    num_channels = 4  # number of channels
     
     max_value = 255     
     
@@ -74,8 +199,8 @@ def generate_sequence( amp1_comp, f1_comp, phi1_comp, amp_var):
     
     """ frequency settings """
     f_rotx   = F_ROT_X    # rotation frequency x-direction
-    f_roty   = F_ROT_Y      # resonante Abstimmung bei 44500 entspricht 
-    f_offset = F_OFFSET       # offset field frequency
+    f_roty   = F_ROT_Y    # resonante Abstimmung bei 44500 entspricht 
+    f_offset = F_OFFSET   # offset field frequency
     f_off    = frequency_scale*f_offset    # calculated offset frequency for psoc
 
     r_off_rotx = 0.03   # ratio of rotation amplitude_x to offset amplitude = amp_off = 0.1 * amp_rotx
@@ -166,7 +291,7 @@ def plot_sequence( values,
 """ end plot sequence """    
 
 
-def write_sequence(serialPort,nsamples_total,values):
+def write_sequence( serialPort, nsamples_total, values):
     ''' settings '''
     # B) baudrate
     baudrate = 1382400
@@ -209,10 +334,14 @@ def write_sequence(serialPort,nsamples_total,values):
                 
                 
                 #last package
+                amp_idle = 255/2
                 if data.size != len_data:
-                    data = np.append(data, np.zeros( len_data - data.size, dtype=np.uint8))
-                    
-            
+                    data = np.append(   data,
+                                        amp_idle
+                                      * np.ones(   len_data
+                                                 - data.size,
+                                                 dtype=np.uint8
+                                                 ))
             
                 data_bytes = bytes(data)
             
@@ -358,9 +487,9 @@ def run_sequence( serialPort,
         return dat_time, dat_sig, max(dat_sig) - min(dat_sig)
         
     else:
-        print(   f'Data incomplete '
+        print(   'Data incomplete '
                + f'({len(bytes_received)} '
-               + f'bytes received)' )
+               + 'bytes received)' )
         
 """ end run_sequence() """
 
@@ -368,12 +497,18 @@ def run_sequence( serialPort,
 """ function testing """
 if __name__ == "__main__":
     
-    nsamples_total, values = generate_sequence( 0, 0, 0, 1 )
-    
-    plot_sequence( values,
-                   channels = [0],
-                   dac_sampling_rate = 250e3
-                   )
+
+    n_samples, waves = generate_wavelets(
+                            par = RDS_Sequence_Params(
+                                    calib_pulse_pos   = 50,
+                                    calib_pulse_width = 1000
+                                    )
+                            )
+
+    plot_sequence(  waves,
+                    channels = [0,1,2,3],
+                    dac_sampling_rate = 250e3
+                    )
     
    
     

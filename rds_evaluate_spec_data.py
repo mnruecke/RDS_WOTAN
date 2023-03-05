@@ -110,7 +110,7 @@ START_IDX_REF    = 1 # odd  #: reference
 F_CHX = 50200 # Hz
 F_CHY = 50000 # Hz
 
-BANDWIDTH = 20000 # Bandwidth around the downmixed harmonic in Hz
+BANDWIDTH = 25000 # Bandwidth around the downmixed harmonic in Hz
 
 SAMPLES_PER_SEC = 2e6 # sampling rate of data files
 DOWN_SAMPLING   = 1
