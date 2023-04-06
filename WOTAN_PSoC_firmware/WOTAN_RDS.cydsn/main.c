@@ -92,6 +92,7 @@ char  version[3] = "1.8";  // WOTAN for RDS Spectrometer
 #define KEY_LED              'L'
 
 
+
 /* end command set */
 
 #define  TRIGGER_OUT_TRUE    1

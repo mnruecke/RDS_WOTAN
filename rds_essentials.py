@@ -301,15 +301,20 @@ def write_sequence( serialPort, nsamples_total, values):
     # package settings
     len_header = 8
     len_data = 50
+    
+    software_reset = b'e'
     ''' end settings '''
     
     # opening serial connection
     try:
         # baudrate 1 as dummy variable since it will be ignored
+        ser = serial.Serial( serialPort, baudrate, timeout=time_out)  
+        ser.write( software_reset )
+        time.sleep(0.25)
         ser = serial.Serial( serialPort, baudrate, timeout=time_out)    
     
         # calculating the number of packages
-        num_packages = int (np.ceil(nsamples_total / len_data)) # number of full packages
+        num_packages = int (np.ceil(nsamples_total / len_data)) # number of full package
      
         for channel in [0,1,2,3]:
         

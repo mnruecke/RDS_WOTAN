@@ -35,15 +35,42 @@
 # y-coil B/I = 0.79
 
 """ --- Required parameters ---- """ 
-serialPort = '\\\\.\\COM13' 
+serialPort = '\\\\.\\COM6' 
 """ ----------------------------- """
 
-from rds_essentials import ( generate_sequence,
+import numpy as np
+from rds_essentials import ( 
+                             RDS_Sequence_Params,   
+                             generate_wavelets,
                              write_sequence,
                              plot_sequence
                              )
-                            
-nsamples_total, values = generate_sequence( 0, 0, 0, 1 ) 
+  
+rds_params = RDS_Sequence_Params(
+    f_rot_x_Hz            = 50200,
+    f_rot_y_Hz            = 50000,
+    f_offset_x_Hz         = 50, 
+
+    amp_rot_x             = 0.9,
+    amp_rot_y             = 1,
+    amp_offset_x          = 0.1,
+    
+    phi_rot_x             = np.pi * 0,
+    phi_rot_y             = np.pi * 0.5,
+    phi_offset_x          = np.pi * 0,
+    
+    calib_pulse_pos       = 0,
+    calib_pulse_width     = 1,
+
+    dac_samples_per_sec   =  250e3,
+    adc_samples_per_sec   = 2000e3,
+    
+    n_samples_ramp_up     = 3750,
+    n_samples_main        = 3750,
+    n_samples_ramp_down   = 375,
+    )
+                          
+nsamples_total, values = generate_wavelets( par = rds_params ) 
 
 write_sequence( serialPort,
                 nsamples_total,
@@ -55,4 +82,4 @@ plot_sequence( values,
                dac_sampling_rate = 250e3
                )
 
-
+runfile('C:/Users/marti/OneDrive/Desktop/github/RDS_WOTAN/rds_run_sequence.py', wdir='C:/Users/marti/OneDrive/Desktop/github/RDS_WOTAN')
