@@ -51,9 +51,9 @@ rds_params = RDS_Sequence_Params(
     f_rot_y_Hz            = 50000,
     f_offset_x_Hz         = 50, 
 
-    amp_rot_x             = 0.9,
+    amp_rot_x             = 0.8,
     amp_rot_y             = 1,
-    amp_offset_x          = 0.1,
+    amp_offset_x          = 0.2,
     
     phi_rot_x             = np.pi * 0,
     phi_rot_y             = np.pi * 0.5,

@@ -310,7 +310,7 @@ def write_sequence( serialPort, nsamples_total, values):
         # baudrate 1 as dummy variable since it will be ignored
         ser = serial.Serial( serialPort, baudrate, timeout=time_out)  
         ser.write( software_reset )
-        time.sleep(0.25)
+        time.sleep(0.5)
         ser = serial.Serial( serialPort, baudrate, timeout=time_out)    
     
         # calculating the number of packages
