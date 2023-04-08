@@ -17,6 +17,9 @@
 
     char  version[3];
     
+    #define LED_ON  1
+    #define LED_OFF 0
+    
     // USBUART (USBFS)
     #define USBFS_DEVICE            (0u)
     #define USBFS_TX_SIZE           60    // exakt package size
@@ -31,12 +34,20 @@
     #define KEY_VERSION         'a'
     #define KEY_SERIAL_NUMBER   'b'
     #define KEY_RUN_WAVE        'c'
-    
+    #define KEY_RESET           'd'
+    #define KEY_CREATE_WAVE     'e'
+    #define KEY_GET_RUN_COUNT   'f'
+    #define KEY_WRITE_SEQUENCE  'g'
+    #define KEY_WAVE_LENGTH     'h'
     
     void init_psoc(void);
     void usbfs_interface(void);
+    void usbfs_process_firmware_commands( uint8* );
     void usbfs_put_version(void);
     void usbfs_put_chip_id(void);
+    void usbfs_put_run_count(void);
+    void usbfs_get_packet( uint8* );
+    void usbfs_put_wave_length(void);
 
 #endif //PSOC_CORE_H_INCLUDED
 

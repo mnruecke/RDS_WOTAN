@@ -48,17 +48,25 @@ void usbfs_interface(void){
                 
                 /* Wait until component is ready to send data to host. */
                 while (0u == USBUART_CDCIsReady());  
-                
-                //-------------------------------------------------------                
-                /* Process firmware commands */                                       
-                if ( buffer[0] == KEY_VERSION )         usbfs_put_version();
-                if ( buffer[0] == KEY_SERIAL_NUMBER )   usbfs_put_chip_id();
-                if ( buffer[0] == KEY_RUN_WAVE )        run_wave();
+                            
+                usbfs_process_firmware_commands( buffer );
                 
             }//END if (0u != count)
         }//END if (0u != USBUART_DataIsReady())
     }//END if (0u != USBUART_GetConfiguration())
 }//END usbfs_interface(void)
+
+void usbfs_process_firmware_commands( uint8* buffer ){
+    /* Process firmware commands */                                       
+    if ( buffer[0] == KEY_VERSION )         usbfs_put_version();
+    if ( buffer[0] == KEY_SERIAL_NUMBER )   usbfs_put_chip_id();
+    if ( buffer[0] == KEY_WAVE_LENGTH )     usbfs_put_wave_length();
+    if ( buffer[0] == KEY_WRITE_SEQUENCE )  usbfs_get_packet( buffer );
+    if ( buffer[0] == KEY_CREATE_WAVE )     create_wave();
+    if ( buffer[0] == KEY_RUN_WAVE )        run_wave();
+    if ( buffer[0] == KEY_RESET )           CySoftwareReset();
+    if ( buffer[0] == KEY_GET_RUN_COUNT )   usbfs_put_run_count();    
+}//END void usbfs_command_menue( uint8* )
 
 void usbfs_put_version(void){
     while (0u == USBUART_CDCIsReady());
@@ -83,5 +91,46 @@ void usbfs_put_chip_id(void){
     while (0u == USBUART_CDCIsReady());
     USBUART_PutData( (uint8 *)pseudoid , strlength);  
 }//END void usbfs_put_chip_id(void)
+
+void usbfs_put_run_count(void){
+    
+    const int run_count_strlen = 6;
+    char run_count[run_count_strlen];
+    sprintf( run_count, "%5d", dma_dac_1_run_count );
+    
+    while (0u == USBUART_CDCIsReady());
+    USBUART_PutData( (uint8 *) run_count, run_count_strlen);     
+}//END void usbfs_get_run_count(void)
+
+void usbfs_put_wave_length(void){
+    
+    const int wave_len_strlen = 6;
+    char wave_len[wave_len_strlen];
+    sprintf( wave_len, "%5d", DMA_DAC_WAVELET_LENGTH  );    
+    
+    while (0u == USBUART_CDCIsReady());
+    USBUART_PutData( (uint8 *) wave_len, wave_len_strlen );     
+}//END void usbfs_get_wave_length(void)
+
+void usbfs_get_packet( uint8 * buffer ){
+    
+    // get parameters:
+    volatile uint16 number_of_packages = (256*buffer[4]+buffer[5]);
+    volatile uint16 package_number     = (256*buffer[2]+buffer[3]);
+    volatile uint16 number_of_samples  = number_of_packages * SIZE_OF_SEGMENT;
+    volatile uint8  channel_number     = buffer[1];
+    
+    // write wave into flash memory:
+    memcpy( sig_1.dac_data      + SIZE_OF_SEGMENT * package_number,
+            (char *) buffer     + SIZE_OF_HEADER,
+            SIZE_OF_SEGMENT
+            );                  
+    if( package_number == (number_of_packages-1) )
+    {
+        cLED_Write( LED_ON );
+        FLASH_Write( sig_1.dac_data, flash2dac_LUT[channel_number], number_of_samples);
+        cLED_Write( LED_OFF );
+    }  
+}//END void usbfs_get_packet(void)
 
 /* [] END OF FILE */
