@@ -88,29 +88,29 @@
     #define DMA_DAC_4_WAVELET_LENGTH DMA_DAC_1_WAVELET_LENGTH
     
     #define DMA_DAC_WAVELET_LENGTH   DMA_DAC_1_WAVELET_LENGTH
-    #define DMA_ADC_DATA_LENGTH      15000
+    #define DMA_ADC_DATA_LENGTH      12000
     #define NUM_OF_ADCS 2
     #define ADC_1       0
     #define ADC_2       1
     
     union Signals{
-        uint8  dac_data[ DMA_DAC_WAVELET_LENGTH ];
-        uint16 adc_data[ NUM_OF_ADCS ] [ DMA_ADC_DATA_LENGTH ];
+        uint8  temp_dac_data [ DMA_DAC_WAVELET_LENGTH ];
+        uint16 adc_data      [ NUM_OF_ADCS ] [ DMA_ADC_DATA_LENGTH ];
     } sig_1;
 
-    void init_dacs      (void);
-    void init_dma_dac_1 (void);
-    void init_dma_dac_2 (void);
-    void init_dma_dac_3 (void);
-    void init_dma_dac_4 (void);
-    void start_dma_dac_1(void);
-    void start_dma_dac_2(void);
-    void start_dma_dac_3(void);
-    void start_dma_dac_4(void);
-    void create_wave    (void);
-    void run_wave       (void);
+    void init_dacs       (void);
+    void init_dma_dac_1  (void);
+    void init_dma_dac_2  (void);
+    void init_dma_dac_3  (void);
+    void init_dma_dac_4  (void);
+    void start_dma_dac_1 (void);
+    void start_dma_dac_2 (void);
+    void start_dma_dac_3 (void);
+    void start_dma_dac_4 (void);
+    void create_wave     (void);
+    void run_wave        (void);
    
-    CY_ISR_PROTO( isr_DAC_1_done );
+    CY_ISR_PROTO( isr_DACs_done );
     
 #endif //DACS_H_INCLUDED
 

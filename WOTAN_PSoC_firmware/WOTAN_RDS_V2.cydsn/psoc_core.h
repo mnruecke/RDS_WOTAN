@@ -17,6 +17,9 @@
 
     char  version[3];
     
+    #define TRUE    1
+    #define FALSE   0
+    
     #define LED_ON  1
     #define LED_OFF 0
     
@@ -31,14 +34,16 @@
     #define SIZE_OF_SEGMENT     50
 
     /* command set */
-    #define KEY_VERSION         'a'
-    #define KEY_SERIAL_NUMBER   'b'
-    #define KEY_RUN_WAVE        'c'
-    #define KEY_RESET           'd'
-    #define KEY_CREATE_WAVE     'e'
-    #define KEY_GET_RUN_COUNT   'f'
-    #define KEY_WRITE_SEQUENCE  'g'
-    #define KEY_WAVE_LENGTH     'h'
+    #define KEY_VERSION          'a'
+    #define KEY_SERIAL_NUMBER    'b'
+    #define KEY_RUN_WAVE         'c'
+    #define KEY_RESET            'd'
+    #define KEY_CREATE_WAVE      'e'
+    #define KEY_GET_RUN_COUNT    'f'
+    #define KEY_WRITE_SEQUENCE   'g'
+    #define KEY_WAVE_LENGTH      'h'
+    #define KEY_ACQUISITION_DONE 'i'
+    #define KEY_SEND_ADC_DATA    'j'
     
     void init_psoc(void);
     void usbfs_interface(void);
@@ -48,6 +53,8 @@
     void usbfs_put_run_count(void);
     void usbfs_get_packet( uint8* );
     void usbfs_put_wave_length(void);
+    void usbfs_is_acquisition_done(void);
+    void usbfs_send_adc_data(void);
 
 #endif //PSOC_CORE_H_INCLUDED
 

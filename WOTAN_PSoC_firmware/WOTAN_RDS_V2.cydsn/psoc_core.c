@@ -14,6 +14,7 @@
 #include <string.h>
 #include "psoc_core.h"
 #include "dacs.h"
+#include "adcs.h"
 
 void init_psoc(void){
     
@@ -22,7 +23,7 @@ void init_psoc(void){
     USBUART_Start(USBFS_DEVICE, USBUART_5V_OPERATION);
     
     init_dacs();
-    
+    init_adcs();
 }//END init_psoc(void)
 
 void usbfs_interface(void){
@@ -44,11 +45,7 @@ void usbfs_interface(void){
             /* Read received data and re-enable OUT endpoint. */
             count = USBUART_GetAll(buffer);
 
-            if (0u != count) {   
-                
-                /* Wait until component is ready to send data to host. */
-                while (0u == USBUART_CDCIsReady());  
-                            
+            if (0u != count) {                               
                 usbfs_process_firmware_commands( buffer );
                 
             }//END if (0u != count)
@@ -57,16 +54,18 @@ void usbfs_interface(void){
 }//END usbfs_interface(void)
 
 void usbfs_process_firmware_commands( uint8* buffer ){
-    /* Process firmware commands */                                       
-    if ( buffer[0] == KEY_VERSION )         usbfs_put_version();
-    if ( buffer[0] == KEY_SERIAL_NUMBER )   usbfs_put_chip_id();
-    if ( buffer[0] == KEY_WAVE_LENGTH )     usbfs_put_wave_length();
-    if ( buffer[0] == KEY_WRITE_SEQUENCE )  usbfs_get_packet( buffer );
-    if ( buffer[0] == KEY_CREATE_WAVE )     create_wave();
-    if ( buffer[0] == KEY_RUN_WAVE )        run_wave();
-    if ( buffer[0] == KEY_RESET )           CySoftwareReset();
-    if ( buffer[0] == KEY_GET_RUN_COUNT )   usbfs_put_run_count();    
-}//END void usbfs_command_menue( uint8* )
+    
+    if ( buffer[0] == KEY_VERSION )          usbfs_put_version();
+    if ( buffer[0] == KEY_SERIAL_NUMBER )    usbfs_put_chip_id();
+    if ( buffer[0] == KEY_WAVE_LENGTH )      usbfs_put_wave_length();
+    if ( buffer[0] == KEY_WRITE_SEQUENCE )   usbfs_get_packet( buffer );
+    if ( buffer[0] == KEY_CREATE_WAVE )      create_wave();
+    if ( buffer[0] == KEY_RUN_WAVE )         run_wave();
+    if ( buffer[0] == KEY_RESET )            CySoftwareReset();
+    if ( buffer[0] == KEY_GET_RUN_COUNT )    usbfs_put_run_count();    
+    if ( buffer[0] == KEY_ACQUISITION_DONE ) usbfs_is_acquisition_done();    
+    if ( buffer[0] == KEY_SEND_ADC_DATA )    usbfs_send_adc_data();
+}//END void usbfs_process_firmware_commands( uint8* buffer )
 
 void usbfs_put_version(void){
     while (0u == USBUART_CDCIsReady());
@@ -121,16 +120,64 @@ void usbfs_get_packet( uint8 * buffer ){
     volatile uint8  channel_number     = buffer[1];
     
     // write wave into flash memory:
-    memcpy( sig_1.dac_data      + SIZE_OF_SEGMENT * package_number,
+    memcpy( sig_1.temp_dac_data + SIZE_OF_SEGMENT * package_number,
             (char *) buffer     + SIZE_OF_HEADER,
             SIZE_OF_SEGMENT
             );                  
     if( package_number == (number_of_packages-1) )
     {
         cLED_Write( LED_ON );
-        FLASH_Write( sig_1.dac_data, flash2dac_LUT[channel_number], number_of_samples);
+        FLASH_Write( sig_1.temp_dac_data, flash2dac_LUT[channel_number], number_of_samples);
         cLED_Write( LED_OFF );
     }  
 }//END void usbfs_get_packet(void)
+
+void usbfs_is_acquisition_done(void){
+    while (0u == USBUART_CDCIsReady());
+    USBUART_PutData( (uint8 *) &acquisition_completed, 1 );     
+}//END void usbfs_is_acquisition_done(void)
+
+void usbfs_send_adc_data(void){
+    
+    uint8 * adc1_ptr = (uint8 *) sig_1.adc_data[ADC_1];
+    uint8 * adc2_ptr = (uint8 *) sig_1.adc_data[ADC_2];
+    uint8 adc1_adc2_interleaved[USBFS_TX_SIZE];
+    
+    cLED_Write( LED_ON );
+    
+    // turn interleaved uint16 adc data into byte stream
+    for( int usb_pckt = 0;
+         usb_pckt < (2* DMA_ADC_DATA_LENGTH / USBFS_TX_SIZE*DMA_ADC_1_BYTES_PER_BURST);
+         usb_pckt++
+         )
+    {
+        // a) create data packet fitting in usb tx buffer
+        for(int smpl=0; smpl < USBFS_TX_SIZE/4; smpl++)
+        {
+            // MSB ADC 1
+            adc1_adc2_interleaved[4*smpl+0] = *( adc1_ptr
+                                               + ( usb_pckt * USBFS_TX_SIZE/2+(2*smpl+1))
+                                               );    
+            // LSB ADC 1
+            adc1_adc2_interleaved[4*smpl+1] = *( adc1_ptr
+                                               + ( usb_pckt * USBFS_TX_SIZE/2+(2*smpl+0))
+                                               );     
+            // MSB ADC 2
+            adc1_adc2_interleaved[4*smpl+2] = *( adc2_ptr 
+                                               + ( usb_pckt * USBFS_TX_SIZE/2+(2*smpl+1))
+                                               );   
+            // LSB ADC 2
+            adc1_adc2_interleaved[4*smpl+3] = *( adc2_ptr
+                                               + ( usb_pckt * USBFS_TX_SIZE/2+(2*smpl+0))
+                                               );                           
+        }//END for(int smpl=0; smpl<=USBFS_TX_SIZE/4; smpl++)
+        
+        // b) send
+        while (0u == USBUART_CDCIsReady());          
+        USBUART_PutData( adc1_adc2_interleaved , USBFS_TX_SIZE);  
+    }//END for( int usb_pckt = 0; ...
+    
+    cLED_Write( LED_OFF );
+}//END void usbfs_send_adc_data(void)
 
 /* [] END OF FILE */

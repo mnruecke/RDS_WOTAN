@@ -7,6 +7,7 @@ Created on Fri Apr  7 18:19:12 2023
 
 import serial
 import time
+import struct
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -58,6 +59,38 @@ def get_wave_length( ser_obj ):
     psoc_response = ser_obj.read( wave_length_strlen )
     
     return int( psoc_response[:-1] )
+
+def is_acquisition_completed( ser_obj ):
+    is_acquisition_completed_command = b'i'
+    response_byte_len = 1
+    completed_flag = b'\x01'
+    
+    ser_obj.write( is_acquisition_completed_command )
+    return ser_obj.read( response_byte_len ) == completed_flag
+
+def get_adc_data( ser_obj ):
+    get_adc_data_command = b'j'
+    response_byte_len = 12000*2
+    
+    ser_obj.write( get_adc_data_command )
+    return ser_obj.read( response_byte_len )
+
+def unpack_adc_data_stream( adc_data_bin ):
+    
+    numOfSamples   = 12000
+    bytesPerSample = 2
+    
+    # transform byte stream into int16 array
+    adc_data_int16 = struct.unpack(
+        '>'+'h'*int( len(adc_data_bin) / bytesPerSample ),
+        adc_data_bin
+        )
+
+    bytes_expected  = numOfSamples * bytesPerSample
+    bytes_received  = len( adc_data_bin )
+    assert( bytes_received == bytes_expected )
+    
+    return adc_data_int16
     
 def software_reset( ser_obj ):
     software_reset_command = b'd'    
@@ -110,10 +143,11 @@ def write_sequence( ser_obj, trace, channel ):
         header[3] = package & 0xFF              # package number LSB
         header[4] = num_packages >> 8           # total number of packages MSB
         header[5] = num_packages & 0xFF         # total number of packages LSB
+        #header[6:8]: reserved for future use
         
         header_bytes = bytes(header)       
         
-        #data
+        #data packet
         data = trace [ len_packet*package : len_packet*(package+1) ]   
         data_bytes = bytes(data)   
         ser_obj.write( header_bytes + data_bytes )      
@@ -125,26 +159,18 @@ def basic_wave_test():
         verify_firmware_version( ser )
         verify_chip_id( ser )
         
-        #create_test_wave( ser )
-        trace1 = wavelet_generation( 1e3, wave_len_ = get_wave_length(ser) ) 
-        plot_wave( np.arange(len(trace1)), trace1 )
-        trace2 = wavelet_generation( 2e3, wave_len_ = get_wave_length(ser) ) 
-        plot_wave( np.arange(len(trace2)), trace2 )
-        trace3 = wavelet_generation( 4e3, wave_len_ = get_wave_length(ser) ) 
-        plot_wave( np.arange(len(trace3)), trace3 )
-        trace4 = wavelet_generation( 8e3, wave_len_ = get_wave_length(ser) ) 
-        plot_wave( np.arange(len(trace4)), trace4 )
-        write_sequence( ser, trace1, channel=0 )
-        write_sequence( ser, trace2, channel=1 )
-        write_sequence( ser, trace3, channel=2 )
-        write_sequence( ser, trace4, channel=3 )
+        for channel_, frequ in zip( [0,1,2,3], [1e2,2e2,3e2,4e2] ):          
+            trace = wavelet_generation( frequ,
+                                        wave_len_ = get_wave_length(ser)
+                                        )           
+            plot_wave( np.arange(len(trace)), trace )
+            write_sequence( ser, trace, channel= channel_ )
         
         for _ in range(1):
             run_test_wave( ser )
             time.sleep(2e-3)
             
         get_run_count(   ser )
-        get_wave_length( ser )
         
     finally:   
         ser.close()
@@ -155,17 +181,20 @@ def basic_wave_test_run_only():
        
         verify_firmware_version( ser )
         verify_chip_id( ser )
-  
-        #create_test_wave( ser )
+        
         for _ in range(1):
             run_test_wave( ser )
-            time.sleep(2e-3)
             
-        get_run_count(   ser )
-        print( get_wave_length( ser ) )
+            time.sleep(50e-3)
+            print( is_acquisition_completed( ser ))
+            
+        get_run_count(  ser )
         
+        plt.plot( unpack_adc_data_stream( get_adc_data( ser )))
+
     finally:   
-        ser.close()
+        ser.close()        
+
 
 """ function testing """
 if __name__ == "__main__":
