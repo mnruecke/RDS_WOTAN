@@ -64,7 +64,7 @@ void usbfs_process_firmware_commands( uint8* buffer ){
     if ( buffer[0] == KEY_RESET )            CySoftwareReset();
     if ( buffer[0] == KEY_GET_RUN_COUNT )    usbfs_put_run_count();    
     if ( buffer[0] == KEY_ACQUISITION_DONE ) usbfs_is_acquisition_done();    
-    if ( buffer[0] == KEY_SEND_ADC_DATA )    usbfs_send_adc_data();
+    if ( buffer[0] == KEY_SEND_ADC_DATA )    usbfs_send_adc_data( buffer );
 }//END void usbfs_process_firmware_commands( uint8* buffer )
 
 void usbfs_put_version(void){
@@ -137,47 +137,47 @@ void usbfs_is_acquisition_done(void){
     USBUART_PutData( (uint8 *) &acquisition_completed, 1 );     
 }//END void usbfs_is_acquisition_done(void)
 
-void usbfs_send_adc_data(void){
+void usbfs_send_adc_data( uint8 * buffer ){
+    
+    cLED_Write( LED_ON );     
+    
+    // a) parameters
+    uint16 usb_pckt = ((uint16)buffer[1] << 8) + ((uint16)buffer[2]);
     
     uint8 * adc1_ptr = (uint8 *) sig_1.adc_data[ADC_1];
     uint8 * adc2_ptr = (uint8 *) sig_1.adc_data[ADC_2];
     uint8 adc1_adc2_interleaved[USBFS_TX_SIZE];
-    
-    cLED_Write( LED_ON );
-    
-    // turn interleaved uint16 adc data into byte stream
-    for( int usb_pckt = 0;
-         usb_pckt < (2* DMA_ADC_DATA_LENGTH / USBFS_TX_SIZE*DMA_ADC_1_BYTES_PER_BURST);
-         usb_pckt++
-         )
-    {
-        // a) create data packet fitting in usb tx buffer
-        for(int smpl=0; smpl < USBFS_TX_SIZE/4; smpl++)
-        {
-            // MSB ADC 1
-            adc1_adc2_interleaved[4*smpl+0] = *( adc1_ptr
-                                               + ( usb_pckt * USBFS_TX_SIZE/2+(2*smpl+1))
-                                               );    
-            // LSB ADC 1
-            adc1_adc2_interleaved[4*smpl+1] = *( adc1_ptr
-                                               + ( usb_pckt * USBFS_TX_SIZE/2+(2*smpl+0))
-                                               );     
-            // MSB ADC 2
-            adc1_adc2_interleaved[4*smpl+2] = *( adc2_ptr 
-                                               + ( usb_pckt * USBFS_TX_SIZE/2+(2*smpl+1))
-                                               );   
-            // LSB ADC 2
-            adc1_adc2_interleaved[4*smpl+3] = *( adc2_ptr
-                                               + ( usb_pckt * USBFS_TX_SIZE/2+(2*smpl+0))
-                                               );                           
-        }//END for(int smpl=0; smpl<=USBFS_TX_SIZE/4; smpl++)
         
-        // b) send
-        while (0u == USBUART_CDCIsReady());          
-        USBUART_PutData( adc1_adc2_interleaved , USBFS_TX_SIZE);  
-    }//END for( int usb_pckt = 0; ...
+    // b) create data packet fitting in usb tx buffer
+    for(int smpl=0; smpl < USBFS_TX_SIZE/4; smpl++)
+    {
+        // MSB ADC 1
+        adc1_adc2_interleaved[4*smpl+0] = adc1_ptr[
+                                            usb_pckt * USBFS_TX_SIZE/2+(2*smpl+1)
+                                            + DISMISS_INITIAL_DATA_POINTS
+                                            ];
+        // LSB ADC 1
+        adc1_adc2_interleaved[4*smpl+1] = adc1_ptr[
+                                            usb_pckt * USBFS_TX_SIZE/2+(2*smpl+0)
+                                            + DISMISS_INITIAL_DATA_POINTS
+                                            ];     
+        // MSB ADC 2
+        adc1_adc2_interleaved[4*smpl+2] = adc2_ptr[ 
+                                            usb_pckt * USBFS_TX_SIZE/2+(2*smpl+1)
+                                            + DISMISS_INITIAL_DATA_POINTS
+                                            ];   
+        // LSB ADC 2
+        adc1_adc2_interleaved[4*smpl+3] = adc2_ptr[
+                                            usb_pckt * USBFS_TX_SIZE/2+(2*smpl+0)
+                                            + DISMISS_INITIAL_DATA_POINTS
+                                            ];                           
+    }//END for(int smpl=0; smpl<=USBFS_TX_SIZE/4; smpl++)
+    
+    // c) send
+    while (0u == USBUART_CDCIsReady());          
+    USBUART_PutData( adc1_adc2_interleaved , USBFS_TX_SIZE);  
     
     cLED_Write( LED_OFF );
-}//END void usbfs_send_adc_data(void)
+}//END void usbfs_send_adc_data( uint8 * buffer )
 
 /* [] END OF FILE */

@@ -16,7 +16,7 @@
 
 void init_adcs(void){
     
-    sigBuf_Start();
+    PGA_ADC_Buffer_Start();
     
     ADC_SAR_1_Start();
     ADC_SAR_2_Start();
@@ -32,7 +32,10 @@ void init_adcs(void){
 
 void init_dma_adc_1(void){
     /* DMA Configuration for DMA_ADC_1 */
-    const int bytes_per_td = DMA_ADC_DATA_LENGTH / DMA_ADC_1_NUM_OF_TDS;    
+    const int bytes_per_td = (    DMA_ADC_DATA_LENGTH
+                                / DMA_ADC_1_NUM_OF_TDS 
+                                * DMA_ADC_1_BYTES_PER_BURST
+                                );
     
     DMA_ADC_1_Chan = DMA_ADC_1_DmaInitialize( DMA_ADC_1_BYTES_PER_BURST,
                                               DMA_ADC_1_REQUEST_PER_BURST, 
@@ -70,7 +73,10 @@ void start_dma_adc_1(void){
 
 void init_dma_adc_2(void){
     /* DMA Configuration for DMA_ADC_2 */
-    const int bytes_per_td = DMA_ADC_DATA_LENGTH / DMA_ADC_2_NUM_OF_TDS;    
+    const int bytes_per_td = (    DMA_ADC_DATA_LENGTH
+                                / DMA_ADC_2_NUM_OF_TDS 
+                                * DMA_ADC_2_BYTES_PER_BURST
+                                );  
     
     DMA_ADC_2_Chan = DMA_ADC_2_DmaInitialize( DMA_ADC_2_BYTES_PER_BURST,
                                               DMA_ADC_2_REQUEST_PER_BURST, 

@@ -54,7 +54,7 @@
     void usbfs_get_packet( uint8* );
     void usbfs_put_wave_length(void);
     void usbfs_is_acquisition_done(void);
-    void usbfs_send_adc_data(void);
+    void usbfs_send_adc_data( uint8* );
 
 #endif //PSOC_CORE_H_INCLUDED
 

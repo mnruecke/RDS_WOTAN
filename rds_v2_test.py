@@ -67,17 +67,41 @@ def is_acquisition_completed( ser_obj ):
     
     ser_obj.write( is_acquisition_completed_command )
     return ser_obj.read( response_byte_len ) == completed_flag
+ 
+
+def get_data_package( ser_obj, package_num, bytes_per_package ):
+    get_adc_data_command = b'j' + bytes([ package_num >> 8,
+                                          package_num &  0xff
+                                          ])
+    ser_obj.write( get_adc_data_command)    
+    return ser_obj.read( bytes_per_package )
 
 def get_adc_data( ser_obj ):
-    get_adc_data_command = b'j'
-    response_byte_len = 12000*2
+    bytes_per_package    = 60
+    bytes_per_sample     = 2
+    adc_sampling_time_us = 15000
+    adc_samples_per_us   = 2
     
-    ser_obj.write( get_adc_data_command )
-    return ser_obj.read( response_byte_len )
+    total_num_of_bytes = (   bytes_per_sample
+                           * adc_sampling_time_us
+                           * adc_samples_per_us
+                           )
+    
+    total_num_of_packages = total_num_of_bytes // bytes_per_package
+    
+    adc_data = []
+    for pckt_i in range( total_num_of_packages ):
+        dat = get_data_package( ser_obj, pckt_i, bytes_per_package)
+        if len(adc_data) == 0:
+            adc_data = dat
+        else:
+            adc_data = adc_data + dat
+    
+    return adc_data
 
 def unpack_adc_data_stream( adc_data_bin ):
     
-    numOfSamples   = 12000
+    numOfSamples   = 30000
     bytesPerSample = 2
     
     # transform byte stream into int16 array
@@ -118,7 +142,6 @@ def wavelet_generation( f, wave_len_ = 1600 ):
     
     return y1
   
-    
 def plot_wave( t_, y ):
     plt.plot( t_, y )
     plt.xlabel(r'time $[\mu s]$')
@@ -159,7 +182,7 @@ def basic_wave_test():
         verify_firmware_version( ser )
         verify_chip_id( ser )
         
-        for channel_, frequ in zip( [0,1,2,3], [1e2,2e2,3e2,4e2] ):          
+        for channel_, frequ in zip( [0,1,2,3], [1e4,2e4,3e4,5e4] ):          
             trace = wavelet_generation( frequ,
                                         wave_len_ = get_wave_length(ser)
                                         )           
@@ -189,7 +212,7 @@ def basic_wave_test_run_only():
             print( is_acquisition_completed( ser ))
             
         get_run_count(  ser )
-        
+             
         plt.plot( unpack_adc_data_stream( get_adc_data( ser )))
 
     finally:   
