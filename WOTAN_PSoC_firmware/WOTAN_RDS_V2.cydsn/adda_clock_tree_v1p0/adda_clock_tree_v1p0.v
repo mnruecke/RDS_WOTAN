@@ -38,7 +38,7 @@ always @ ( posedge clk or posedge rst )
 begin
     if( rst == 1'b1 )
     begin
-        shift_reg <= RESET_VALUE;
+        shift_reg <= POWER_CYCLE_VALUE;
     end
     else if( shift_reg == POWER_CYCLE_VALUE )
     begin

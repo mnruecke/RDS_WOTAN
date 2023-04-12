@@ -76,7 +76,24 @@ def get_data_package( ser_obj, package_num, bytes_per_package ):
     ser_obj.write( get_adc_data_command)    
     return ser_obj.read( bytes_per_package )
 
+def unpack_adc_byte_stream( adc_data_bytes, bytesPerSample ):
+
+    numOfSamples   = len( adc_data_bytes ) // bytesPerSample
+    
+    # transform byte stream into int16 array
+    adc_data_uint16 = struct.unpack(
+        '>'+'h'*int( len(adc_data_bytes) / bytesPerSample ),
+        adc_data_bytes
+        )
+
+    bytes_expected  = numOfSamples * bytesPerSample
+    bytes_received  = len( adc_data_bytes )
+    assert( bytes_received == bytes_expected )
+    
+    return adc_data_uint16
+
 def get_adc_data( ser_obj ):
+    
     bytes_per_package    = 60
     bytes_per_sample     = 2
     adc_sampling_time_us = 15000
@@ -89,38 +106,22 @@ def get_adc_data( ser_obj ):
     
     total_num_of_packages = total_num_of_bytes // bytes_per_package
     
-    adc_data = []
+    adc_data_bytes = []
     for pckt_i in range( total_num_of_packages ):
-        dat = get_data_package( ser_obj, pckt_i, bytes_per_package)
-        if len(adc_data) == 0:
-            adc_data = dat
+        data_pckt_i = get_data_package( ser_obj, pckt_i, bytes_per_package)
+        if len(adc_data_bytes) == 0:
+            adc_data_bytes = data_pckt_i
         else:
-            adc_data = adc_data + dat
+            adc_data_bytes = adc_data_bytes + data_pckt_i
     
-    return adc_data
+    return unpack_adc_byte_stream( adc_data_bytes, bytes_per_sample )
 
-def unpack_adc_data_stream( adc_data_bin ):
-    
-    numOfSamples   = 30000
-    bytesPerSample = 2
-    
-    # transform byte stream into int16 array
-    adc_data_int16 = struct.unpack(
-        '>'+'h'*int( len(adc_data_bin) / bytesPerSample ),
-        adc_data_bin
-        )
-
-    bytes_expected  = numOfSamples * bytesPerSample
-    bytes_received  = len( adc_data_bin )
-    assert( bytes_received == bytes_expected )
-    
-    return adc_data_int16
     
 def software_reset( ser_obj ):
     software_reset_command = b'd'    
     ser_obj.write( software_reset_command )
     
-def wavelet_generation( f, wave_len_ = 1600 ):
+def wavelet_generation( f, wave_len_ ):
     
     sampling_rate = 1e6
     wave_length   = wave_len_
@@ -135,7 +136,9 @@ def wavelet_generation( f, wave_len_ = 1600 ):
     
     t_ = np.arange( wave_length )
     y1 = amp1 * np.sin( 
-                        2*np.pi/sampling_rate * f1 * t_ + phi1
+                          2*np.pi / sampling_rate
+                        * f1 * t_
+                        + phi1
                         ) + off1
     y1[-1] = idle_amplitude
     y1 = np.uint8( y1 )
@@ -175,25 +178,19 @@ def write_sequence( ser_obj, trace, channel ):
         data_bytes = bytes(data)   
         ser_obj.write( header_bytes + data_bytes )      
 
-def basic_wave_test():
+def write_basic_wavelets():
     try:
         ser = serial.Serial( serialPort, baudrate, timeout=time_out) 
        
         verify_firmware_version( ser )
         verify_chip_id( ser )
         
-        for channel_, frequ in zip( [0,1,2,3], [1e4,2e4,3e4,5e4] ):          
+        for channel_, frequ in zip( [0,1,2,3], [4e4,5e4,6e4,5e4] ):          
             trace = wavelet_generation( frequ,
                                         wave_len_ = get_wave_length(ser)
                                         )           
             plot_wave( np.arange(len(trace)), trace )
             write_sequence( ser, trace, channel= channel_ )
-        
-        for _ in range(1):
-            run_test_wave( ser )
-            time.sleep(2e-3)
-            
-        get_run_count(   ser )
         
     finally:   
         ser.close()
@@ -210,11 +207,11 @@ def basic_wave_test_run_only():
             
             time.sleep(50e-3)
             print( is_acquisition_completed( ser ))
+            plt.plot( get_adc_data( ser ) )
+            plt.show()
             
         get_run_count(  ser )
              
-        plt.plot( unpack_adc_data_stream( get_adc_data( ser )))
-
     finally:   
         ser.close()        
 
@@ -222,7 +219,7 @@ def basic_wave_test_run_only():
 """ function testing """
 if __name__ == "__main__":
 
-    #basic_wave_test()
+    #write_basic_wavelets()
     basic_wave_test_run_only()
     
     pass

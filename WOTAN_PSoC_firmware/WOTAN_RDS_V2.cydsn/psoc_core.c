@@ -24,6 +24,8 @@ void init_psoc(void){
     
     init_dacs();
     init_adcs();
+    //run_wave();
+    
 }//END init_psoc(void)
 
 void usbfs_interface(void){
@@ -142,7 +144,9 @@ void usbfs_send_adc_data( uint8 * buffer ){
     cLED_Write( LED_ON );     
     
     // a) parameters
-    uint16 usb_pckt = ((uint16)buffer[1] << 8) + ((uint16)buffer[2]);
+    const uint8 msb_idx = 1;
+    const uint8 lsb_idx = 2;
+    uint16 tx_packet_num = ((uint16)buffer[msb_idx] << 8) + ((uint16)buffer[lsb_idx]);
     
     uint8 * adc1_ptr = (uint8 *) sig_1.adc_data[ADC_1];
     uint8 * adc2_ptr = (uint8 *) sig_1.adc_data[ADC_2];
@@ -153,22 +157,22 @@ void usbfs_send_adc_data( uint8 * buffer ){
     {
         // MSB ADC 1
         adc1_adc2_interleaved[4*smpl+0] = adc1_ptr[
-                                            usb_pckt * USBFS_TX_SIZE/2+(2*smpl+1)
+                                            tx_packet_num * USBFS_TX_SIZE/2+(2*smpl+1)
                                             + DISMISS_INITIAL_DATA_POINTS
                                             ];
         // LSB ADC 1
         adc1_adc2_interleaved[4*smpl+1] = adc1_ptr[
-                                            usb_pckt * USBFS_TX_SIZE/2+(2*smpl+0)
+                                            tx_packet_num * USBFS_TX_SIZE/2+(2*smpl+0)
                                             + DISMISS_INITIAL_DATA_POINTS
                                             ];     
         // MSB ADC 2
         adc1_adc2_interleaved[4*smpl+2] = adc2_ptr[ 
-                                            usb_pckt * USBFS_TX_SIZE/2+(2*smpl+1)
+                                            tx_packet_num * USBFS_TX_SIZE/2+(2*smpl+1)
                                             + DISMISS_INITIAL_DATA_POINTS
                                             ];   
         // LSB ADC 2
         adc1_adc2_interleaved[4*smpl+3] = adc2_ptr[
-                                            usb_pckt * USBFS_TX_SIZE/2+(2*smpl+0)
+                                            tx_packet_num * USBFS_TX_SIZE/2+(2*smpl+0)
                                             + DISMISS_INITIAL_DATA_POINTS
                                             ];                           
     }//END for(int smpl=0; smpl<=USBFS_TX_SIZE/4; smpl++)
