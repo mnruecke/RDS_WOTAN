@@ -13,6 +13,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+''' Start - core functions ----------------------------------------------- '''
+
 def verify_firmware_version( ser_obj ):
     
     print_firmware_version_command  = b'a'
@@ -46,7 +48,7 @@ def get_run_count( ser_obj ):
     
     ser_obj.write( get_run_count_command )
     psoc_response = ser_obj.read( run_count_strlen )
-    print( psoc_response[:-1] )
+    return int( psoc_response[:-1] )
 
 def get_wave_length( ser_obj ):    
     get_wave_length_command  = b'h'
@@ -141,7 +143,7 @@ def save_adc_data( adc_data, data_path='\\.', file_prefix='data'):
         print( 'Data written to: ' + data_file_name +
           '  (' + str(len(adc_data)) + ' samples)')
         
-def read_adc_data( data_path='\\.', file_prefix='data' ):
+def read_adc_data_files( data_path='\\.', file_prefix='data' ):
     
     file_count = 1
     data_file_name = file_prefix + '_' + str(file_count) + '.txt'
@@ -157,7 +159,19 @@ def software_reset( ser_obj ):
     software_reset_command = b'd'    
     ser_obj.write( software_reset_command )
     
-def wavelet_generation( f_, phi_, amp_, wave_len_ ):
+def sequence_envelope( trace, ramp_up_end, ramp_down_start ):
+    
+    ramp_up = np.arange( 0, ramp_up_end ) * 1/(ramp_up_end-1)
+    trace[ : ramp_up_end ] = ramp_up * trace[ : ramp_up_end ]
+    
+    ramp_down_length = len(trace) - ramp_down_start
+    ramp_down        = (1- np.arange( 0, ramp_down_length
+                                       ) * 1/(ramp_down_length-1))
+    trace[ ramp_down_start : ] = ramp_down * trace[ ramp_down_start : ]    
+    
+    return trace
+    
+def wavelet_generation( f, phi, amp, wave_length, ramp=True ):
     
     # a) fixed sampling pattern settings
     pts_per_td       = 24000/16
@@ -172,20 +186,11 @@ def wavelet_generation( f_, phi_, amp_, wave_len_ ):
     adc_window_length = 15000 # samples
     
     sampling_rate = 1e6
-    wave_length   = wave_len_
     
-    idle_amplitude      = 127 
-    base_line_amplitude = 127.5
-    
-    phi_adc_window_start = 2 * np.pi * f_ * adc_window_start / sampling_rate   
+    phi_adc_window_start = 2 * np.pi * f * adc_window_start / sampling_rate   
     
     
     # b) wave generation
-    amp  = amp_   # uint8
-    f    = f_     # kHz
-    phi  = phi_   # rad
-    
-    
     t_ = np.arange( wave_length )
     
     y = amp * np.sin( 
@@ -194,24 +199,12 @@ def wavelet_generation( f_, phi_, amp_, wave_len_ ):
                         + phi - phi_adc_window_start
                         )
     # c) add up- and down- ramp before and after the adc sampling window
-    ramp_up_start = 0
-    ramp_up_end   = int( 3/4 * adc_window_start )
-    ramp_up       = np.arange( ramp_up_start,
-                               ramp_up_end
-                               ) * 1/(ramp_up_end-1)
-    y[ ramp_up_start : ramp_up_end ] = ramp_up * y[   ramp_up_start
-                                                    : ramp_up_end
-                                                    ]
-  
-    ramp_down_start  = adc_window_start + int( adc_window_length * 1.02 )
-    ramp_down_length = wave_length - ramp_down_start 
-    ramp_down        = ( 1 - np.arange( 0, ramp_down_length
-                                       ) * 1/(ramp_down_length-1))
-    y[ ramp_down_start : ] = ramp_down * y[ ramp_down_start : ]
-    
-    y = y + base_line_amplitude
-    y[-1] = idle_amplitude
-    return np.uint8( y )
+    if ramp:
+        ramp_up_end     = int( 3/4 * adc_window_start )
+        ramp_down_start = adc_window_start + int( adc_window_length * 1.02 )
+        y = sequence_envelope( y, ramp_up_end, ramp_down_start)
+        
+    return y
   
 def plot_wave( t_, y ):
     plt.plot( t_, y )
@@ -245,7 +238,12 @@ def write_sequence( ser_obj, trace, channel ):
         data = trace [ len_packet*package : len_packet*(package+1) ]   
         data_bytes = bytes(data)   
         ser_obj.write( header_bytes + data_bytes )   
+ 
     
+''' END - core functions ------------------------------------------------- '''
+
+
+''' Start - application code---------------------------------------------- '''    
 
 def write_basic_wavelets():
     try:
@@ -254,24 +252,36 @@ def write_basic_wavelets():
         verify_firmware_version( ser )
         verify_chip_id( ser )
         
-        wavelets = [ [ 5e4, -2*np.pi*0, 127],
-                     [ 5e4, -2*np.pi*0.1, 127],
+        idx_frequ = 0
+        idx_phi   = 1
+        idx_amp   = 2
+        
+        base_line_amplitude = 127.0
+        idle_amplitude      = 127
+        
+        wavelets = [ [ 5e4, -2*np.pi*0,   50],
+                     [ 5e4, -2*np.pi*0.1, 50],
                      [ 5e4, -2*np.pi*0.2, 127],
                      [ 5e4, -2*np.pi*0.3, 127],
                      ]
         
         for channel_ in [0,1,2,3]:          
-            frequ = wavelets[ channel_ ][0]
-            phi   = wavelets[ channel_ ][1]
-            amp   = wavelets[ channel_ ][2]
+            frequ = wavelets[ channel_ ][ idx_frequ ]
+            phi   = wavelets[ channel_ ][ idx_phi   ]
+            amp   = wavelets[ channel_ ][ idx_amp   ]
             trace = wavelet_generation( frequ,
                                         phi,
                                         amp,
-                                        wave_len_ = get_wave_length(ser)
-                                        )          
+                                        wave_length = get_wave_length(ser),
+                                        ramp = True       
+                                        )    
+            
+            trace = trace + base_line_amplitude
+            trace[-1] = idle_amplitude
+            trace = np.uint8( trace )
             
             plt.figure(1)
-            trace_part = trace[:100]
+            trace_part = trace[:]
             plot_wave( np.arange(len(trace_part)), trace_part )
             write_sequence( ser, trace, channel= channel_ )
         
@@ -290,35 +300,122 @@ def basic_wave_test_run_only( data_path='\\.' ):
             
             run_test_wave( ser )          
             time.sleep(50e-3)
-            print( is_acquisition_completed(ser))           
+            print( "Sequence finished: ", is_acquisition_completed(ser))           
             adc_data, adc1_div_adc2 = adjust_adc1_vs_adc2(get_adc_data(ser))    
             
             plt.figure(2)
-            plt.plot( adc_data[-100:] )
-            plt.plot( adc_data[:100] )
-            print( "ADC data pts: ", len(adc_data))
+            plt.plot( adc_data[ -100 : ] )
+            plt.plot( adc_data[ : 100  ] )
             
             #save_adc_data( adc_data, data_path )
             
-        get_run_count(  ser )
+        print( "Number of runs: ", get_run_count( ser ) )
              
     finally:   
         ser.close()        
 
+def rds_wavelets_v1():
+    try:
+        ser = serial.Serial( serialPort, baudrate, timeout=time_out) 
+       
+        verify_firmware_version( ser )
+        verify_chip_id( ser )
+        
+        base_line_amplitude = 127.0
+        idle_amplitude      = 127
+        
+        idx_frequ = 0
+        idx_phi   = 1
+        idx_amp   = 2
+        
+        x_channel = 0
+        y_channel = 1
+        
+        B_rot_x =  [  50200, 2*np.pi*0,   100]
+        B_off_x =  [    200, 2*np.pi*0.1, 20]
+        B_rot_y =  [  50000, 2*np.pi*0.1, 120]
+                
+        trace_B_rot_x = wavelet_generation(
+                            f   = B_rot_x[ idx_frequ ],
+                            phi = B_rot_x[ idx_phi   ],
+                            amp = B_rot_x[ idx_amp   ],
+                            wave_length = get_wave_length(ser),
+                            ramp = True
+                            )          
+ 
+        trace_B_off_x = wavelet_generation(
+                            f   = B_off_x[ idx_frequ ],
+                            phi = B_off_x[ idx_phi   ],
+                            amp = B_off_x[ idx_amp   ],
+                            wave_length = get_wave_length(ser),
+                            ramp = True
+                            )          
+        
+        trace_B_rot_y = wavelet_generation(
+                            f   = B_rot_y[ idx_frequ ],
+                            phi = B_rot_y[ idx_phi   ],
+                            amp = B_rot_y[ idx_amp   ],
+                            wave_length = get_wave_length(ser),
+                            ramp = True
+                            )          
+        
+        Bx = trace_B_rot_x + trace_B_off_x + base_line_amplitude
+        By = trace_B_rot_y + base_line_amplitude
+        
+        Bx[-1] = idle_amplitude
+        By[-1] = idle_amplitude
+        
+        assert( max(Bx) < 256 and max(By) < 256 )
+        assert( min(Bx) >= 0  and min(By) >= 0  )
+        
+        Bx = np.uint8(Bx)
+        By = np.uint8(By)
+        
+        plt.figure(3)
+        plot_wave( np.arange(len(Bx)), Bx )
+        plot_wave( np.arange(len(By)), By )
+        write_sequence( ser, Bx, channel = x_channel )
+        write_sequence( ser, By, channel = y_channel )
+        
+    finally:   
+        ser.close()
 
-""" function testing """
+def run_rds_v1( data_path='\\.' ):
+    try:
+        ser = serial.Serial( serialPort, baudrate, timeout=time_out) 
+       
+        verify_firmware_version( ser )
+        verify_chip_id( ser )
+        
+        n_rep = 1
+        for _ in range( n_rep ):
+            
+            run_test_wave( ser )          
+            time.sleep(50e-3)
+            print( "Sequence finished: ", is_acquisition_completed(ser))           
+            adc_data, adc1_div_adc2 = adjust_adc1_vs_adc2(get_adc_data(ser))    
+            
+            plt.figure(2)
+            plt.plot( adc_data[ -100 : ] )
+            plt.plot( adc_data[ : 100  ] )
+            
+            #save_adc_data( adc_data, data_path )
+            
+        print( "Number of runs: ", get_run_count( ser ) )
+             
+    finally:   
+        ser.close()   
+
+
+""" ----------------- function testing / run application code ------------ """
 if __name__ == "__main__":
 
     serialPort = '\\\\.\\COM6' 
     baudrate   = 0 # value is ignored for usbfs interface
     time_out   = 1
 
-    GAIN_RATIO_ADC1_ADC2 = 0.99734    
-        
-
-    write_basic_wavelets()
-    basic_wave_test_run_only()
+    #write_basic_wavelets()
+    #basic_wave_test_run_only()
     
-    pass
-
-
+    rds_wavelets_v1()
+    run_rds_v1()
