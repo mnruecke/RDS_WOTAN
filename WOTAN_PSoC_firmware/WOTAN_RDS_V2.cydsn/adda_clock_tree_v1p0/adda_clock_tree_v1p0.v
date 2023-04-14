@@ -29,8 +29,8 @@ module adda_clock_tree_v1p0 (
 
 //        Your code goes here
 parameter  WIDTH = 6;
-parameter [WIDTH-1:0] RESET_VALUE         = 6'b000_111;
-parameter [WIDTH-1:0] POWER_CYCLE_VALUE   = 6'b000_000;
+parameter [WIDTH-1:0] START_VALUE = 6'b000_111;
+parameter [WIDTH-1:0] RESET_VALUE = 6'b000_000;
 
 reg [WIDTH-1:0] shift_reg;
 
@@ -38,11 +38,11 @@ always @ ( posedge clk or posedge rst )
 begin
     if( rst == 1'b1 )
     begin
-        shift_reg <= POWER_CYCLE_VALUE;
-    end
-    else if( shift_reg == POWER_CYCLE_VALUE )
-    begin
         shift_reg <= RESET_VALUE;
+    end
+    else if( shift_reg == RESET_VALUE )
+    begin
+        shift_reg <= START_VALUE;
     end
     else
     begin

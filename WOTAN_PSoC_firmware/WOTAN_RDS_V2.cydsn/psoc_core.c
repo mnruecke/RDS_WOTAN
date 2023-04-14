@@ -24,7 +24,7 @@ void init_psoc(void){
     
     init_dacs();
     init_adcs();
-    //run_wave();
+    run_wave();
     
 }//END init_psoc(void)
 

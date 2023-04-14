@@ -113,11 +113,14 @@ void start_dma_adc_2(void){
 }//END void start_dma_adc_2(void)
 
 CY_ISR( isr_ADC_1_done ){
-    acquisition_completed = TRUE;
+    
 }//END CY_ISR( isr_ADC_1_done )
 
 CY_ISR( isr_ADC_2_done ){
-    
+    acquisition_completed = TRUE;
+    CyDelayUs(2);
+    cResetTrigger_Write(1);
+    cResetTrigger_Write(0);
 }//END CY_ISR( isr_ADC_2_done )
 
 /* [] END OF FILE */

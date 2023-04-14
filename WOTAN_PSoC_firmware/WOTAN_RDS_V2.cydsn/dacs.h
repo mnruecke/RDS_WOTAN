@@ -22,8 +22,6 @@
     
     #define DAC_IDLE_VALUE 127
     
-    #define TDS_NUM_FOR_TRIGGER_OUT 2
-    
     #define  FLASH_DAC_1          (const uint8 *)     0x10000  // max length: 64 kB
     #define  FLASH_DAC_2          (const uint8 *)     0x20000
     #define  FLASH_DAC_3          (const uint8 *)     0x30000
@@ -80,16 +78,18 @@
     /* Move these variable declarations to the top of the function */
     uint8 DMA_DAC_4_Chan;
     uint8 DMA_DAC_4_TD[DMA_DAC_4_NUM_OF_TDS];
-
+    
     
     #define DMA_DAC_1_WAVELET_LENGTH 24000
     #define DMA_DAC_2_WAVELET_LENGTH DMA_DAC_1_WAVELET_LENGTH
     #define DMA_DAC_3_WAVELET_LENGTH DMA_DAC_1_WAVELET_LENGTH
     #define DMA_DAC_4_WAVELET_LENGTH DMA_DAC_1_WAVELET_LENGTH
     
+    #define TDS_NUM_FOR_TRIGGER_OUT 4 // Determines number of TDs used for tx start ramp    
+    
     #define DMA_DAC_WAVELET_LENGTH   DMA_DAC_1_WAVELET_LENGTH
-    #define DISMISS_INITIAL_DATA_POINTS 16
-    #define DMA_ADC_DATA_LENGTH         15016
+    #define DISMISS_INITIAL_DATA_POINTS 160
+    #define DMA_ADC_DATA_LENGTH         15160
     #define NUM_OF_ADCS 2
     #define ADC_1       0
     #define ADC_2       1
